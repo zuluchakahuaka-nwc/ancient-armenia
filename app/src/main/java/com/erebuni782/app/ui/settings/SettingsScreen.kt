@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
@@ -38,10 +39,10 @@ private val languageOptions = listOf(
     "en" to R.string.lang_en
 )
 
-/** Настройки: язык, скин, о приложении. */
+/** Настройки: язык, скин, вход сотрудника, о приложении. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SettingsScreen(viewModel: MainViewModel) {
+fun SettingsScreen(viewModel: MainViewModel, onOpenEmployee: () -> Unit) {
     val skin by viewModel.skin.collectAsState()
     val currentLang = LocalConfiguration.current.locales[0]?.language ?: "en"
 
@@ -79,6 +80,25 @@ fun SettingsScreen(viewModel: MainViewModel) {
                         onClick = { viewModel.setSkin(id) },
                         label = { Text(stringResource(labelRes)) }
                     )
+                }
+            }
+        }
+        item {
+            Card {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.employee_mode), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.employee_mode_hint),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    androidx.compose.material3.OutlinedButton(
+                        onClick = onOpenEmployee,
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .testTag("open_employee")
+                    ) {
+                        Text(stringResource(R.string.employee_enter))
+                    }
                 }
             }
         }

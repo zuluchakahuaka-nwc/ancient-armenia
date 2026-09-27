@@ -17,9 +17,11 @@ import kotlinx.coroutines.launch
         WikiArticleEntity::class,
         BookEntity::class,
         ChapterEntity::class,
-        AudioTrackEntity::class
+        AudioTrackEntity::class,
+        com.erebuni782.app.data.db.ArtifactEntity::class,
+        com.erebuni782.app.data.db.AuditEntryEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -27,6 +29,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun wikiDao(): WikiDao
     abstract fun bookDao(): BookDao
     abstract fun audioTrackDao(): AudioTrackDao
+    abstract fun artifactDao(): com.erebuni782.app.data.db.ArtifactDao
+    abstract fun auditDao(): com.erebuni782.app.data.db.AuditDao
 
     companion object {
         fun build(context: Context): AppDatabase {

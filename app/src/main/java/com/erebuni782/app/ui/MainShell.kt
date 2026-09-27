@@ -25,6 +25,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.erebuni782.app.MainViewModel
 import com.erebuni782.app.R
+import com.erebuni782.app.ui.employee.ArtifactEditScreen
+import com.erebuni782.app.ui.employee.EmployeeScreen
+import com.erebuni782.app.ui.employee.PinGateScreen
 import com.erebuni782.app.ui.guide.GuideScreen
 import com.erebuni782.app.ui.library.LibraryScreen
 import com.erebuni782.app.ui.library.MiniPlayerBar
@@ -98,7 +101,38 @@ fun MainShell(mainViewModel: MainViewModel) {
                 )
             }
             composable("map") { MapScreen() }
-            composable("settings") { SettingsScreen(mainViewModel) }
+            composable("settings") { SettingsScreen(mainViewModel) { navController.navigate("employee_gate") } }
+            composable("employee_gate") {
+                PinGateScreen(
+                    onUnlocked = {
+                        navController.navigate("employee") {
+                            popUpTo("employee_gate") { inclusive = true }
+                        }
+                    }
+                )
+            }
+            composable("employee") {
+                // guard: после recreate процесса сессия закрыта — редирект на PIN-гейт
+                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                    EmployeeScreen(
+                        onOpenArtifact = { navController.navigate("artifact_edit/$it") },
+                        onNewArtifact = { navController.navigate("artifact_edit/new") }
+                    )
+                } else {
+                    androidx.compose.runtime.LaunchedEffect(Unit) {
+                        navController.navigate("employee_gate") {
+                            popUpTo("employee") { inclusive = true }
+                        }
+                    }
+                }
+            }
+            composable("artifact_edit/{id}") { entry ->
+                val raw = entry.arguments?.getString("id").orEmpty()
+                ArtifactEditScreen(
+                    artifactId = if (raw == "new") "" else raw,
+                    onBack = { navController.popBackStack() }
+                )
+            }
         }
     }
 }

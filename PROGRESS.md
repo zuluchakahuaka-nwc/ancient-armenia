@@ -58,4 +58,24 @@
 | P2 | zai-vision MCP (встроенный + mcp-cli) таймаутил всю сессию (5+ попыток) — верификация через uiautomator-кодпоинты + пиксели; вернуться к OCR при стабилизации сервера |
 | P2 | Commit feat(P2) + push |
 
+## 2026-09-27 — P3 (режим сотрудника)
+
+| Фаза | Действие → Результат |
+|------|----------------------|
+| P3 | Зависимости: security-crypto (EncryptedSharedPreferences), exifinterface, work-runtime-ktx 2.9.1 |
+| P3 | Room v2: ArtifactEntity (13 полей + soft-delete под синк P5) + AuditEntryEntity; DAO + репозиторий с обязательным аудитом каждого действия (CREATED/UPDATED/STATUS_CHANGED/PHOTO_ADDED/DELETED) |
+| P3 | Машина состояний CustodyStatus (in-situ→agreed→transit→museum→researched, только вперёд, fromRaw-fallback) + ArtifactCategory ×4 |
+| P3 | D3: PinRepository — EncryptedSharedPreferences, солёный SHA-256 (PinHasher чистый/JVM-тестируемый), сетап с подтверждением/ввод/смена; EmployeeSession (процессная сессия) |
+| P3 | D4: EXIF-политика — SettingsStore.keepExif (дефолт СОХРАНЯТЬ) + PhotoStore (keep → копия как есть; strip → перекодирование битмапом) + тумблер в реестре |
+| P3 | WorkManager: InspectionReminderWorker (нотификация, канал, permission-check API33+) + ReminderScheduler (чистый computeDelayMillis, uniqueWork REPLACE) |
+| P3 | UI: PinGateScreen (сетап/ввод), EmployeeScreen (реестр + EXIF-тумблер + FAB), ArtifactEditScreen (все поля спеки: категория-чипы, даты dd.mm.yyyy, статусы с advance, фото-Picker, аудит-лента); маршруты в MainShell + guard: employee без сессии → авто-редирект на гейт (дыра закрыта) |
+| P3 | Строки: ~50 ключей ×3 локали |
+| P3 | Тесты: unit 22 (CustodyStatus 3, PinHasher 2, Reminder 1, ArtifactRepository 4 на фейковых DAO, + прежние) ✓; e2e EmployeeFlowE2E: PIN-сетап → создание → рестарт активности → гейт → данные живы → статус → аудит ✓ |
+| P3 | **Отловлено в e2e**: (1) стейт-поллинг: PIN персистенен → гейт адаптивен (SETUP/ENTER); (2) дыра безопасности: recreate открывал реестр без PIN → guard-редирект; (3) гонка: advance-кнопка кликалась до загрузки драфта (id пуст → молча return) → дозагрузка в advanceStatus; (4) аудит ниже сгиба → performScrollToNode по тегу edit_scroll; (5) интеракции из waitUntil-условия НЕ работают (только проверки); (6) стейл-dex при install -r → лечится полным uninstall/install |
+| P3 | Ручная проверка драйвером (uiautomator): полный флоу сотрудника живьём — PIN, создание, статус Agreed for transfer, аудит с датами ✓ |
+| P3 | Зрение: CLI-вызов исправлен (полный путь C:\Users\Admin\.bun\bin\mcp-cli.exe, JSON в одинарных кавычках, timeout 240с) — OCR полного экрана аудита идеален; гочи задокументированы в AGENTS.md §9 |
+| P3 | Скриншоты: p3_pin_gate/registry/edit_form/audit (en) |
+| P3 | Итог инструментальных: **OK (6 tests)**, крэш-буфер чист; unit все зелёные |
+| P3 | Commit feat(P3) + push |
+
 \* время локальное, заполняется по мере возможности.

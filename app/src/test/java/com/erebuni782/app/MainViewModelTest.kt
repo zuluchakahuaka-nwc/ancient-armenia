@@ -36,6 +36,9 @@ class FakeSettingsStore : SettingsStore {
         val cur = _marks.value
         _marks.value = if (key in cur) cur - key else cur + key
     }
+    private val _keepExif = MutableStateFlow(true)
+    override val keepExif = _keepExif
+    override suspend fun setKeepExif(enabled: Boolean) { _keepExif.value = enabled }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

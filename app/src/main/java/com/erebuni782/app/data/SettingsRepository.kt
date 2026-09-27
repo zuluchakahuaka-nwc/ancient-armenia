@@ -29,6 +29,10 @@ interface SettingsStore {
     suspend fun setReaderNightMode(enabled: Boolean)
     val readerBookmarks: Flow<Set<String>>
     suspend fun toggleBookmark(key: String)
+
+    /** D4: сохранять EXIF на фото артефактов (по умолчанию ДА). */
+    val keepExif: Flow<Boolean>
+    suspend fun setKeepExif(enabled: Boolean)
 }
 
 /** DataStore-реализация: всё персистентно между запусками. */
@@ -80,11 +84,20 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         }
     }
 
+    override val keepExif: Flow<Boolean> = store.data.map { prefs ->
+        prefs[KEEP_EXIF_KEY] ?: true
+    }
+
+    override suspend fun setKeepExif(enabled: Boolean) {
+        store.edit { prefs -> prefs[KEEP_EXIF_KEY] = enabled }
+    }
+
     companion object {
         private val SKIN_KEY = stringPreferencesKey("skin")
         private val URARTU_FM_KEY = booleanPreferencesKey("urartu_fm_enabled")
         private val READER_FONT_KEY = floatPreferencesKey("reader_font_scale")
         private val READER_NIGHT_KEY = booleanPreferencesKey("reader_night_mode")
         private val READER_BOOKMARKS_KEY = stringSetPreferencesKey("reader_bookmarks")
+        private val KEEP_EXIF_KEY = booleanPreferencesKey("keep_exif")
     }
 }

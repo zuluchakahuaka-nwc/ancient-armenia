@@ -20,6 +20,10 @@ object AppGraph {
         private set
     lateinit var player: PlayerManager
         private set
+    lateinit var artifacts: com.erebuni782.app.data.ArtifactRepository
+        private set
+    lateinit var pin: com.erebuni782.app.data.PinRepository
+        private set
 
     fun init(app: Application) {
         val db = AppDatabase.build(app)
@@ -28,6 +32,8 @@ object AppGraph {
         books = BookRepository(db.bookDao())
         audio = AudioRepository(db.audioTrackDao())
         player = PlayerManager(app)
+        artifacts = com.erebuni782.app.data.ArtifactRepository(db.artifactDao(), db.auditDao())
+        pin = com.erebuni782.app.data.PinRepository(app)
     }
 }
 
