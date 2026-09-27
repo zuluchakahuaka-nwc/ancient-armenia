@@ -11,3 +11,4 @@ AGENTS.md
 .externalNativeBuild
 .cxx
 app/build/
+.kotlin/
