@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Էրեբունի 782</string>
+    <string name="screen_home_title">Ձեւավորում և լեզու</string>
+    <string name="settings_skin">Ոճ</string>
+    <string name="skin_pre_urartu">Նախաուրարտու</string>
+    <string name="skin_urartu">Ուրարտու</string>
+    <string name="skin_post_urartu">Հետուրարտու</string>
+    <string name="settings_language">Լեզու</string>
+    <string name="lang_hy">Հայերեն</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+    <string name="sample_card_title">Նախադիտում</string>
+    <string name="sample_body">Մթա 782 թվականին ուրարտացի Արգիշտի Ա թագավորը Արին-Բերդ բլրի վրա հիմնեց Էրեբունի ամրոցը՝ Երևանի հիմնադրման պայմանական թվականը, ինչը հաստատված է պեղումների ժամանակ գտնված սեպագիր արձանագրությամբ։</string>
+    <string name="sample_action">Օրինակ կոճակ</string>
+    <string name="action_about">Ծրագրի մասին</string>
+    <string name="about_title">Ծրագրի մասին</string>
+    <string name="about_body">Էրեբունի 782 — եռալեզու առանց ինտերնետ ուղեցույց Ուրարտուի Էրեբունի և Թեյշեբաինի (Կարմիր բլուր) ամրոցների մասին։ P1 փուլ. երեք պատմական ոճերի շարժիչ և թարգմանության կառուցվածք։</string>
+    <string name="action_back">Հետ</string>
 </resources>

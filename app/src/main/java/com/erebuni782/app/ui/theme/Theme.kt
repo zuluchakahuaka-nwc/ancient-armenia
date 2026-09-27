@@ -2,22 +2,26 @@ package com.erebuni782.app.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
-// P0: временная заглушка. P1 заменит на движок 3 скинов
-// (Pre-Urartu / Urartu / Post-Urartu) — AGENTS.md §6.
-private val LightColors = lightColorScheme()
-private val DarkColors = darkColorScheme()
-
+/**
+ * Корневая тема приложения. Скин выбирается снаружи (DataStore → ViewModel);
+ * тёмный режим следует системе.
+ */
 @Composable
 fun Erebuni782Theme(
+    skinId: SkinId = SkinId.URARTU,
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
-        content = content
-    )
+    val spec = skinSpec(skinId)
+    CompositionLocalProvider(LocalSkin provides spec) {
+        MaterialTheme(
+            colorScheme = if (darkTheme) spec.dark else spec.light,
+            typography = spec.typography,
+            shapes = spec.shapes,
+            content = content
+        )
+    }
 }

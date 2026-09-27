@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Эребуни 782</string>
+    <string name="screen_home_title">Оформление и язык</string>
+    <string name="settings_skin">Скин</string>
+    <string name="skin_pre_urartu">До-Урарту</string>
+    <string name="skin_urartu">Урарту</string>
+    <string name="skin_post_urartu">Пост-Урарту</string>
+    <string name="settings_language">Язык</string>
+    <string name="lang_hy">Հայերեն</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+    <string name="sample_card_title">Предпросмотр</string>
+    <string name="sample_body">В 782 году до н. э. урартский царь Аргишти I основал крепость Эребуни на холме Арин-Берд — условная дата основания Еревана, подтверждённая клинописной надписью, найденной при раскопках.</string>
+    <string name="sample_action">Пример кнопки</string>
+    <string name="action_about">О приложении</string>
+    <string name="about_title">О приложении</string>
+    <string name="about_body">Эребуни 782 — трёхъязычный офлайн-гид по урартским крепостям Эребуни и Тейшебаини (Кармир-Блур). Фаза P1: движок тем с тремя историческими скинами и каркас локализации.</string>
+    <string name="action_back">Назад</string>
 </resources>

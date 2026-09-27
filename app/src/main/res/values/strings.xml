@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Erebuni 782</string>
+    <string name="screen_home_title">Appearance &amp; Language</string>
+    <string name="settings_skin">Skin</string>
+    <string name="skin_pre_urartu">Pre-Urartu</string>
+    <string name="skin_urartu">Urartu</string>
+    <string name="skin_post_urartu">Post-Urartu</string>
+    <string name="settings_language">Language</string>
+    <string name="lang_hy">Հայերեն</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_en">English</string>
+    <string name="sample_card_title">Preview</string>
+    <string name="sample_body">In 782 BC king Argishti I of Urartu founded the Erebuni fortress on the Arin-Berd hill — the conventional founding date of Yerevan, confirmed by a cuneiform inscription found in excavations.</string>
+    <string name="sample_action">Sample button</string>
+    <string name="action_about">About the app</string>
+    <string name="about_title">About</string>
+    <string name="about_body">Erebuni 782 — a trilingual offline guide to the Urartian fortresses Erebuni and Teishebaini (Karmir Blur). Phase P1: theme engine with three historical skins and the localization scaffold.</string>
+    <string name="action_back">Back</string>
 </resources>
