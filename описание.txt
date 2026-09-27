@@ -1,0 +1,81 @@
+MASTER PROMPT — PROJECT "EREBUNI 782" (handoff spec, v1.1)
+
+You are the lead developer agent for a new Android app. Read this whole spec,
+resolve the OPEN QUESTIONS section with the project owner FIRST, then execute
+phase by phase. Do not skip the machine audit step.
+
+━━━━━━━━ 1. PRODUCT ━━━━━━━━
+Name (decided): "Erebuni 782" — hy: Էրեբունի 782, ru: Эребуни 782, en: Erebuni 782.
+The 782 refers to 782 BC: king Argishti I of Urartu founded the Erebuni
+fortress (Arin-Berd hill) that year — the conventional founding date of
+Yerevan, verified by the cuneiform foundation inscription found in
+excavations.
+
+Trilingual (Armenian hy / Russian ru / English en) educational + field-research
+app about the Urartian fortresses Erebuni and Teishebaini (Karmir Blur).
+Timeline covered: ~860 BC (rise of Urartu) → 782 (Erebuni founded) → reign of
+Sarduri II → ~590 BC (fall of Teishebaini, end of Urartu) → Achaemenid /
+Hellenistic aftermath → 20th-century excavations.
+
+Two user modes:
+• "I am a tourist" (default): fortress guide, timeline, offline mini-wikipedia
+  (kings Argishti I / Sarduri II / Rusa, gods Haldi / Teisheba / Shivini,
+  daily life, cuneiform basics), e-book library with excavation scholarship
+  (Pokrovsky, Piotrovsky and other participants of the Erebuni / Karmir Blur
+  excavations) — ONLY public-domain or licensed texts; every book carries
+  source/license metadata. Reader: bookmarks, font size, night mode.
+• "I am an employee" (PIN/password gate, EncryptedSharedPreferences):
+  registry of stones/artifacts built into modern private houses that cannot
+  yet be transferred to museums but must eventually reach them and be studied.
+  Record: id, category (stone block / masonry / pottery / other), description,
+  photos, geo coords + address, discovery date, owner/custodian, custody status
+  (in-situ → agreed-for-transfer → in-transit → handed-to-museum → researched),
+  next inspection date (WorkManager reminders), audit-log of changes.
+  Export/import: full signed JSON dump + photos zip for PC; Android↔Android
+  Bluetooth sync (RFCOMM or BLE, last-write-wins + version vectors, conflict
+  list; Wi-Fi Direct fallback). No cloud. Offline-first.
+
+━━━━━━━━ 2. DESIGN SYSTEM ━━━━━━━━
+Three switchable historical skins — full design-system swap, not color-only:
+1) Pre-Urartu (early Iron Age, ceramics, rough textures)
+2) Urartu (cuneiform motifs, basalt/clay palette, ornament borders from
+   Erebuni wall paintings) — the flagship/default skin
+3) Post-Urartu (Achaemenid/Hellenistic layer)
+Each skin = colors + typography pairing + decorative assets + icon variants.
+Armenian-capable fonts bundled (Noto Sans/Serif Armenian). Layouts must
+survive +40% text length in hy/ru.
+
+━━━━━━━━ 3. TECH ━━━━━━━━
+Kotlin, Jetpack Compose, Material 3, MVVM, Navigation Compose, Room,
+DataStore, Coil, WorkManager; EPUB via Readium or PDF via PdfRenderer
+(decide per source books); minSdk 26. Emulator-first development.
+
+THIS MACHINE (audit before coding, report findings):
+- Android SDK: D:\Android\Sdk ; cmdline-tools zip also present in D:\Android
+- Android Studio data (gradle/config/plugins): D:\AndroidStudioData
+- Existing AVDs in %USERPROFILE%\.android\avd AND D:\Android\avd:
+  ruspanol-24, ruspanol-34, Test_API34, Test_API34_B (API 24/34 images)
+- Create missing profiles if needed (phone medium + tablet). Prefer CLI
+  avdmanager + emulator commands so builds run headless.
+
+━━━━━━━━ 4. OPEN QUESTIONS (ask the owner, record answers in
+docs/decisions.md) ━━━━━━━━
+Q1. Exact book list + license status (public domain?) + format (EPUB/PDF/scan).
+Q2. "Sync with PC": signed file export/import enough, or live USB/Wi-Fi
+    desktop client required?
+Q3. Employee PIN: single shared PIN or per-user local accounts?
+Q4. Photos: keep EXIF (coords prove find location) or strip for privacy?
+
+━━━━━━━━ 5. PHASES ━━━━━━━━
+P1 skeleton + theming engine (3 skins) + i18n scaffold (no hardcoded strings,
+   3 locales) + navigation. Acceptance: clean build, runs on AVD, language and
+   skin switchable at runtime.
+P2 tourist shell: bottom nav Guide/Wiki/Library/Map/Settings; 10 seed wiki
+   articles; reader with 1 sample book.
+P3 employee mode: registry CRUD + photos + reminders + PIN gate.
+P4 export to PC + Bluetooth sync protocol between two emulators.
+P5 content fill, tablet layout, TalkBack accessibility for 3 locales.
+
+Definition of done per phase: builds clean, tested on emulator, UI fully
+localized, employee data survives restart. Keep PROGRESS.md; commit after each
+phase with conventional commits.

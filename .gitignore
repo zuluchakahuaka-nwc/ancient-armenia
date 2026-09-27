@@ -1,0 +1,13 @@
+# Локальный только: инструкция агента + окружение владельца (в GitHub НЕ грузить)
+AGENTS.md
+
+*.iml
+.gradle/
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build/
