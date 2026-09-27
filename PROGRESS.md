@@ -37,4 +37,25 @@
 | - | P1 | Дебаг-логи удалены; финал: assembleDebug + test + am instrument OK (4) |
 | - | P1 | Commit feat(P1) + push |
 
+## 2026-09-27 — P2 (туристический шелл)
+
+| Фаза | Действие → Результат |
+|------|----------------------|
+| P2 | Зависимости: Room 2.6.1 + KSP 2.0.21-1.0.28, Media3 1.5.1, material-icons(-core/extended) |
+| P2 | Аудио-пакет Urartu.fm СГЕНЕРИРОВАН (PS-скрипт, 3 ambient-WAV по 20с/860КБ в assets/urartu_fm) — станция реально играет офлайн (D10) |
+| P2 | Room: WikiArticleEntity/BookEntity/ChapterEntity/AudioTrackEntity + DAO + сид-колбэк; AppGraph (сервис-локатор) + App |
+| P2 | Сид-контент: 10 статей вики ×3 локали, книга «Эребуни: крепость на Арин-Берде» (4 главы ×3, licenseNote CC0 — D1), 2 аудиогида-заглушки |
+| P2 | Репозитории: Wiki/Book/Audio (+URARTU_FM_PACK), SettingsStore расширен: urartuFmEnabled (дефолт ВКЛ, D10), readerFontScale/NightMode/Bookmarks |
+| P2 | PlayerManager (ExoPlayer, интерфейс PlayerController для тестов) + мини-плеер над навбаром |
+| P2 | UI: MainShell (bottom-nav Guide/Wiki/Library/Map/Settings + NavHost), GuideScreen (крепости→статьи), WikiScreen+WikiArticleScreen, LibraryScreen (Books/Audio табы), ReaderScreen (шрифт A±, ночь, закладки, главы), AudioTab (Urartu.fm Switch, SAF-импорт музыки, гиды), MapScreen (координаты), SettingsScreen (язык/скин/about); P1-экраны Home/About/AppNavHost удалены |
+| P2 | Строки: ~50 ключей ×3 локали |
+| P2 | Тесты: unit — MainViewModelTest(2)+LibraryViewModelTest(4: дефолт ON, старт/стоп пакета, CRUD треков)+ReaderViewModelTest(5: главы clamp, закладки persist, шрифт clamp, ночь) = 11+Sanity; component — SkinRenderTest(3, переписан под SampleContent)+WikiScreenTest(сид-статьи из Room); e2e — TouristShellE2E (полный туристический сценарий) заменил LanguageSkinSwitchTest |
+| P2 | Починено в ходе: produceState-импорты (runtime, не flow), mainViewModel-имя, rememberLibraryViewModel в MainShell, Icons.Book/Pause → material-icons-extended, composeRule.activity → InstrumentationRegistry |
+| P2 | **БАГ-КУЛЬБИТ**: LocalSkin-краш «SkinSpec not provided» в подкомпозиции LazyLayout (стек: CachedItemContent→SaveableStateProvider→PinnableItem) при nav-saveState-лимбо + эмиссии Room-flow в отцепленной композиции. Фикс №1 (чтение в теле вместо default-параметра) НЕ помог; фикс №2 (dynamic compositionLocalOf) НЕ помог; фикс №3 (безопасный дефолт URARTU вместо error) — крашей больше нет. Урок: fail-safe default для скин-local обязателен |
+| P2 | e2e-фиксы: awaitText(substring=true) (тело статьи ≠ точная строка), нормализация EN на старте, awaitTag перед tab_audio, выход из ридера reader_back (restoreState честно восстанавливает цепочку library→book — осознанный UX «вернуться к чтению») |
+| P2 | Итог инструментальных: **OK (5 tests)** (3 skin + 1 wiki-component + 1 полный e2e), крэш-буфер чист |
+| P2 | Визуальный проход (en/ru/hy, dumps + 12 скриншотов build/vision): все 5 вкладок, статья, книги, ридер, аудио (станция+гипы+моя музыка), карта, настройки; мини-плеер подтверждён нодой «Արին-Բերդ» над навбаром при включённой станции; локали переключаются на лету |
+| P2 | zai-vision MCP (встроенный + mcp-cli) таймаутил всю сессию (5+ попыток) — верификация через uiautomator-кодпоинты + пиксели; вернуться к OCR при стабилизации сервера |
+| P2 | Commit feat(P2) + push |
+
 \* время локальное, заполняется по мере возможности.

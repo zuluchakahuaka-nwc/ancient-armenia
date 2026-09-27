@@ -1,14 +1,16 @@
 package com.erebuni782.app
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.erebuni782.app.ui.PreviewCard
 import com.erebuni782.app.ui.theme.Erebuni782Theme
 import com.erebuni782.app.ui.theme.OrnamentStyle
 import com.erebuni782.app.ui.theme.OrnamentalDivider
@@ -21,26 +23,34 @@ import org.junit.runner.RunWith
 private fun str(res: Int): String =
     InstrumentationRegistry.getInstrumentation().targetContext.getString(res)
 
-/** Component-уровень: все скины рендерятся в одной композиции без падений. */
+/** Component: каждый скин рендерит текст+орнамент без падений. */
 @RunWith(AndroidJUnit4::class)
 class SkinRenderTest {
 
     @get:Rule
     val composeRule = createComposeRule()
 
+    @Composable
+    private fun SampleContent() {
+        Column {
+            Text(stringResource(R.string.app_name))
+            OrnamentalDivider()
+        }
+    }
+
     @Test
-    fun allSkins_renderPreviewCard() {
+    fun allSkins_renderSampleContent() {
         composeRule.setContent {
             Column {
                 SkinId.entries.forEach { skin ->
                     key(skin) {
-                        Erebuni782Theme(skinId = skin) { PreviewCard() }
+                        Erebuni782Theme(skinId = skin) { SampleContent() }
                     }
                 }
             }
         }
-        val previews = composeRule.onAllNodesWithText(str(R.string.sample_card_title))
-        assertEquals(SkinId.entries.size, previews.fetchSemanticsNodes().size)
+        val names = composeRule.onAllNodesWithText(str(R.string.app_name))
+        assertEquals(SkinId.entries.size, names.fetchSemanticsNodes().size)
         val ornaments = composeRule.onAllNodesWithTag("ornament")
         assertEquals(SkinId.entries.size, ornaments.fetchSemanticsNodes().size)
     }
@@ -59,11 +69,11 @@ class SkinRenderTest {
     }
 
     @Test
-    fun urartuSkin_rendersPreview() {
+    fun urartuSkin_rendersSample() {
         composeRule.setContent {
-            Erebuni782Theme(skinId = SkinId.URARTU) { PreviewCard() }
+            Erebuni782Theme(skinId = SkinId.URARTU) { SampleContent() }
         }
         composeRule.waitForIdle()
-        composeRule.onNodeWithText(str(R.string.sample_card_title)).assertExists()
+        composeRule.onNodeWithText(str(R.string.app_name)).assertExists()
     }
 }

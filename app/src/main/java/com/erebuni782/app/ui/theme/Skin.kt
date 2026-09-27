@@ -6,6 +6,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
@@ -33,10 +34,14 @@ data class SkinSpec(
     val ornament: OrnamentStyle
 )
 
-/** Доступ к текущему скину из любого места композиции. */
-val LocalSkin = staticCompositionLocalOf<SkinSpec> {
-    error("SkinSpec not provided: оберни композицию в Erebuni782Theme")
-}
+/**
+ * Доступ к текущему скину из любого места композиции.
+ * Безопасный дефолт (URARTU) вместо error: подкомпозиции LazyLayout в
+ * nav-saveState-лимбо (movableContent) могут читать local вне провайдера
+ * (эмиссия Room-flow в отцепленной композиции) — падать там нельзя.
+ * Реальная композиция всегда сидит под провайдером с актуальным скином.
+ */
+val LocalSkin = compositionLocalOf { skinSpec(SkinId.URARTU) }
 
 object AppTheme {
     val skin: SkinSpec

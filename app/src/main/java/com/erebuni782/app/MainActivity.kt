@@ -11,7 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.erebuni782.app.ui.AppNavHost
+import com.erebuni782.app.ui.MainShell
 import com.erebuni782.app.ui.theme.Erebuni782Theme
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavHost(viewModel = viewModel)
+                    MainShell(mainViewModel = viewModel)
                 }
             }
         }
