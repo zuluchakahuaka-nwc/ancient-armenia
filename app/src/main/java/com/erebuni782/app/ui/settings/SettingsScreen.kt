@@ -66,7 +66,8 @@ fun SettingsScreen(viewModel: MainViewModel, onOpenEmployee: () -> Unit) {
                                 LocaleListCompat.forLanguageTags(tag)
                             )
                         },
-                        label = { Text(stringResource(labelRes)) }
+                        label = { Text(stringResource(labelRes)) },
+                        modifier = Modifier.testTag("lang_$tag")
                     )
                 }
             }
@@ -78,7 +79,8 @@ fun SettingsScreen(viewModel: MainViewModel, onOpenEmployee: () -> Unit) {
                     FilterChip(
                         selected = skin == id,
                         onClick = { viewModel.setSkin(id) },
-                        label = { Text(stringResource(labelRes)) }
+                        label = { Text(stringResource(labelRes)) },
+                        modifier = Modifier.testTag("skin_${id.name}")
                     )
                 }
             }

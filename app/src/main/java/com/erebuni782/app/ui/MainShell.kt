@@ -1,6 +1,10 @@
 package com.erebuni782.app.ui
 
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
@@ -11,6 +15,8 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,7 +54,11 @@ private val tabs = listOf(
     TabSpec("settings", R.string.nav_settings, Icons.Outlined.Settings)
 )
 
-/** Туристический шелл P2: 5 вкладок + мини-плеер над навигацией. */
+/**
+ * Туристический шелл P2. P6: адаптив — узкий экран = bottom-bar,
+ * широкий (планшет ≥840dp) = navigation-rail слева. Иконки несут
+ * contentDescription (TalkBack, AGENTS.md P6).
+ */
 @Composable
 fun MainShell(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
@@ -55,112 +66,147 @@ fun MainShell(mainViewModel: MainViewModel) {
     val currentRoute = backStackEntry?.destination?.route
     val libraryViewModel = rememberLibraryViewModel()
 
-    Scaffold(
-        bottomBar = {
-            Column {
+    fun navigateTab(route: String) {
+        navController.navigate(route) {
+            popUpTo(navController.graph.startDestinationId) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    BoxWithConstraints {
+        val wide = maxWidth >= 840.dp
+
+        if (wide) {
+            Column(Modifier.fillMaxSize()) {
                 MiniPlayerBar(libraryViewModel)
-                NavigationBar {
-                    tabs.forEach { tab ->
-                        NavigationBarItem(
-                            selected = currentRoute == tab.route,
-                            onClick = {
-                                navController.navigate(tab.route) {
-                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = { Icon(tab.icon, contentDescription = null) },
-                            label = { Text(stringResource(tab.labelRes)) },
-                            modifier = Modifier.testTag("nav_${tab.route}")
-                        )
+                Row(Modifier.fillMaxHeight()) {
+                    NavigationRail {
+                        tabs.forEach { tab ->
+                            NavigationRailItem(
+                                selected = currentRoute == tab.route,
+                                onClick = { navigateTab(tab.route) },
+                                icon = {
+                                    Icon(tab.icon, contentDescription = stringResource(tab.labelRes))
+                                },
+                                label = { Text(stringResource(tab.labelRes)) },
+                                modifier = Modifier.testTag("nav_${tab.route}")
+                            )
+                        }
+                    }
+                    AppNavHost(navController, mainViewModel, Modifier.fillMaxHeight().weight(1f))
+                }
+            }
+        } else {
+            Scaffold(
+                bottomBar = {
+                    Column {
+                        MiniPlayerBar(libraryViewModel)
+                        NavigationBar {
+                            tabs.forEach { tab ->
+                                NavigationBarItem(
+                                    selected = currentRoute == tab.route,
+                                    onClick = { navigateTab(tab.route) },
+                                    icon = {
+                                        Icon(tab.icon, contentDescription = stringResource(tab.labelRes))
+                                    },
+                                    label = { Text(stringResource(tab.labelRes)) },
+                                    modifier = Modifier.testTag("nav_${tab.route}")
+                                )
+                            }
+                        }
+                    }
+                }
+            ) { padding ->
+                AppNavHost(navController, mainViewModel, Modifier.padding(padding))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppNavHost(
+    navController: NavHostController,
+    mainViewModel: MainViewModel,
+    modifier: Modifier = Modifier
+) {
+    NavHost(navController = navController, startDestination = "guide", modifier = modifier) {
+        composable("guide") {
+            GuideScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })
+        }
+        composable("wiki") {
+            WikiScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })
+        }
+        composable("wiki_article/{id}") { entry ->
+            WikiArticleScreen(articleId = entry.arguments?.getString("id").orEmpty())
+        }
+        composable("library") {
+            LibraryScreen(onOpenBook = { navController.navigate("book/$it") })
+        }
+        composable("book/{id}") { entry ->
+            ReaderScreen(
+                bookId = entry.arguments?.getString("id").orEmpty(),
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable("map") { MapScreen() }
+        composable("settings") { SettingsScreen(mainViewModel) { navController.navigate("employee_gate") } }
+        composable("employee_gate") {
+            PinGateScreen(
+                onUnlocked = {
+                    navController.navigate("employee") {
+                        popUpTo("employee_gate") { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable("employee") {
+            // guard: после recreate процесса сессия закрыта — редирект на PIN-гейт
+            if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                EmployeeScreen(
+                    onOpenArtifact = { navController.navigate("artifact_edit/$it") },
+                    onNewArtifact = { navController.navigate("artifact_edit/new") },
+                    onOpenAerial = { navController.navigate("aerial") }
+                )
+            } else {
+                androidx.compose.runtime.LaunchedEffect(Unit) {
+                    navController.navigate("employee_gate") {
+                        popUpTo("employee") { inclusive = true }
                     }
                 }
             }
         }
-    ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = "guide",
-            modifier = Modifier.padding(padding)
-        ) {
-            composable("guide") {
-                GuideScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })
+        composable("aerial") {
+            if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                AerialScreen(onOpenSession = { navController.navigate("aerial_session/$it") })
+            } else {
+                androidx.compose.runtime.LaunchedEffect(Unit) {
+                    navController.navigate("employee_gate") {
+                        popUpTo("aerial") { inclusive = true }
+                    }
+                }
             }
-            composable("wiki") {
-                WikiScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })
-            }
-            composable("wiki_article/{id}") { entry ->
-                WikiArticleScreen(articleId = entry.arguments?.getString("id").orEmpty())
-            }
-            composable("library") {
-                LibraryScreen(onOpenBook = { navController.navigate("book/$it") })
-            }
-            composable("book/{id}") { entry ->
-                ReaderScreen(
-                    bookId = entry.arguments?.getString("id").orEmpty(),
+        }
+        composable("aerial_session/{id}") { entry ->
+            if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                AerialSessionScreen(
+                    sessionId = entry.arguments?.getString("id").orEmpty(),
                     onBack = { navController.popBackStack() }
                 )
-            }
-            composable("map") { MapScreen() }
-            composable("settings") { SettingsScreen(mainViewModel) { navController.navigate("employee_gate") } }
-            composable("employee_gate") {
-                PinGateScreen(
-                    onUnlocked = {
-                        navController.navigate("employee") {
-                            popUpTo("employee_gate") { inclusive = true }
-                        }
-                    }
-                )
-            }
-            composable("employee") {
-                // guard: после recreate процесса сессия закрыта — редирект на PIN-гейт
-                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
-                    EmployeeScreen(
-                        onOpenArtifact = { navController.navigate("artifact_edit/$it") },
-                        onNewArtifact = { navController.navigate("artifact_edit/new") },
-                        onOpenAerial = { navController.navigate("aerial") }
-                    )
-                } else {
-                    androidx.compose.runtime.LaunchedEffect(Unit) {
-                        navController.navigate("employee_gate") {
-                            popUpTo("employee") { inclusive = true }
-                        }
+            } else {
+                androidx.compose.runtime.LaunchedEffect(Unit) {
+                    navController.navigate("employee_gate") {
+                        popUpTo("aerial_session/{id}") { inclusive = true }
                     }
                 }
             }
-            composable("aerial") {
-                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
-                    AerialScreen(onOpenSession = { navController.navigate("aerial_session/$it") })
-                } else {
-                    androidx.compose.runtime.LaunchedEffect(Unit) {
-                        navController.navigate("employee_gate") {
-                            popUpTo("aerial") { inclusive = true }
-                        }
-                    }
-                }
-            }
-            composable("aerial_session/{id}") { entry ->
-                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
-                    AerialSessionScreen(
-                        sessionId = entry.arguments?.getString("id").orEmpty(),
-                        onBack = { navController.popBackStack() }
-                    )
-                } else {
-                    androidx.compose.runtime.LaunchedEffect(Unit) {
-                        navController.navigate("employee_gate") {
-                            popUpTo("aerial_session/{id}") { inclusive = true }
-                        }
-                    }
-                }
-            }
-            composable("artifact_edit/{id}") { entry ->
-                val raw = entry.arguments?.getString("id").orEmpty()
-                ArtifactEditScreen(
-                    artifactId = if (raw == "new") "" else raw,
-                    onBack = { navController.popBackStack() }
-                )
-            }
+        }
+        composable("artifact_edit/{id}") { entry ->
+            val raw = entry.arguments?.getString("id").orEmpty()
+            ArtifactEditScreen(
+                artifactId = if (raw == "new") "" else raw,
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

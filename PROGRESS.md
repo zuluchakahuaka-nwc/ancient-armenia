@@ -99,4 +99,28 @@
 | P4 | Зрение (рабочий CLI): OCR экрана сессии — статус markers=55 stitched=1 geo=1, гео-ручная, нумерованные маркеры на фото видны ✓ |
 | P4 | Commit feat(P4) + push |
 
+## 2026-09-27 — P5 (подписанный дамп + синк-протокол)
+
+| Фаза | Действие → Результат |
+|------|----------------------|
+| P5 | VersionVector + SyncEngine (чистые): доминирование/конкурентность/merge; LWW по (лампорт,deviceId); параллельные без победителя → конфликт-лист; tombstones |
+| P5 | SyncTransport: TCP-кадры (4B длина + JSON), SyncServer/SyncClient; SyncLoopback — полный протокол в одном процессе (сервер = «новое устройство»); BT-реализация — слот для железа |
+| P5 | Room v4: артефакты + versionVector/lastEditor; DeviceId (персистентный UUID); репозиторий бампает VV на каждом изменении |
+| P5 | ExportRepository (D2): zip .e782 = data.json + photos + manifest + signature; PBKDF2(50k)+HMAC-SHA256 от парольной фразы; импорт: constant-time проверка подписи → upsert → фото в приватное хранилище; экспорт-каталог = external-files (виден ПК по USB) |
+| P5 | UI: карточка «Экспорт/синк» в реестре (пасфраза, 3 кнопки, статус-якорь export_status); ExportViewModel |
+| P5 | Починено: KDoc «photos/*» открывал вложенный комментарий (Kotlin nest!); File(File)-конструктора нет; setValue-импорт; org.json в JVM-тестах (testImplementation org.json:json); INTERNET-permission для loopback-сокетов (EPERM); IndexOutOfBounds — автоМАРКЕРЫ поштучно мутировали список во время measure → батч-вставка одной транзакцией |
+| P5 | Тесты: unit +9 (VV 3, SyncEngine 5) = 42 ✓; androidTest +ExportRoundTripTest 2 (раунд-трип двух баз + отказ неверной фразы) + ExportSyncE2E 1 → **OK (12)** |
+
+## 2026-09-27 — P6 (адаптив, доступность)
+
+| Фаза | Действие → Результат |
+|------|----------------------|
+| P6 | Адаптив-шелл: <840dp = bottom-bar; ≥840dp (планшет) = NavigationRail + мини-плеер сверху; NavHost с weight(1f) |
+| P6 | ПЛАНШЕТ-ФИКС: настройки рендерились ПУСТЫМИ при играющей станции (miniplayer+rail раскладка без weight) → полная перестройка wide-режима; воспроизведено вручную, подтверждено полным suite на erebuni_tablet — **OK (12 tests)** |
+| P6 | TalkBack-семантика: contentDescription на всех иконках навигации (rail+bar) и FAB; живой прогон скринридера — за владельцем (AVD без TalkBack-сервиса) |
+| P6 | E2E: чипы языка/скина получили TAG-якоря (lang_*/skin_*) — все 4 e2e переведены с текстов на теги (планшето-стабильно) |
+| P6 | Книги (D1): добор НЕВОЗМОЖЕН — списка книг и лицензий у владельца нет (решение D1 подтверждено); каркас+1 тестовая книга готовы к наполнению |
+| P6 | Скриншоты: p6_tablet_rail/guide, p6_tablet_library |
+| P6 | Commit feat(P5+P6) + push |
+
 \* время локальное, заполняется по мере возможности.

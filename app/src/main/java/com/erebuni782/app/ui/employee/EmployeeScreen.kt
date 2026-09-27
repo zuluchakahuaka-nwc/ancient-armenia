@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -109,6 +110,9 @@ fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit, 
                     Text(stringResource(R.string.aerial_entry))
                 }
             }
+            item {
+                ExchangeCard()
+            }
             if (artifacts.isEmpty()) {
                 item {
                     Text(
@@ -141,7 +145,7 @@ fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit, 
             onClick = onNewArtifact,
             modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp).testTag("add_artifact")
         ) {
-            Icon(Icons.Filled.Add, contentDescription = null)
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_artifact))
             Text(stringResource(R.string.add_artifact))
         }
     }
@@ -149,4 +153,49 @@ fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit, 
 
 private fun ViewModel.setKeepExif(enabled: Boolean) {
     viewModelScope.launch { AppGraph.settings.setKeepExif(enabled) }
+}
+
+/** P5: подписанный экспорт/импорт (D2) + loopback-синк. Статус = e2e-якорь. */
+@Composable
+private fun ExchangeCard() {
+    val vm: ExportViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = ExportViewModel.factory())
+    val status by vm.status.collectAsState()
+    var passphrase by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("erebuni") }
+
+    Card {
+        Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(stringResource(R.string.exchange_title), style = MaterialTheme.typography.titleSmall)
+            Text(
+                stringResource(R.string.exchange_hint),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            androidx.compose.material3.OutlinedTextField(
+                value = passphrase,
+                onValueChange = { passphrase = it },
+                label = { Text(stringResource(R.string.exchange_pass)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth().testTag("export_pass")
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                androidx.compose.material3.Button(
+                    onClick = { vm.export(passphrase) },
+                    modifier = Modifier.testTag("btn_export")
+                ) { Text(stringResource(R.string.btn_export)) }
+                androidx.compose.material3.OutlinedButton(
+                    onClick = { vm.importLatest(passphrase) },
+                    modifier = Modifier.testTag("btn_import")
+                ) { Text(stringResource(R.string.btn_import)) }
+                androidx.compose.material3.OutlinedButton(
+                    onClick = { vm.loopbackSync() },
+                    modifier = Modifier.testTag("btn_sync")
+                ) { Text(stringResource(R.string.btn_sync)) }
+            }
+            Text(
+                text = status,
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.testTag("export_status")
+            )
+        }
+    }
 }

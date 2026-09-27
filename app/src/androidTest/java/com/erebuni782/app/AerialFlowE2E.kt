@@ -64,9 +64,9 @@ class AerialFlowE2E {
         // EN + PIN (адаптивно) + вход в аэро
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()
-        awaitText("English")
-        rule.onNodeWithText("English").performClick()
-        awaitText("Post-Urartu")
+        awaitTag("lang_en")
+        rule.onNodeWithTag("lang_en").performClick()
+        awaitTag("skin_POST_URARTU")
         rule.onNodeWithTag("open_employee").performClick()
         awaitTag("pin_input")
         val setup = rule.onAllNodesWithTag("pin_confirm").fetchSemanticsNodes().isNotEmpty()

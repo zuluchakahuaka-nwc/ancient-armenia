@@ -136,4 +136,10 @@
     <string name="field_place">Վայր</string>
     <string name="generate_3d">Գեներացնել glTF</string>
     <string name="status_word">Կարգ</string>
+    <string name="exchange_title">Արտահանում / սինք (PC)</string>
+    <string name="exchange_hint">Ստորագրված դոմփ (.e782) լուսանկարներով՝ PC տեղափոխման համար. գաղտնաբառը ստորագրում է ֆայլը (HMAC)։ Loopback-թեստը գլոխարկում է ամբողջ սինք-պրոտոկոլը։</string>
+    <string name="exchange_pass">Գաղտնաբառ</string>
+    <string name="btn_export">Արտահանել</string>
+    <string name="btn_import">Ներմուծել</string>
+    <string name="btn_sync">Սինք-թեստ</string>
 </resources>

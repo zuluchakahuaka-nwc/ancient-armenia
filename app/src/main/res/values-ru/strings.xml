@@ -136,4 +136,10 @@
     <string name="field_place">Место</string>
     <string name="generate_3d">Сгенерировать glTF</string>
     <string name="status_word">Статус</string>
+    <string name="exchange_title">Экспорт / синк (ПК)</string>
+    <string name="exchange_hint">Подписанный дамп (.e782) с фото для переноса на ПК; парольная фраза подписывает файл (HMAC). Loopback-тест гоняет полный протокол синка.</string>
+    <string name="exchange_pass">Парольная фраза</string>
+    <string name="btn_export">Экспорт</string>
+    <string name="btn_import">Импорт</string>
+    <string name="btn_sync">Тест синка</string>
 </resources>

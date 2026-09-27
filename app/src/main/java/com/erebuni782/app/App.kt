@@ -28,6 +28,8 @@ object AppGraph {
         private set
     lateinit var aerial: com.erebuni782.app.data.AerialRepository
         private set
+    lateinit var export: com.erebuni782.app.export.ExportRepository
+        private set
 
     fun init(app: Application) {
         appContext = app
@@ -37,9 +39,13 @@ object AppGraph {
         books = BookRepository(db.bookDao())
         audio = AudioRepository(db.audioTrackDao())
         player = PlayerManager(app)
-        artifacts = com.erebuni782.app.data.ArtifactRepository(db.artifactDao(), db.auditDao())
+        artifacts = com.erebuni782.app.data.ArtifactRepository(
+            db.artifactDao(), db.auditDao(),
+            deviceIdProvider = { com.erebuni782.app.sync.DeviceId.get(app) }
+        )
         pin = com.erebuni782.app.data.PinRepository(app)
         aerial = com.erebuni782.app.data.AerialRepository(app, db.aerialSessionDao(), db.aerialMarkerDao())
+        export = com.erebuni782.app.export.ExportRepository(app, db.artifactDao(), db.auditDao(), db.aerialSessionDao(), db.aerialMarkerDao())
     }
 }
 

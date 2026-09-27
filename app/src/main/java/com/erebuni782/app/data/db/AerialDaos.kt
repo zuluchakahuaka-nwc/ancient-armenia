@@ -26,6 +26,9 @@ interface AerialMarkerDao {
     @Insert
     suspend fun insert(marker: AerialMarkerEntity): Long
 
+    @Insert
+    suspend fun insertAll(markers: List<AerialMarkerEntity>)
+
     @Query("SELECT * FROM aerial_markers WHERE sessionId = :sessionId ORDER BY number")
     fun observeForSession(sessionId: String): Flow<List<AerialMarkerEntity>>
 

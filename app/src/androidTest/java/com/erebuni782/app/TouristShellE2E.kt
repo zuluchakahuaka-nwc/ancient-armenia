@@ -42,12 +42,12 @@ class TouristShellE2E {
 
     @Test
     fun fullTouristFlow() {
-        // ── нормализуем локаль в EN через настройки (названия языков не локализуются)
+        // нормализация EN/скины через TAG-якоря чипов (§7.5 — планшето-стабильно)
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()
-        awaitText("English")
-        rule.onNodeWithText("English").performClick()
-        awaitText("Post-Urartu")
+        awaitTag("lang_en")
+        rule.onNodeWithTag("lang_en").performClick()
+        awaitTag("skin_POST_URARTU")
 
         // ── гид → вики-статья
         rule.onNodeWithTag("nav_guide").performClick()
@@ -77,14 +77,14 @@ class TouristShellE2E {
         rule.onNodeWithTag("nav_map").performClick()
         awaitText("40.1776")
 
-        // ── настройки: скин и язык на лету
+        // ── настройки: скин и язык на лету (TAG-якоря)
         rule.onNodeWithTag("nav_settings").performClick()
-        awaitText("Post-Urartu")
-        rule.onNodeWithText("Post-Urartu").performClick()
-        rule.onNodeWithText("Post-Urartu").assertIsSelected()
-        rule.onNodeWithText("Русский").performClick()
+        awaitTag("skin_POST_URARTU")
+        rule.onNodeWithTag("skin_POST_URARTU").performClick()
+        rule.onNodeWithTag("skin_POST_URARTU").assertIsSelected()
+        rule.onNodeWithTag("lang_ru").performClick()
         awaitText("Урарту")
-        rule.onNodeWithText("English").performClick()
+        rule.onNodeWithTag("lang_en").performClick()
         awaitText("Urartu")
     }
 }

@@ -93,7 +93,7 @@ fun AerialScreen(onOpenSession: (String) -> Unit) {
             onClick = { vm.createSession("Session ${SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())}") { onOpenSession(it) } },
             modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp).testTag("new_aerial_session")
         ) {
-            Icon(Icons.Filled.Add, contentDescription = null)
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.aerial_new_session))
             Text(stringResource(R.string.aerial_new_session))
         }
     }

@@ -95,16 +95,17 @@ class AerialRepository(
 
     suspend fun addAutoMarkers(sessionId: String, detections: List<Pair<Double, Double>>, confidences: List<Double>) {
         var number = (markerDao.maxNumber(sessionId) ?: 0)
-        detections.forEachIndexed { i, (x, y) ->
+        val batch = detections.mapIndexed { i, (x, y) ->
             number++
-            markerDao.insert(
-                AerialMarkerEntity(
-                    sessionId = sessionId, number = number,
-                    x = x, y = y, source = "AUTO",
-                    confidence = confidences.getOrElse(i) { 0.0 }, note = ""
-                )
+            AerialMarkerEntity(
+                sessionId = sessionId, number = number,
+                x = x, y = y, source = "AUTO",
+                confidence = confidences.getOrElse(i) { 0.0 }, note = ""
             )
         }
+        // одна транзакция = одна эмиссия Room-flow (без поштучного роста списка
+        // во время measure LazyColumn — краш IndexOutOfBounds)
+        markerDao.insertAll(batch)
     }
 
     suspend fun clearAutoMarkers(sessionId: String) {

@@ -45,9 +45,9 @@ class EmployeeFlowE2E {
         // нормализуем локаль EN
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()
-        awaitText("English")
-        rule.onNodeWithText("English").performClick()
-        awaitText("Post-Urartu")
+        awaitTag("lang_en")
+        rule.onNodeWithTag("lang_en").performClick()
+        awaitTag("skin_POST_URARTU")
 
         // гейт: адаптивно — SETUP если PIN ещё нет, иначе ENTER (PIN персистенен)
         rule.onNodeWithTag("open_employee").performClick()

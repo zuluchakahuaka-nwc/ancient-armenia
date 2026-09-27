@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
         com.erebuni782.app.data.db.AerialSessionEntity::class,
         com.erebuni782.app.data.db.AerialMarkerEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

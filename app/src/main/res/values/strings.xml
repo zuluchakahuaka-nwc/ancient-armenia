@@ -136,4 +136,10 @@
     <string name="field_place">Place</string>
     <string name="generate_3d">Generate glTF</string>
     <string name="status_word">Status</string>
+    <string name="exchange_title">Export / Sync (PC)</string>
+    <string name="exchange_hint">Signed dump (.e782) with photos for PC transfer; passphrase signs the file (HMAC). Loopback sync self-test runs the full protocol.</string>
+    <string name="exchange_pass">Passphrase</string>
+    <string name="btn_export">Export</string>
+    <string name="btn_import">Import</string>
+    <string name="btn_sync">Sync test</string>
 </resources>

@@ -22,7 +22,9 @@ data class ArtifactUi(
     val nextInspectionEpochDay: Long?,
     val photoPaths: List<String>,
     val createdAt: Long,
-    val updatedAt: Long
+    val updatedAt: Long,
+    val versionVector: String = "{}",
+    val lastEditor: String = ""
 )
 
 interface ArtifactStore {
@@ -43,8 +45,16 @@ interface ArtifactStore {
 class ArtifactRepository(
     private val artifactDao: ArtifactDao,
     private val auditDao: AuditDao,
-    private val clock: Clock = Clock.systemUTC()
+    private val clock: Clock = Clock.systemUTC(),
+    private val deviceIdProvider: () -> String = { "" }
 ) : ArtifactStore {
+
+    private fun bumpVv(raw: String): Pair<String, String> {
+        val deviceId = deviceIdProvider()
+        val vv = org.json.JSONObject(raw)
+        vv.put(deviceId, vv.optLong(deviceId, 0L) + 1L)
+        return vv.toString() to deviceId
+    }
 
     override fun observeActive(): Flow<List<ArtifactEntity>> = artifactDao.observeActive()
 
@@ -53,7 +63,8 @@ class ArtifactRepository(
     override suspend fun create(ui: ArtifactUi): String {
         val id = ui.id.ifEmpty { UUID.randomUUID().toString() }
         val now = clock.millis()
-        artifactDao.upsert(ui.toEntity(id, now, now))
+        val (vv, editor) = bumpVv("{}")
+        artifactDao.upsert(ui.toEntity(id, now, now).copy(versionVector = vv, lastEditor = editor))
         auditDao.insert(
             AuditEntryEntity(artifactId = id, timestamp = now, action = ACTION_CREATED, details = "category=${ui.category}")
         )
@@ -62,7 +73,8 @@ class ArtifactRepository(
 
     override suspend fun update(ui: ArtifactUi, action: String, details: String) {
         val now = clock.millis()
-        artifactDao.upsert(ui.toEntity(ui.id, ui.createdAt, now))
+        val (vv, editor) = bumpVv(ui.versionVector)
+        artifactDao.upsert(ui.toEntity(ui.id, ui.createdAt, now).copy(versionVector = vv, lastEditor = editor))
         auditDao.insert(AuditEntryEntity(artifactId = ui.id, timestamp = now, action = action, details = details))
     }
 
@@ -74,7 +86,8 @@ class ArtifactRepository(
         require(CustodyStatus.canTransition(from, status)) {
             "Недопустимый переход статуса: $from -> $status"
         }
-        artifactDao.upsert(current.copy(custodyStatus = status.name, updatedAt = now))
+        val (vv, editor) = bumpVv(current.versionVector)
+        artifactDao.upsert(current.copy(custodyStatus = status.name, updatedAt = now, versionVector = vv, lastEditor = editor))
         auditDao.insert(
             AuditEntryEntity(
                 artifactId = id, timestamp = now,
@@ -87,15 +100,18 @@ class ArtifactRepository(
         val current = artifactDao.byId(id) ?: return
         val now = clock.millis()
         val photos = if (current.photoPaths.isBlank()) path else current.photoPaths + "\n" + path
-        artifactDao.upsert(current.copy(photoPaths = photos, updatedAt = now))
+        val (vv, editor) = bumpVv(current.versionVector)
+        artifactDao.upsert(current.copy(photoPaths = photos, updatedAt = now, versionVector = vv, lastEditor = editor))
         auditDao.insert(
             AuditEntryEntity(artifactId = id, timestamp = now, action = ACTION_PHOTO_ADDED, details = path)
         )
     }
 
     override suspend fun softDelete(id: String) {
+        val current = artifactDao.byId(id) ?: return
         val now = clock.millis()
-        artifactDao.softDelete(id, now)
+        val (vv, editor) = bumpVv(current.versionVector)
+        artifactDao.upsert(current.copy(deleted = true, updatedAt = now, versionVector = vv, lastEditor = editor))
         auditDao.insert(
             AuditEntryEntity(artifactId = id, timestamp = now, action = ACTION_DELETED, details = "")
         )
@@ -141,7 +157,9 @@ class ArtifactRepository(
             nextInspectionEpochDay = e.nextInspectionEpochDay,
             photoPaths = e.photoPaths.lines().filter { it.isNotBlank() },
             createdAt = e.createdAt,
-            updatedAt = e.updatedAt
+            updatedAt = e.updatedAt,
+            versionVector = e.versionVector,
+            lastEditor = e.lastEditor
         )
     }
 }

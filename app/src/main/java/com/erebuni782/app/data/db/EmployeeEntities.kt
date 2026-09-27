@@ -20,7 +20,9 @@ data class ArtifactEntity(
     val photoPaths: String,      // пути через \n
     val createdAt: Long,
     val updatedAt: Long,
-    val deleted: Boolean = false // soft-delete для будущего синка (P5)
+    val deleted: Boolean = false, // soft-delete для будущего синка (P5)
+    val versionVector: String = "{}", // JSON {deviceId: counter} — синк P5
+    val lastEditor: String = ""
 )
 
 /** Аудит-лог: каждое изменение записи фиксируется (спека §1). */
