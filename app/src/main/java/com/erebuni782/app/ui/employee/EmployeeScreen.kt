@@ -64,7 +64,7 @@ class EmployeeViewModel : ViewModel() {
 
 /** Реестр артефактов (P3) + настройки сотрудника (EXIF D4, смена PIN D3). */
 @Composable
-fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit) {
+fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit, onOpenAerial: () -> Unit) {
     val vm: EmployeeViewModel = viewModel()
     val artifacts by vm.artifacts.collectAsState()
     val keepExif by AppGraph.settings.keepExif.collectAsState(initial = true)
@@ -99,6 +99,14 @@ fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit) 
                             )
                         }
                     }
+                }
+            }
+            item {
+                androidx.compose.material3.OutlinedButton(
+                    onClick = onOpenAerial,
+                    modifier = Modifier.fillMaxWidth().testTag("open_aerial")
+                ) {
+                    Text(stringResource(R.string.aerial_entry))
                 }
             }
             if (artifacts.isEmpty()) {

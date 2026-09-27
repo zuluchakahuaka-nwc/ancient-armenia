@@ -19,9 +19,11 @@ import kotlinx.coroutines.launch
         ChapterEntity::class,
         AudioTrackEntity::class,
         com.erebuni782.app.data.db.ArtifactEntity::class,
-        com.erebuni782.app.data.db.AuditEntryEntity::class
+        com.erebuni782.app.data.db.AuditEntryEntity::class,
+        com.erebuni782.app.data.db.AerialSessionEntity::class,
+        com.erebuni782.app.data.db.AerialMarkerEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -31,6 +33,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun audioTrackDao(): AudioTrackDao
     abstract fun artifactDao(): com.erebuni782.app.data.db.ArtifactDao
     abstract fun auditDao(): com.erebuni782.app.data.db.AuditDao
+    abstract fun aerialSessionDao(): com.erebuni782.app.data.db.AerialSessionDao
+    abstract fun aerialMarkerDao(): com.erebuni782.app.data.db.AerialMarkerDao
 
     companion object {
         fun build(context: Context): AppDatabase {

@@ -10,6 +10,8 @@ import com.erebuni782.app.data.db.AppDatabase
 
 /** Простой сервис-локатор (P2): без DI-фреймворков, явный граф. */
 object AppGraph {
+    lateinit var appContext: android.content.Context
+        private set
     lateinit var settings: SettingsRepository
         private set
     lateinit var wiki: WikiRepository
@@ -24,8 +26,11 @@ object AppGraph {
         private set
     lateinit var pin: com.erebuni782.app.data.PinRepository
         private set
+    lateinit var aerial: com.erebuni782.app.data.AerialRepository
+        private set
 
     fun init(app: Application) {
+        appContext = app
         val db = AppDatabase.build(app)
         settings = SettingsRepository(app)
         wiki = WikiRepository(db.wikiDao())
@@ -34,6 +39,7 @@ object AppGraph {
         player = PlayerManager(app)
         artifacts = com.erebuni782.app.data.ArtifactRepository(db.artifactDao(), db.auditDao())
         pin = com.erebuni782.app.data.PinRepository(app)
+        aerial = com.erebuni782.app.data.AerialRepository(app, db.aerialSessionDao(), db.aerialMarkerDao())
     }
 }
 

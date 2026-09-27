@@ -25,6 +25,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.erebuni782.app.MainViewModel
 import com.erebuni782.app.R
+import com.erebuni782.app.ui.aerial.AerialScreen
+import com.erebuni782.app.ui.aerial.AerialSessionScreen
 import com.erebuni782.app.ui.employee.ArtifactEditScreen
 import com.erebuni782.app.ui.employee.EmployeeScreen
 import com.erebuni782.app.ui.employee.PinGateScreen
@@ -116,12 +118,38 @@ fun MainShell(mainViewModel: MainViewModel) {
                 if (com.erebuni782.app.data.EmployeeSession.unlocked) {
                     EmployeeScreen(
                         onOpenArtifact = { navController.navigate("artifact_edit/$it") },
-                        onNewArtifact = { navController.navigate("artifact_edit/new") }
+                        onNewArtifact = { navController.navigate("artifact_edit/new") },
+                        onOpenAerial = { navController.navigate("aerial") }
                     )
                 } else {
                     androidx.compose.runtime.LaunchedEffect(Unit) {
                         navController.navigate("employee_gate") {
                             popUpTo("employee") { inclusive = true }
+                        }
+                    }
+                }
+            }
+            composable("aerial") {
+                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                    AerialScreen(onOpenSession = { navController.navigate("aerial_session/$it") })
+                } else {
+                    androidx.compose.runtime.LaunchedEffect(Unit) {
+                        navController.navigate("employee_gate") {
+                            popUpTo("aerial") { inclusive = true }
+                        }
+                    }
+                }
+            }
+            composable("aerial_session/{id}") { entry ->
+                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                    AerialSessionScreen(
+                        sessionId = entry.arguments?.getString("id").orEmpty(),
+                        onBack = { navController.popBackStack() }
+                    )
+                } else {
+                    androidx.compose.runtime.LaunchedEffect(Unit) {
+                        navController.navigate("employee_gate") {
+                            popUpTo("aerial_session/{id}") { inclusive = true }
                         }
                     }
                 }
