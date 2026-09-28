@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
@@ -20,6 +21,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -30,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.erebuni782.app.AppGraph
 import com.erebuni782.app.MainViewModel
 import com.erebuni782.app.R
 import com.erebuni782.app.ui.aerial.AerialScreen
@@ -53,7 +56,8 @@ private val tabs = listOf(
     TabSpec("wiki", R.string.nav_wiki, Icons.Outlined.Info),
     TabSpec("library", R.string.nav_library, Icons.Outlined.Book),
     TabSpec("map", R.string.nav_map, Icons.Outlined.Place),
-    TabSpec("settings", R.string.nav_settings, Icons.Outlined.Settings)
+    TabSpec("settings", R.string.nav_settings, Icons.Outlined.Settings),
+    TabSpec("staff", R.string.nav_staff, Icons.Outlined.AdminPanelSettings)
 )
 
 /**
@@ -67,6 +71,7 @@ fun MainShell(mainViewModel: MainViewModel) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
     val libraryViewModel = rememberLibraryViewModel()
+    val modeSelected by AppGraph.settings.modeSelected.collectAsState(initial = false)
 
     fun navigateTab(route: String) {
         navController.navigate(route) {
@@ -125,6 +130,19 @@ fun MainShell(mainViewModel: MainViewModel) {
                 AppNavHost(navController, mainViewModel, Modifier.padding(padding))
             }
         }
+
+        // ── ЭКРАН ПЕРВОГО ЗАПУСКА: выбор режима ──
+        if (!modeSelected) {
+            com.erebuni782.app.ui.WelcomeScreen(
+                onTourist = {
+                    mainViewModel.selectMode()
+                },
+                onEmployee = {
+                    mainViewModel.selectMode()
+                    navController.navigate("employee_gate")
+                }
+            )
+        }
     }
 }
 
@@ -166,6 +184,18 @@ private fun AppNavHost(
         }
         composable("map") { MapScreen() }
         composable("settings") { SettingsScreen(mainViewModel) { navController.navigate("employee_gate") } }
+        composable("staff") {
+            // прямая вкладка входа в режим сотрудника
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                if (com.erebuni782.app.data.EmployeeSession.unlocked) {
+                    navController.navigate("employee") { launchSingleTop = true }
+                } else {
+                    navController.navigate("employee_gate") {
+                        popUpTo("staff") { inclusive = true }
+                    }
+                }
+            }
+        }
         composable("employee_gate") {
             PinGateScreen(
                 onUnlocked = {

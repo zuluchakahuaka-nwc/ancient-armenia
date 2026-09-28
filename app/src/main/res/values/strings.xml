@@ -159,4 +159,21 @@
     <string name="help_employee_body">Protected by PIN (set once, change later). Registry of artifacts with categories, photos, custody status, audit log, inspection reminders. Aerial survey: stitch photos, tap to mark objects, auto-detect anomalies at 3 sensitivity levels, generate 3D reconstruction by era. Export signed .e782 file for PC or device-to-device sync.</string>
     <string name="help_fm_title">Urartu.fm</string>
     <string name="help_fm_body">Offline station with owner\'s soundtrack (10 melodies). Play/pause from the top bar or Library → Audio. Toggle off if you don\'t like it.</string>
+    <string name="map_image_desc">Stylized map showing Erebuni and Teishebaini fortresses near Yerevan</string>
+    <string name="map_walk_title">How to get there on foot</string>
+    <string name="map_drive_title">How to get there by car</string>
+    <string name="map_open_maps">Open map</string>
+    <string name="map_navigate">Navigate</string>
+    <string name="map_erebuni_walk">From Yerevan center: take bus 16 or trolleybus 2 to Arin-Berd stop (south-east, ~20 min). Walk uphill 300 m following signs to the museum entrance.</string>
+    <string name="map_erebuni_drive">From Republic Square: head south on Vardanants St, turn right onto Artashat Hwy, continue 4 km, turn left at Arin-Berd sign, follow the road uphill to the museum parking.</string>
+    <string name="map_teishebaini_walk">From Yerevan center: take bus 5 or 32 to Karmir Blur stop (west, ~15 min). The excavated citadel is visible from the main road, 200 m walk north.</string>
+    <string name="map_teishebaini_drive">From Republic Square: head west on Tigran Mets Ave, cross the Hrazdan bridge, continue on Erebuni Hwy 2.5 km, turn right at Karmir Blur sign.</string>
+    <string name="map_disclaimer">Offline map illustration. Tap «Open map» or «Navigate» to launch your maps app with GPS coordinates.</string>
+    <string name="nav_staff">Staff</string>
+    <string name="welcome_subtitle">Fortresses of Urartu — offline guide</string>
+    <string name="welcome_choose">Choose your mode</string>
+    <string name="welcome_tourist">I am a tourist</string>
+    <string name="welcome_tourist_desc">Guide, wiki, books, audio, map. Everything works offline.</string>
+    <string name="welcome_employee">I am an employee</string>
+    <string name="welcome_employee_desc">Artifact registry, aerial survey, 3D reconstruction. PIN protected.</string>
 </resources>

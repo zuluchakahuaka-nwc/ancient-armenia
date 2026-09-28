@@ -39,6 +39,9 @@ class FakeSettingsStore : SettingsStore {
     private val _keepExif = MutableStateFlow(true)
     override val keepExif = _keepExif
     override suspend fun setKeepExif(enabled: Boolean) { _keepExif.value = enabled }
+    private val _modeSelected = MutableStateFlow(false)
+    override val modeSelected = _modeSelected
+    override suspend fun setModeSelected() { _modeSelected.value = true }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

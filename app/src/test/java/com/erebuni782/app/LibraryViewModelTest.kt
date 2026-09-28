@@ -65,6 +65,9 @@ class FakePlayerController : PlayerController {
         state.value = state.value.copy(isPlaying = !state.value.isPlaying)
     }
 
+    override fun next() { state.value = state.value.copy(title = "next") }
+    override fun previous() { state.value = state.value.copy(title = "prev") }
+
     override fun stop() {
         stopped = true
         state.value = PlayerUiState()

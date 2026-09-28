@@ -23,6 +23,11 @@ class MainViewModel(private val store: SettingsStore) : ViewModel() {
         viewModelScope.launch { store.setSkin(id) }
     }
 
+    /** Первый запуск: выбор режима. */
+    fun selectMode() {
+        viewModelScope.launch { (store as? SettingsRepository)?.setModeSelected() }
+    }
+
     companion object {
         fun factory(appContext: Context) = viewModelFactory {
             initializer { MainViewModel(SettingsRepository(appContext.applicationContext)) }

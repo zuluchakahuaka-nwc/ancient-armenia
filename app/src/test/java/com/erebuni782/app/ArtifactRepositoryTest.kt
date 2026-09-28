@@ -15,9 +15,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 class FakeArtifactDao : ArtifactDao {
     val store = MutableStateFlow<Map<String, ArtifactEntity>>(emptyMap())
@@ -61,7 +58,7 @@ class ArtifactRepositoryTest {
     private lateinit var artifactDao: FakeArtifactDao
     private lateinit var auditDao: FakeAuditDao
     private lateinit var repo: ArtifactRepository
-    private val clock = Clock.fixed(Instant.ofEpochMilli(1_700_000_000_000), ZoneId.of("UTC"))
+    private val clock = { 1_700_000_000_000L }
 
     @Before
     fun setUp() {

@@ -33,6 +33,10 @@ interface SettingsStore {
     /** D4: сохранять EXIF на фото артефактов (по умолчанию ДА). */
     val keepExif: Flow<Boolean>
     suspend fun setKeepExif(enabled: Boolean)
+
+    /** Первый запуск: false пока не выбран режим (турист/сотрудник). */
+    val modeSelected: Flow<Boolean>
+    suspend fun setModeSelected()
 }
 
 /** DataStore-реализация: всё персистентно между запусками. */
@@ -92,6 +96,14 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         store.edit { prefs -> prefs[KEEP_EXIF_KEY] = enabled }
     }
 
+    override val modeSelected: Flow<Boolean> = store.data.map { prefs ->
+        prefs[MODE_SELECTED_KEY] ?: false
+    }
+
+    override suspend fun setModeSelected() {
+        store.edit { prefs -> prefs[MODE_SELECTED_KEY] = true }
+    }
+
     companion object {
         private val SKIN_KEY = stringPreferencesKey("skin")
         private val URARTU_FM_KEY = booleanPreferencesKey("urartu_fm_enabled")
@@ -99,5 +111,6 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         private val READER_NIGHT_KEY = booleanPreferencesKey("reader_night_mode")
         private val READER_BOOKMARKS_KEY = stringSetPreferencesKey("reader_bookmarks")
         private val KEEP_EXIF_KEY = booleanPreferencesKey("keep_exif")
+        private val MODE_SELECTED_KEY = booleanPreferencesKey("mode_selected")
     }
 }

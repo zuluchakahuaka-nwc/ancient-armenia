@@ -1,5 +1,6 @@
 package com.erebuni782.app.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,9 +16,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import android.graphics.BitmapFactory
 import com.erebuni782.app.AppGraph
 import com.erebuni782.app.R
 import com.erebuni782.app.data.WikiArticleUi
@@ -68,6 +73,40 @@ fun WikiArticleScreen(articleId: String) {
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        // ── иллюстрация статьи ──
+        item {
+            val imageName = when (articleId) {
+                "erebuni" -> "erebuni_fortress"
+                "teishebaini" -> "teishebaini_ruins"
+                "haldi" -> "god_haldi"
+                "teisheba" -> "god_teisheba"
+                "shivini" -> "god_shivini"
+                "argishti1", "sarduri2", "rusa2" -> "king_throne"
+                "cuneiform" -> "cuneiform_tablet"
+                "daily_life" -> "daily_life"
+                else -> null
+            }
+            imageName?.let { name ->
+                val bitmap = remember(articleId) {
+                    runCatching {
+                        BitmapFactory.decodeStream(
+                            AppGraph.appContext.assets.open("wiki_images/$name.png")
+                        )
+                    }.getOrNull()
+                }
+                bitmap?.let {
+                    Card(Modifier.fillMaxWidth()) {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = article?.title.orEmpty(),
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+
         item {
             Text(
                 text = article?.title.orEmpty(),
