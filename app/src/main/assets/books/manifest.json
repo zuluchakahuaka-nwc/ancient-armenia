@@ -1,0 +1,45 @@
+{
+  "license": "Файлы предоставлены из личной библиотеки владельца проекта (D1). Научные издания 1955-2011 гг.",
+  "books": [
+    {
+      "id": "moiseeva_1955",
+      "title": "В древнем царстве Урарту",
+      "author": "Моисеева К.М.",
+      "year": 1955,
+      "file": "moiseeva_ancient_urartu_1955.pdf",
+      "format": "pdf"
+    },
+    {
+      "id": "piotrovsky_1959",
+      "title": "Ванское царство (Урарту)",
+      "author": "Пиотровский Б.Б.",
+      "year": 1959,
+      "file": "piotrovsky_van_kingdom_1959.djvu",
+      "format": "djvu"
+    },
+    {
+      "id": "arutunyan_1964",
+      "title": "Земледелие и скотоводство Урарту",
+      "author": "Арутюнян Н.В.",
+      "year": 1964,
+      "file": "arutunyan_agriculture_urartu_1964.djvu",
+      "format": "djvu"
+    },
+    {
+      "id": "arutunyan_2006",
+      "title": "Биайнили-Урарту. Военно-политическая история и вопросы топонимики",
+      "author": "Арутюнян Н.В.",
+      "year": 2006,
+      "file": "arutunyan_biainili_urartu_2006.pdf",
+      "format": "pdf"
+    },
+    {
+      "id": "piotrovsky_2011",
+      "title": "История и культура Урарту",
+      "author": "Пиотровский Б.Б.",
+      "year": 2011,
+      "file": "piotrovsky_history_culture_urartu_2011.pdf",
+      "format": "pdf"
+    }
+  ]
+}

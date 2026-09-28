@@ -145,4 +145,9 @@
     <string name="btn_change_pin">Change PIN</string>
     <string name="pin_current">Current PIN</string>
     <string name="pin_new">New PIN</string>
+    <string name="owner_library_title">Owner’s library</string>
+    <string name="owner_library_license">From the project owner’s private collection (D1)</string>
+    <string name="book_djvu_hint">DJVU: convert to PDF on a PC to read here</string>
+    <string name="book_page_of">p. %1$d of %2$d</string>
+    <string name="pdf_loading">Rendering page…</string>
 </resources>

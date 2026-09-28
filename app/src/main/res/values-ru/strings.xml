@@ -145,4 +145,9 @@
     <string name="btn_change_pin">Сменить PIN</string>
     <string name="pin_current">Текущий PIN</string>
     <string name="pin_new">Новый PIN</string>
+    <string name="owner_library_title">Библиотека владельца</string>
+    <string name="owner_library_license">Из личной библиотеки владельца проекта (D1)</string>
+    <string name="book_djvu_hint">DJVU: сконвертируйте в PDF на ПК для чтения здесь</string>
+    <string name="book_page_of">стр. %1$d из %2$d</string>
+    <string name="pdf_loading">Рендер страницы…</string>
 </resources>

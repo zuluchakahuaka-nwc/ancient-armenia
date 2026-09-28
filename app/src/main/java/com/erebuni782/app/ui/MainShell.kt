@@ -141,7 +141,18 @@ private fun AppNavHost(
             WikiArticleScreen(articleId = entry.arguments?.getString("id").orEmpty())
         }
         composable("library") {
-            LibraryScreen(onOpenBook = { navController.navigate("book/$it") })
+            LibraryScreen(
+                onOpenBook = { navController.navigate("book/$it") },
+                onOpenPdf = { navController.navigate("pdf/$it") }
+            )
+        }
+        composable("pdf/{id}") { entry ->
+            val id = entry.arguments?.getString("id").orEmpty()
+            val context = androidx.compose.ui.platform.LocalContext.current
+            val book = com.erebuni782.app.data.book.PdfBookCatalog.find(context, id)
+            if (book != null) {
+                com.erebuni782.app.ui.reader.PdfReaderScreen(book = book, onBack = { navController.popBackStack() })
+            }
         }
         composable("book/{id}") { entry ->
             ReaderScreen(

@@ -49,9 +49,9 @@ import com.erebuni782.app.data.UserTrackUi
 import com.erebuni782.app.ui.theme.OrnamentalDivider
 import java.util.Locale
 
-/** Библиотека: книги + аудио (D9/D10). */
+/** Библиотека: книги + аудио (D9/D10) + книги владельца (D1, PDF/DJVU). */
 @Composable
-fun LibraryScreen(onOpenBook: (String) -> Unit) {
+fun LibraryScreen(onOpenBook: (String) -> Unit, onOpenPdf: (String) -> Unit = {}) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
 
     Column(Modifier.fillMaxSize()) {
@@ -70,19 +70,22 @@ fun LibraryScreen(onOpenBook: (String) -> Unit) {
             )
         }
         when (tab) {
-            0 -> BooksTab(onOpenBook)
+            0 -> BooksTab(onOpenBook, onOpenPdf)
             1 -> AudioTab(viewModel = rememberLibraryViewModel())
         }
     }
 }
 
 @Composable
-private fun BooksTab(onOpenBook: (String) -> Unit) {
+private fun BooksTab(onOpenBook: (String) -> Unit, onOpenPdf: (String) -> Unit) {
     val books by produceState(initialValue = emptyList<BookUi>()) {
         value = com.erebuni782.app.AppGraph.books.books(Locale.getDefault().toLanguageTag())
     }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val ownerBooks = remember { com.erebuni782.app.data.book.PdfBookCatalog.load(context) }
 
     LazyColumn(
+        modifier = Modifier.testTag("books_scroll"),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -96,6 +99,42 @@ private fun BooksTab(onOpenBook: (String) -> Unit) {
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+            }
+        }
+
+        item {
+            Text(
+                stringResource(R.string.owner_library_title),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 8.dp).testTag("owner_books_header")
+            )
+            Text(
+                stringResource(R.string.owner_library_license),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        items(ownerBooks, key = { it.id }) { ob ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = ob.isReadable) { onOpenPdf(ob.id) }
+                    .testTag("owner_book_${ob.id}")
+            ) {
+                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(ob.title, style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        "${ob.author} · ${ob.year} · ${ob.format.uppercase()}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    if (!ob.isReadable) {
+                        Text(
+                            stringResource(R.string.book_djvu_hint),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
                 }
             }
         }
