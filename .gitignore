@@ -22,3 +22,8 @@ app/src/main/assets/urartu_fm/*.flac
 .cxx
 app/build/
 .kotlin/
+
+# Бинарники сборки — не в git
+dist/*.apk
+dist/Erebuni782_Manual.pdf
+

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -17,9 +16,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
- * Богатый орнаментальный разделитель в урартском стиле.
- * Каждый скин — свой паттерн: шеврон-керамика / зубцы крепости / меандр.
- * Толстый (36dp), двухслойный: фон-полоса + узор + тонкая рамка.
+ * Клинописный орнаментальный разделитель — 3 исторических стиля:
+ *
+ * Pre-Urartu (ранний железный век): грубые керамические треугольники,
+ * отпечатки пальцев гончара, примитивная штриховка.
+ *
+ * Urartu (флагман): клинописные клинья (▼◀▶) из фундаментных надписей,
+ * зубцы крепостных стен, строгая геометрия базальта.
+ *
+ * Post-Urartu (эллинизм): греческий меандр, лотосы, плавные волны.
  */
 @Composable
 fun OrnamentalDivider(
@@ -29,126 +34,149 @@ fun OrnamentalDivider(
 ) {
     val resolvedPattern = pattern ?: LocalSkin.current.ornament
     val primary = if (color == Color.Unspecified) MaterialTheme.colorScheme.primary else color
-    val onPrimaryDim = primary.copy(alpha = 0.3f)
-    val onPrimaryBright = primary.copy(alpha = 0.7f)
+    val dim = primary.copy(alpha = 0.25f)
+    val mid = primary.copy(alpha = 0.5f)
+    val bright = primary.copy(alpha = 0.8f)
 
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(36.dp)
+            .height(40.dp)
             .testTag("ornament")
     ) {
         val h = size.height
         val w = size.width
+        val cw = h * 0.22f // ширина клина
 
         when (resolvedPattern) {
             OrnamentStyle.CHEVRON -> {
+                // PRE-URARTU: грубые керамические треугольники + штриховка
                 // фон-полоса
-                drawRect(color = onPrimaryDim, topLeft = Offset(0f, h * 0.2f), size = Size(w, h * 0.6f))
-                // крупные шевроны
-                val period = w / 12f
+                drawRect(color = dim, topLeft = Offset(0f, h * 0.15f), size = Size(w, h * 0.7f))
+                // большие треугольники вниз (керамический орнамент)
+                val period = w / 8f
                 var x = 0f
                 while (x < w) {
                     val path = Path().apply {
-                        moveTo(x, h * 0.8f)
-                        lineTo(x + period / 2, h * 0.2f)
-                        lineTo(x + period, h * 0.8f)
+                        moveTo(x, h * 0.2f)
+                        lineTo(x + period * 0.5f, h * 0.8f)
+                        lineTo(x + period, h * 0.2f)
+                        close()
                     }
-                    drawPath(path, color = primary, style = Stroke(width = h * 0.08f))
-                    // внутренний малый
-                    val p2 = Path().apply {
-                        moveTo(x + period * 0.2f, h * 0.7f)
-                        lineTo(x + period * 0.5f, h * 0.35f)
-                        lineTo(x + period * 0.8f, h * 0.7f)
+                    drawPath(path, color = mid)
+                    // внутренний треугольник (отпечаток)
+                    val inner = Path().apply {
+                        moveTo(x + period * 0.2f, h * 0.35f)
+                        lineTo(x + period * 0.5f, h * 0.65f)
+                        lineTo(x + period * 0.8f, h * 0.35f)
+                        close()
                     }
-                    drawPath(p2, color = onPrimaryBright, style = Stroke(width = h * 0.05f))
-                    x += period * 1.4f
+                    drawPath(inner, color = bright)
+                    x += period * 1.3f
                 }
-                // рамки
-                drawLine(primary, Offset(0f, h * 0.15f), Offset(w, h * 0.15f), strokeWidth = h * 0.03f)
-                drawLine(primary, Offset(0f, h * 0.85f), Offset(w, h * 0.85f), strokeWidth = h * 0.03f)
+                // грубая штриховка сверху и снизу
+                var sx = period * 0.3f
+                while (sx < w) {
+                    drawLine(dim, Offset(sx, h * 0.05f), Offset(sx + h * 0.1f, h * 0.12f), strokeWidth = h * 0.03f)
+                    drawLine(dim, Offset(sx, h * 0.88f), Offset(sx + h * 0.1f, h * 0.95f), strokeWidth = h * 0.03f)
+                    sx += period * 0.5f
+                }
             }
 
             OrnamentStyle.CRENELLATION -> {
-                // фон
-                drawRect(color = onPrimaryDim, topLeft = Offset(0f, h * 0.15f), size = Size(w, h * 0.7f))
-                // крупные зубцы
+                // URARTU: клинописные клинья (▼) + зубцы крепости
+                drawRect(color = dim, topLeft = Offset(0f, h * 0.1f), size = Size(w, h * 0.8f))
+                // основа — стена
+                drawRect(color = primary, topLeft = Offset(0f, h * 0.6f), size = Size(w, h * 0.25f))
+                // зубцы (крепостная стена)
                 val tooth = w / 14f
-                val gap = tooth * 0.4f
+                val gap = tooth * 0.35f
                 var x = 0f
                 while (x < w) {
-                    drawRoundRect(
+                    drawRect(
                         color = primary,
                         topLeft = Offset(x, h * 0.1f),
-                        size = Size(tooth, h * 0.55f),
-                        cornerRadius = CornerRadius(h * 0.02f)
-                    )
-                    // малый зубец между крупными
-                    drawRoundRect(
-                        color = onPrimaryBright,
-                        topLeft = Offset(x + tooth + gap * 0.3f, h * 0.45f),
-                        size = Size(gap * 0.4f, h * 0.35f),
-                        cornerRadius = CornerRadius(h * 0.01f)
+                        size = Size(tooth, h * 0.5f)
                     )
                     x += tooth + gap
                 }
-                // основа
-                drawRect(color = primary, topLeft = Offset(0f, h * 0.65f), size = Size(w, h * 0.2f))
-                // клинья на основе
-                var cx = tooth / 3
+                // клинописные клинья на стене (▼ из надписей)
+                var cx = tooth * 0.5f
                 while (cx < w) {
-                    drawRect(
-                        color = onPrimaryDim,
-                        topLeft = Offset(cx, h * 0.68f),
-                        size = Size(tooth * 0.3f, h * 0.14f)
-                    )
-                    cx += tooth * 0.8f
+                    // большой клин ▼
+                    val wedge = Path().apply {
+                        moveTo(cx - cw * 0.5f, h * 0.65f)
+                        lineTo(cx + cw * 0.5f, h * 0.65f)
+                        lineTo(cx, h * 0.85f)
+                        close()
+                    }
+                    drawPath(wedge, color = bright)
+                    // малый клин ◀
+                    if (cx + tooth * 1.2f < w) {
+                        val small = Path().apply {
+                            moveTo(cx + tooth * 0.4f, h * 0.68f)
+                            lineTo(cx + tooth * 0.4f + cw * 0.4f, h * 0.72f)
+                            lineTo(cx + tooth * 0.4f, h * 0.76f)
+                            close()
+                        }
+                        drawPath(small, color = mid)
+                    }
+                    cx += tooth * 1.5f
                 }
+                // рамки
+                drawLine(primary, Offset(0f, h * 0.08f), Offset(w, h * 0.08f), strokeWidth = h * 0.03f)
+                drawLine(primary, Offset(0f, h * 0.92f), Offset(w, h * 0.92f), strokeWidth = h * 0.03f)
             }
 
             OrnamentStyle.MEANDER -> {
-                // фон
-                drawRect(color = onPrimaryDim, topLeft = Offset(0f, h * 0.1f), size = Size(w, h * 0.8f))
-                // меандр (греческий ключ)
-                val period = w / 8f
-                val strokeWidth = h * 0.06f
+                // POST-URARTU: греческий меандр + лотосы
+                drawRect(color = dim, topLeft = Offset(0f, h * 0.1f), size = Size(w, h * 0.8f))
+                val period = w / 6f
+                val sw = h * 0.05f
                 var x = 0f
                 while (x < w) {
+                    // меандр (греческий ключ)
                     val path = Path().apply {
-                        // вертикаль
                         moveTo(x, h * 0.8f)
                         lineTo(x, h * 0.2f)
-                        // горизонталь вправо
-                        lineTo(x + period * 0.4f, h * 0.2f)
-                        // вниз
-                        lineTo(x + period * 0.4f, h * 0.5f)
-                        // вправо
-                        lineTo(x + period * 0.7f, h * 0.5f)
-                        // вверх
-                        lineTo(x + period * 0.7f, h * 0.3f)
-                        // вправо (выход)
+                        lineTo(x + period * 0.35f, h * 0.2f)
+                        lineTo(x + period * 0.35f, h * 0.55f)
+                        lineTo(x + period * 0.6f, h * 0.55f)
+                        lineTo(x + period * 0.6f, h * 0.3f)
                         lineTo(x + period, h * 0.3f)
                     }
-                    drawPath(path, color = primary, style = Stroke(width = strokeWidth))
-                    // точка в углу
-                    drawCircle(
-                        color = onPrimaryBright,
-                        radius = strokeWidth * 0.8f,
-                        center = Offset(x + period * 0.15f, h * 0.65f)
-                    )
-                    x += period * 1.2f
+                    drawPath(path, color = primary, style = Stroke(width = sw))
+                    // лотос между меандрами
+                    if (x + period * 0.75f < w) {
+                        val lotus = Path().apply {
+                            val lx = x + period * 0.5f
+                            val ly = h * 0.65f
+                            moveTo(lx, ly - h * 0.08f)         // верхушка
+                            cubicTo(lx - cw, ly, lx - cw, ly + h * 0.06f, lx, ly + h * 0.08f)
+                            cubicTo(lx + cw, ly + h * 0.06f, lx + cw, ly, lx, ly - h * 0.08f)
+                        }
+                        drawPath(lotus, color = bright)
+                        // точка в лотосе
+                        drawCircle(color = mid, radius = sw * 0.6f, center = Offset(x + period * 0.5f, h * 0.68f))
+                    }
+                    x += period * 1.1f
                 }
-                // рамки
-                drawLine(primary, Offset(0f, h * 0.1f), Offset(w, h * 0.1f), strokeWidth = strokeWidth * 0.5f)
-                drawLine(primary, Offset(0f, h * 0.9f), Offset(w, h * 0.9f), strokeWidth = strokeWidth * 0.5f)
+                // волнистая линия сверху (эллинистический фриз)
+                val wave = Path()
+                var wx = 0f
+                wave.moveTo(wx, h * 0.06f)
+                while (wx < w) {
+                    wave.quadraticBezierTo(wx + cw, h * 0.02f, wx + cw * 2f, h * 0.06f)
+                    wx += cw * 2f
+                }
+                drawPath(wave, color = mid, style = Stroke(width = sw * 0.7f))
             }
         }
     }
 }
 
 /**
- * Декоративный орнаментальный КАРД-БОРДЕР — обводка вокруг карточек.
- * Тонкая рамка с узором по углам.
+ * Декоративная клинописная рамка вокруг карточек.
  */
 @Composable
 fun OrnamentalBorder(
@@ -163,23 +191,25 @@ fun OrnamentalBorder(
 
         // рамка
         drawRoundRect(
-            color = color.copy(alpha = 0.4f),
-            cornerRadius = CornerRadius(cornerSize),
+            color = color.copy(alpha = 0.35f),
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(cornerSize),
             style = Stroke(width = strokeWidth)
         )
-        // уголки — клинья
-        val cw = 6.dp.toPx()
+        // клинописные клинья по углам (▼)
+        val cw = 8.dp.toPx()
         listOf(
             Offset(cornerSize * 0.5f, cornerSize * 0.5f),
             Offset(w - cornerSize * 0.5f, cornerSize * 0.5f),
             Offset(cornerSize * 0.5f, h - cornerSize * 0.5f),
             Offset(w - cornerSize * 0.5f, h - cornerSize * 0.5f)
         ).forEach { corner ->
-            drawRect(
-                color = color.copy(alpha = 0.6f),
-                topLeft = Offset(corner.x - cw / 2, corner.y - cw / 2),
-                size = Size(cw, cw)
-            )
+            val wedge = Path().apply {
+                moveTo(corner.x - cw / 2, corner.y - cw / 4)
+                lineTo(corner.x + cw / 2, corner.y - cw / 4)
+                lineTo(corner.x, corner.y + cw / 2)
+                close()
+            }
+            drawPath(wedge, color = color.copy(alpha = 0.6f))
         }
     }
 }

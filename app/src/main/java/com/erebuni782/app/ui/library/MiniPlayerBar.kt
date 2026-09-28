@@ -23,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.erebuni782.app.R
 
-/** Мини-плеер над нижней навигацией: виден только когда есть контент. */
+/** Мини-плеер над нижней навигацией: ПОКАЗЫВАЕТСЯ ТОЛЬКО после взаимодействия юзера с плеером. */
 @Composable
 fun MiniPlayerBar(viewModel: LibraryViewModel) {
     val state by viewModel.playerState.collectAsState()
-    if (!state.hasContent) return
+    val userInteracted by viewModel.userInteractedWithPlayer.collectAsState()
+    if (!state.hasContent || !userInteracted) return
 
     Surface(tonalElevation = 4.dp) {
         Row(

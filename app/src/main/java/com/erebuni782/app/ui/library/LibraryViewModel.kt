@@ -14,6 +14,7 @@ import com.erebuni782.app.data.UserTrackUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -29,8 +30,15 @@ class LibraryViewModel(
 
     val playerState: StateFlow<PlayerUiState> = player.state
 
+    /** Мини-плеер показывается только после взаимодействия юзера с плеером. */
+    private val _userInteracted = kotlinx.coroutines.flow.MutableStateFlow(false)
+    val userInteractedWithPlayer: StateFlow<Boolean> = _userInteracted.asStateFlow()
+
+    fun markPlayerInteracted() { _userInteracted.value = true }
+
     /** Транспорт станции: play/pause; из idle при включённой станции — старт. */
     fun stationPlayPause() {
+        markPlayerInteracted()
         val st = player.state.value
         if (!st.hasContent) {
             if (stationEnabled.value) {
@@ -41,9 +49,9 @@ class LibraryViewModel(
         }
     }
 
-    fun stationStop() = player.stop()
-    fun stationNext() = player.next()
-    fun stationPrevious() = player.previous()
+    fun stationStop() { markPlayerInteracted(); player.stop() }
+    fun stationNext() { markPlayerInteracted(); player.next() }
+    fun stationPrevious() { markPlayerInteracted(); player.previous() }
 
     fun userTracks(localeTag: String): Flow<List<UserTrackUi>> = audio.userTracks(localeTag)
 
@@ -64,6 +72,7 @@ class LibraryViewModel(
     fun stopPlayer() = player.stop()
 
     fun setStation(enabled: Boolean) {
+        markPlayerInteracted()
         viewModelScope.launch {
             settings.setUrartuFmEnabled(enabled)
             if (enabled) player.startStation(URARTU_FM_PACK) else player.stop()
