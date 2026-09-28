@@ -2,6 +2,12 @@
 
 ## КРИТИЧНО (git не пушится — 432 МБ)
 
+- [ ] **БЫСТРАЯ СЪЁМКА — ВЫЛЕТАЕТ ПРИЛОЖЕНИЕ** при нажатии. Вероятная причина: ActivityResultContracts.TakePicture требует FileProvider (API 24+) — не настроен. Нужно:
+  1. Добавить FileProvider в AndroidManifest.xml
+  2. Создать file_paths.xml
+  3. Использовать FileProvider.getUriForFile() вместо Uri.fromFile()
+  4. Или заменить на ActivityResultContracts.TakePicturePreview (возвращает Bitmap, не требует FileProvider)
+
 - [ ] **git filter-repo — НЕ сработал до конца**: APK 385 МБ всё ещё в истории. Запустить:
   ```powershell
   python -m pip install git-filter-repo
