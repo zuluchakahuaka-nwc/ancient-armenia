@@ -115,35 +115,15 @@ fun MainShell(mainViewModel: MainViewModel) {
                 onEmployee = { mainViewModel.selectMode() }
             )
         } else if (wide) {
-            Column(Modifier.fillMaxSize()) {
-                TopActionBar(libraryViewModel)
-                MiniPlayerBar(libraryViewModel)
-                Row(Modifier.fillMaxHeight()) {
-                    NavigationRail {
-                        tabs.forEach { tab ->
-                            NavigationRailItem(
-                                selected = currentRoute == tab.route,
-                                onClick = { navigateTab(tab.route) },
-                                icon = {
-                                    Icon(tab.icon, contentDescription = stringResource(tab.labelRes))
-                                },
-                                label = { Text(stringResource(tab.labelRes)) },
-                                modifier = Modifier.testTag("nav_${tab.route}")
-                            )
-                        }
-                    }
-                    AppNavHost(navController, mainViewModel, Modifier.fillMaxHeight().weight(1f))
-                }
-            }
-        } else {
-            Scaffold(
-                topBar = { TopActionBar(libraryViewModel) },
-                bottomBar = {
-                    Column {
-                        MiniPlayerBar(libraryViewModel)
-                        NavigationBar {
+            // ── ПЛАНШЕТ: rail слева + стилизованный контент ──
+            com.erebuni782.app.ui.theme.StyledScreen {
+                Column(Modifier.fillMaxSize()) {
+                    TopActionBar(libraryViewModel)
+                    MiniPlayerBar(libraryViewModel)
+                    Row(Modifier.fillMaxHeight()) {
+                        NavigationRail {
                             tabs.forEach { tab ->
-                                NavigationBarItem(
+                                NavigationRailItem(
                                     selected = currentRoute == tab.route,
                                     onClick = { navigateTab(tab.route) },
                                     icon = {
@@ -154,10 +134,36 @@ fun MainShell(mainViewModel: MainViewModel) {
                                 )
                             }
                         }
+                        AppNavHost(navController, mainViewModel, Modifier.fillMaxHeight().weight(1f))
                     }
                 }
-            ) { padding ->
-                AppNavHost(navController, mainViewModel, Modifier.padding(padding))
+            }
+        } else {
+            // ── ТЕЛЕФОН: стилизованный контент + bottom bar ──
+            com.erebuni782.app.ui.theme.StyledScreen {
+                Scaffold(
+                    topBar = { TopActionBar(libraryViewModel) },
+                    bottomBar = {
+                        Column {
+                            MiniPlayerBar(libraryViewModel)
+                            NavigationBar {
+                                tabs.forEach { tab ->
+                                    NavigationBarItem(
+                                        selected = currentRoute == tab.route,
+                                        onClick = { navigateTab(tab.route) },
+                                        icon = {
+                                            Icon(tab.icon, contentDescription = stringResource(tab.labelRes))
+                                        },
+                                        label = { Text(stringResource(tab.labelRes)) },
+                                        modifier = Modifier.testTag("nav_${tab.route}")
+                                    )
+                                }
+                            }
+                        }
+                    }
+                ) { padding ->
+                    AppNavHost(navController, mainViewModel, Modifier.padding(padding))
+                }
             }
         }
     }
