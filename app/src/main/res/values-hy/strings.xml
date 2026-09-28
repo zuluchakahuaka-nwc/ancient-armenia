@@ -182,4 +182,22 @@
     <string name="quick_capture_button">Նկարել և նշել</string>
     <string name="employee_registry_count">%1$d գրառում ռեգիստրում</string>
     <string name="aerial_open">Բացել աերոհետախուզությունը</string>
+    <string name="ob_skip">Բաց թողնել</string>
+    <string name="ob_next">Հաջորդը</string>
+    <string name="ob_start">Հասկանալի է</string>
+    <string name="ob_welcome_title">Բարի գալուստ Էրեբունի 782</string>
+    <string name="ob_welcome_body">Օֆլայն ուղեցույց Ուրարտուի ամրոցներով։ Ամեն ինչ աշխատում է առանց ինտերնետի։</string>
+    <string name="ob_tourist_title">🧭 Տուրիստի ռեժիմ</string>
+    <string name="ob_tourist_body">• Ուղեցույց. ամրոցների քարտեր լուսանկարներով\n• Վիքի. 25 հոդված\n• Գրադարան. 5 գիրք PDF\n• Քարտեզ. GPS + ճանապարհներ\n• Լեզու և ոճ փոխվում է թռուցիկ</string>
+    <string name="ob_employee_title">👤 Աշխատակցի ռեժիմ</string>
+    <string name="ob_employee_body">• Ռեգիստր. արտեֆակտների հաշվառում\n• Աերոհետախուզություն և նշում\n• 3D վերակառուցում\n• Արտահանում և սինք\n• PIN-կոդով պաշտպանված</string>
+    <string name="ob_music_title">🎵 Urartu.fm նվագարկիչ</string>
+    <string name="ob_music_body">10 մեղեդի նվագարկվում է առանց ինտերնետի։\n\n• ⏮ Նախորդը\n• ⏯ Հպում = դադար, Պահում = կանգ\n• ⏭ Հաջորդը</string>
+    <string name="ob_topbar_title">⚙️ Վերին վահանակի կոճակներ</string>
+    <string name="ob_longpress_hint">💡 Երկար սեղմում ցանկացած տեղում — բաց թողնել ուսուցումը</string>
+    <string name="lang_pick_title">Ընտրեք լեզուն</string>
+    <string name="take_photo">📷 Նկարել</string>
+    <string name="mode_quick">Արագ նկարահանում</string>
+    <string name="mode_aerial">Աերոնկարահանում</string>
+    <string name="ob_topbar_body">🟢 i — Ծրագրի մասին\n\n▶ ⏸ ⏭ — Urartu.fm կառավարում\n\n🔴 ! — Սխալների լոգեր Download պանակ\n\nՆերքևի վահանակ. Ուղեցույց | Վիքի | Գրադարան | Քարտեզ | Կարգավորումներ | Աշխատակից</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,7 +64,7 @@ fun TopActionBar(
     val context = LocalContext.current
     val playerState by libraryViewModel.playerState.collectAsState()
     val stationEnabled by libraryViewModel.stationEnabled.collectAsState()
-    var showHelp by rememberSaveable { mutableStateOf(false) }
+    var showOnboarding by rememberSaveable { mutableStateOf(false) }
     var logResult by rememberSaveable { mutableStateOf("") }
 
     Surface(tonalElevation = 2.dp, modifier = modifier.fillMaxWidth()) {
@@ -72,9 +73,9 @@ fun TopActionBar(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // ── зелёная «i» — справка ──
+            // ── зелёная «i» — онбординг (повторно) ──
             IconButton(
-                onClick = { showHelp = true },
+                onClick = { showOnboarding = true },
                 modifier = Modifier.testTag("btn_help")
             ) {
                 Box(
@@ -192,30 +193,13 @@ fun TopActionBar(
         }
     }
 
-    // ── диалог справки ──
-    if (showHelp) {
-        AlertDialog(
-            onDismissRequest = { showHelp = false },
-            title = { Text(stringResource(R.string.help_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(stringResource(R.string.help_about), style = MaterialTheme.typography.bodyMedium)
-                    Text(stringResource(R.string.help_tourist_title), style = MaterialTheme.typography.titleSmall)
-                    Text(stringResource(R.string.help_tourist_body), style = MaterialTheme.typography.bodySmall)
-                    Text(stringResource(R.string.help_employee_title), style = MaterialTheme.typography.titleSmall)
-                    Text(stringResource(R.string.help_employee_body), style = MaterialTheme.typography.bodySmall)
-                    Text(stringResource(R.string.help_fm_title), style = MaterialTheme.typography.titleSmall)
-                    Text(stringResource(R.string.help_fm_body), style = MaterialTheme.typography.bodySmall)
-                    if (logResult.isNotBlank()) {
-                        Text(logResult, style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.tertiary)
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showHelp = false }) { Text("OK") }
-            }
-        )
+    // ── онбординг по кнопке «i» (полноэкранный оверлей) ──
+    if (showOnboarding) {
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+            com.erebuni782.app.ui.OnboardingScreen(
+                onFinished = { showOnboarding = false }
+            )
+        }
     }
 }
 

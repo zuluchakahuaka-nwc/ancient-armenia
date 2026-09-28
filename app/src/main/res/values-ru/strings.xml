@@ -182,4 +182,22 @@
     <string name="quick_capture_button">Снять и разметить</string>
     <string name="employee_registry_count">%1$d записей в реестре</string>
     <string name="aerial_open">Открыть аэро-разведку</string>
+    <string name="ob_skip">Пропустить</string>
+    <string name="ob_next">Далее</string>
+    <string name="ob_start">Понятно!</string>
+    <string name="ob_welcome_title">Добро пожаловать в Эребуни 782</string>
+    <string name="ob_welcome_body">Офлайн-гид по урартским крепостям Эребуни (782 до н.э.) и Тейшебаини. Всё работает без интернета. Выберите режим на следующем шаге.</string>
+    <string name="ob_tourist_title">🧭 Режим туриста</string>
+    <string name="ob_tourist_body">• Гид: карточки крепостей с фото\n• Вики: 25 статей о царях, богах, быте\n• Библиотека: 5 книг с PDF-читалкой\n• Карта: GPS-координаты + как добраться\n• Настройки: смена языка (hy/ru/en) и скина на лету</string>
+    <string name="ob_employee_title">👤 Режим сотрудника</string>
+    <string name="ob_employee_body">• Реестр: учёт артефактов с фото и журналом\n• Аэро-разведка: сшивка фото, разметка тапами, автодетекция 3 уровней\n• 3D-реконструкция по исторической эпохе\n• Экспорт подписанной копии для ПК или синк\n• Защищено PIN-кодом</string>
+    <string name="ob_music_title">🎵 Плеер Urartu.fm</string>
+    <string name="ob_music_body">10 мелодий играют офлайн.\n\n• ⏮ Предыдущая мелодия\n• ⏯ Тап = пауза/плей, Удержание = стоп\n• ⏭ Следующая мелодия (по кругу)\n\nВыключается в Библиотека → Аудио.</string>
+    <string name="ob_topbar_title">⚙️ Кнопки верхней панели</string>
+    <string name="ob_longpress_hint">💡 Долгое нажатие в любом месте — пропустить обучение</string>
+    <string name="lang_pick_title">Выберите язык</string>
+    <string name="take_photo">📷 Сделать фото</string>
+    <string name="mode_quick">Быстрая съёмка</string>
+    <string name="mode_aerial">Аэросъёмка</string>
+    <string name="ob_topbar_body">🟢 i — О приложении и как пользоваться\n\n▶ ⏸ ⏭ — Быстрое управление Urartu.fm\n\n🔴 ! — Скопировать логи ошибок в Download/Erebuni782.txt\n\nНижняя панель: Гид | Вики | Библиотека | Карта | Настройки | Сотрудник</string>
 </resources>

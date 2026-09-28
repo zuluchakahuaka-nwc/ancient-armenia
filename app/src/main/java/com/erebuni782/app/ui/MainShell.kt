@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.first
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -72,6 +73,8 @@ fun MainShell(mainViewModel: MainViewModel) {
     val currentRoute = backStackEntry?.destination?.route
     val libraryViewModel = rememberLibraryViewModel()
     val modeSelected by AppGraph.settings.modeSelected.collectAsState(initial = false)
+    val onboardingShown by AppGraph.settings.onboardingShown.collectAsState(initial = true)
+    val langSelected by AppGraph.settings.langSelected.collectAsState(initial = true)
 
     fun navigateTab(route: String) {
         navController.navigate(route) {
@@ -86,8 +89,29 @@ fun MainShell(mainViewModel: MainViewModel) {
     BoxWithConstraints {
         val wide = maxWidth >= 840.dp
 
-        // ── ЭКРАН ПЕРВОГО ЗАПУСКА: отдельный экран, не оверлей ──
-        if (!modeSelected) {
+        // ── АВТОСТАРТ Urartu.fm ──
+        androidx.compose.runtime.LaunchedEffect(langSelected, onboardingShown, modeSelected) {
+            if (langSelected && onboardingShown && modeSelected) {
+                val on = AppGraph.settings.urartuFmEnabled.first()
+                if (on && !libraryViewModel.playerState.value.hasContent) {
+                    libraryViewModel.setStation(true)
+                }
+            }
+        }
+
+        // ── 0. ВЫБОР ЯЗЫКА (самый первый запуск) ──
+        if (!langSelected) {
+            com.erebuni782.app.ui.LanguagePickerScreen(
+                onLangSelected = { mainViewModel.setLangSelected() },
+                onSkip = { mainViewModel.setLangSelected() }
+            )
+        } else if (!onboardingShown) {
+            // ── 1. ОНБОРДИНГ: 5 слайдов ──
+            com.erebuni782.app.ui.OnboardingScreen(
+                onFinished = { mainViewModel.setOnboardingShown() }
+            )
+        } else if (!modeSelected) {
+            // ── 2. ВЫБОР РЕЖИМА ──
             com.erebuni782.app.ui.WelcomeScreen(
                 onTourist = { mainViewModel.selectMode() },
                 onEmployee = { mainViewModel.selectMode() }

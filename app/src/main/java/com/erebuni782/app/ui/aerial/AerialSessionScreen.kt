@@ -1,5 +1,6 @@
 package com.erebuni782.app.ui.aerial
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -50,6 +54,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.erebuni782.app.R
 import com.erebuni782.app.aerial.detect.DetectLevel
 import com.erebuni782.app.aerial.gen3d.Era
+import java.io.File
 
 /** Экран сессии: фото → сшивка → тумблер ручная/авто → маркеры → 3D. */
 @OptIn(ExperimentalLayoutApi::class)
@@ -60,9 +65,32 @@ fun AerialSessionScreen(sessionId: String, onBack: () -> Unit) {
     var showGeoDialog by rememberSaveable { mutableStateOf(false) }
     var show3dDialog by rememberSaveable { mutableStateOf(false) }
     var infoMessage by rememberSaveable { mutableStateOf("") }
+    var quickMode by rememberSaveable { mutableStateOf(true) } // дефолт: быстрая съёмка
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
         if (uris.isNotEmpty()) vm.importUris(uris)
+    }
+
+    // ── КАМЕРА: фото прямо с телефона ──
+    val cameraUri = remember { mutableStateOf<Uri?>(null) }
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
+            cameraUri.value?.let { uri ->
+                val src = File(uri.path ?: return@let)
+                if (src.exists()) {
+                    val dst = File(vm.repoDir(), "cam_${System.currentTimeMillis()}.jpg")
+                    src.copyTo(dst, overwrite = true)
+                    vm.addPhotoPath(dst.absolutePath)
+                }
+            }
+        }
+    }
+    fun launchCamera() {
+        val dir = File(com.erebuni782.app.AppGraph.appContext.cacheDir, "camera")
+        dir.mkdirs()
+        val file = File(dir, "cam_${System.currentTimeMillis()}.jpg")
+        cameraUri.value = Uri.fromFile(file)
+        cameraUri.value?.let { uri -> cameraLauncher.launch(uri) }
     }
 
     LaunchedEffect(state.message) { state.message?.let { infoMessage = it } }
@@ -114,21 +142,47 @@ fun AerialSessionScreen(sessionId: String, onBack: () -> Unit) {
             Card {
                 Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.aerial_photos_count, state.session?.photos?.size ?: 0), style = MaterialTheme.typography.titleSmall)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedButton(
-                            onClick = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
-                            modifier = Modifier.testTag("import_photos")
-                        ) { Text(stringResource(R.string.aerial_import)) }
-                        OutlinedButton(
-                            onClick = { vm.loadDemoPhotos() },
-                            modifier = Modifier.testTag("load_demo_photos")
-                        ) { Text(stringResource(R.string.aerial_demo)) }
+                    // тумблер режима: быстрая съёмка / аэросъёмка
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        FilterChip(
+                            selected = quickMode,
+                            onClick = { quickMode = true },
+                            label = { Text(stringResource(R.string.mode_quick)) },
+                            modifier = Modifier.testTag("mode_quick")
+                        )
+                        FilterChip(
+                            selected = !quickMode,
+                            onClick = { quickMode = false },
+                            label = { Text(stringResource(R.string.mode_aerial)) },
+                            modifier = Modifier.testTag("mode_aerial_chip")
+                        )
                     }
+                    // камера — всегда доступна в обоих режимах
                     Button(
-                        onClick = { vm.stitch() },
-                        enabled = (state.session?.photos?.size ?: 0) >= 2 && !state.busy,
-                        modifier = Modifier.testTag("stitch_button")
-                    ) { Text(stringResource(R.string.aerial_stitch)) }
+                        onClick = { launchCamera() },
+                        modifier = Modifier.fillMaxWidth().testTag("btn_camera")
+                    ) {
+                        Icon(Icons.Filled.AddAPhoto, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                        Text(stringResource(R.string.take_photo))
+                    }
+                    if (!quickMode) {
+                        // аэро-режим: импорт из галереи + демо + сшивка
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedButton(
+                                onClick = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                                modifier = Modifier.testTag("import_photos")
+                            ) { Text(stringResource(R.string.aerial_import)) }
+                            OutlinedButton(
+                                onClick = { vm.loadDemoPhotos() },
+                                modifier = Modifier.testTag("load_demo_photos")
+                            ) { Text(stringResource(R.string.aerial_demo)) }
+                        }
+                        Button(
+                            onClick = { vm.stitch() },
+                            enabled = (state.session?.photos?.size ?: 0) >= 2 && !state.busy,
+                            modifier = Modifier.testTag("stitch_button")
+                        ) { Text(stringResource(R.string.aerial_stitch)) }
+                    }
                     if (state.busy) CircularProgressIndicator(Modifier.height(24.dp))
                 }
             }

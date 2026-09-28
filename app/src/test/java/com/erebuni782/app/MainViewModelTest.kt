@@ -42,6 +42,12 @@ class FakeSettingsStore : SettingsStore {
     private val _modeSelected = MutableStateFlow(false)
     override val modeSelected = _modeSelected
     override suspend fun setModeSelected() { _modeSelected.value = true }
+    private val _onboardingShown = MutableStateFlow(true)
+    override val onboardingShown = _onboardingShown
+    override suspend fun setOnboardingShown() { _onboardingShown.value = true }
+    private val _langSelected = MutableStateFlow(true)
+    override val langSelected = _langSelected
+    override suspend fun setLangSelected() { _langSelected.value = true }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

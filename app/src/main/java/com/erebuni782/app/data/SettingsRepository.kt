@@ -37,6 +37,14 @@ interface SettingsStore {
     /** Первый запуск: false пока не выбран режим (турист/сотрудник). */
     val modeSelected: Flow<Boolean>
     suspend fun setModeSelected()
+
+    /** Онбординг показан (первый запуск или повторно через «i»). */
+    val onboardingShown: Flow<Boolean>
+    suspend fun setOnboardingShown()
+
+    /** Язык выбран при первом запуске. */
+    val langSelected: Flow<Boolean>
+    suspend fun setLangSelected()
 }
 
 /** DataStore-реализация: всё персистентно между запусками. */
@@ -104,6 +112,22 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         store.edit { prefs -> prefs[MODE_SELECTED_KEY] = true }
     }
 
+    override val onboardingShown: Flow<Boolean> = store.data.map { prefs ->
+        prefs[ONBOARDING_KEY] ?: false
+    }
+
+    override suspend fun setOnboardingShown() {
+        store.edit { prefs -> prefs[ONBOARDING_KEY] = true }
+    }
+
+    override val langSelected: Flow<Boolean> = store.data.map { prefs ->
+        prefs[LANG_SELECTED_KEY] ?: false
+    }
+
+    override suspend fun setLangSelected() {
+        store.edit { prefs -> prefs[LANG_SELECTED_KEY] = true }
+    }
+
     companion object {
         private val SKIN_KEY = stringPreferencesKey("skin")
         private val URARTU_FM_KEY = booleanPreferencesKey("urartu_fm_enabled")
@@ -112,5 +136,7 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         private val READER_BOOKMARKS_KEY = stringSetPreferencesKey("reader_bookmarks")
         private val KEEP_EXIF_KEY = booleanPreferencesKey("keep_exif")
         private val MODE_SELECTED_KEY = booleanPreferencesKey("mode_selected")
+        private val ONBOARDING_KEY = booleanPreferencesKey("onboarding_shown")
+        private val LANG_SELECTED_KEY = booleanPreferencesKey("lang_selected")
     }
 }

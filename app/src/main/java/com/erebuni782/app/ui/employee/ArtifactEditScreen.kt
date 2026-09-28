@@ -174,8 +174,19 @@ fun ArtifactEditScreen(artifactId: String, onBack: () -> Unit) {
     var description by rememberSaveable(draft.id) { mutableStateOf(draft.description) }
     var address by rememberSaveable(draft.id) { mutableStateOf(draft.address) }
     var custodian by rememberSaveable(draft.id) { mutableStateOf(draft.custodian) }
-    var discoveryText by rememberSaveable(draft.id) { mutableStateOf(epochDayToText(draft.discoveryEpochDay)) }
-    var inspectionText by rememberSaveable(draft.id) { mutableStateOf(epochDayToText(draft.nextInspectionEpochDay)) }
+    // даты по умолчанию: находка = сегодня, осмотр = +1 год
+    var discoveryText by rememberSaveable(draft.id) {
+        mutableStateOf(
+            if (vm.isNew) LocalDate.now().format(DATE_FORMAT)
+            else epochDayToText(draft.discoveryEpochDay)
+        )
+    }
+    var inspectionText by rememberSaveable(draft.id) {
+        mutableStateOf(
+            if (vm.isNew) LocalDate.now().plusYears(1).format(DATE_FORMAT)
+            else epochDayToText(draft.nextInspectionEpochDay)
+        )
+    }
 
     val photoPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let {

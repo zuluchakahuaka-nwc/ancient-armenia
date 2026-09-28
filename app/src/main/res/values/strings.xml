@@ -182,4 +182,22 @@
     <string name="quick_capture_button">Take photo and mark</string>
     <string name="employee_registry_count">%1$d records in registry</string>
     <string name="aerial_open">Open aerial survey</string>
+    <string name="ob_skip">Skip</string>
+    <string name="ob_next">Next</string>
+    <string name="ob_start">Got it!</string>
+    <string name="ob_welcome_title">Welcome to Erebuni 782</string>
+    <string name="ob_welcome_body">Your offline guide to the Urartian fortresses of Erebuni (782 BC) and Teishebaini. Everything works without internet. Choose your mode on the next step.</string>
+    <string name="ob_tourist_title">🧭 Tourist mode</string>
+    <string name="ob_tourist_body">• Guide: fortress cards with photos\n• Wiki: 25 articles about kings, gods, daily life\n• Library: 5 books with PDF reader\n• Map: GPS coordinates + how to get there\n• Settings: switch language (hy/ru/en) and skin on the fly</string>
+    <string name="ob_employee_title">👤 Employee mode</string>
+    <string name="ob_employee_body">• Registry: catalog artifacts with photos and audit log\n• Aerial survey: stitch photos, tap to mark targets, 3-level auto-detection\n• 3D reconstruction by historical era\n• Export signed backup for PC or device sync\n• Protected by PIN code</string>
+    <string name="ob_music_title">🎵 Urartu.fm player</string>
+    <string name="ob_music_body">10 melodies play offline.\n\n• ⏮ Previous track\n• ⏯ Tap = pause/play, Hold = stop\n• ⏭ Next track (wraps around)\n\nToggle off in Library → Audio if you don\'t like it.</string>
+    <string name="ob_topbar_title">⚙️ Top bar buttons</string>
+    <string name="ob_longpress_hint">💡 Long press anywhere to skip the tutorial</string>
+    <string name="lang_pick_title">Choose your language</string>
+    <string name="take_photo">📷 Take photo</string>
+    <string name="mode_quick">Quick capture</string>
+    <string name="mode_aerial">Aerial survey</string>
+    <string name="ob_topbar_body">🟢 i — About the app and how to use it\n\n▶ ⏸ ⏭ — Urartu.fm quick controls (always visible)\n\n🔴 ! — Copy error logs to Download/Erebuni782.txt for troubleshooting\n\nBottom bar: Guide | Wiki | Library | Map | Settings | Staff</string>
 </resources>

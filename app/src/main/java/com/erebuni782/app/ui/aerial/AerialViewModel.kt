@@ -73,6 +73,25 @@ class AerialViewModel(private val sessionId: String) : ViewModel() {
 
     fun setLevel(level: DetectLevel) { levelFlow.value = level }
 
+    /** Директория сессии (для камеры). */
+    fun repoDir() = repo.sessionDir(sessionId)
+
+    /** Добавить фото (после съёмки с камеры). */
+    fun addPhotoPath(path: String) {
+        viewModelScope.launch {
+            repo.addPhoto(sessionId, path)
+            sessionFlow.value = repo.session(sessionId)
+        }
+    }
+
+    /** Обработка фото после камеры (заглушка — вызывается из screen). */
+    fun onPhotoTaken() {
+        // перезагружаем сессию
+        viewModelScope.launch {
+            sessionFlow.value = repo.session(sessionId)
+        }
+    }
+
     /** Тап пальцем по фото — каждый тык = нумерованный маркер (ручной режим). */
     fun onImageTap(xNorm: Double, yNorm: Double) {
         if (modeFlow.value != MarkMode.MANUAL) return

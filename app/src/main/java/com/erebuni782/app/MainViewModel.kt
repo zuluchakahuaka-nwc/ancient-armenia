@@ -28,6 +28,16 @@ class MainViewModel(private val store: SettingsStore) : ViewModel() {
         viewModelScope.launch { (store as? SettingsRepository)?.setModeSelected() }
     }
 
+    /** Онбординг просмотрен. */
+    fun setOnboardingShown() {
+        viewModelScope.launch { (store as? SettingsRepository)?.setOnboardingShown() }
+    }
+
+    /** Язык выбран. */
+    fun setLangSelected() {
+        viewModelScope.launch { (store as? SettingsRepository)?.setLangSelected() }
+    }
+
     companion object {
         fun factory(appContext: Context) = viewModelFactory {
             initializer { MainViewModel(SettingsRepository(appContext.applicationContext)) }
