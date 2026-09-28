@@ -89,13 +89,11 @@ fun MainShell(mainViewModel: MainViewModel) {
     BoxWithConstraints {
         val wide = maxWidth >= 840.dp
 
-        // ── АВТОСТАРТ Urartu.fm ──
-        androidx.compose.runtime.LaunchedEffect(langSelected, onboardingShown, modeSelected) {
-            if (langSelected && onboardingShown && modeSelected) {
-                val on = AppGraph.settings.urartuFmEnabled.first()
-                if (on && !libraryViewModel.playerState.value.hasContent) {
-                    libraryViewModel.setStation(true)
-                }
+        // ── АВТОСТАРТ Urartu.fm: играет СРАЗУ при запуске, даже во время онбординга ──
+        androidx.compose.runtime.LaunchedEffect(Unit) {
+            val on = AppGraph.settings.urartuFmEnabled.first()
+            if (on && !libraryViewModel.playerState.value.hasContent) {
+                libraryViewModel.setStation(true)
             }
         }
 
