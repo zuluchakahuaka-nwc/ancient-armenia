@@ -27,3 +27,7 @@ app/build/
 dist/*.apk
 dist/Erebuni782_Manual.pdf
 
+
+dist/*.apk
+dist/.~lock*
+dist/Erebuni782_Manual.pdf
