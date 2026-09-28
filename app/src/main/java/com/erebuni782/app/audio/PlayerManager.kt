@@ -40,7 +40,7 @@ class PlayerManager(context: Context) : PlayerController {
     }
 
     /** D10: станция играет офлайн-пакет из assets. */
-    override fun startStation(tracks: List<StationTrack>, resolveTitle: (Int) -> String) {
+    override fun startStation(tracks: List<StationTrack>) {
         val p = ensurePlayer()
         p.clearMediaItems()
         tracks.forEach { track ->
@@ -52,7 +52,7 @@ class PlayerManager(context: Context) : PlayerController {
             )
         }
         _state.value = PlayerUiState(
-            title = tracks.firstOrNull()?.let { resolveTitle(it.titleRes) },
+            title = tracks.firstOrNull()?.title,
             isPlaying = false,
             hasContent = true
         )
@@ -78,6 +78,31 @@ class PlayerManager(context: Context) : PlayerController {
         player?.stop()
         player?.clearMediaItems()
         _state.value = PlayerUiState()
+    }
+
+    override fun next() {
+        val p = player ?: return
+        if (p.hasNextMediaItem()) {
+            p.seekToNextMediaItem()
+            p.prepare()
+            p.play()
+        } else {
+            p.seekTo(0, 0) // цикл: с последнего — на первый
+            p.seekTo(0, 0)
+            p.prepare()
+            p.play()
+        }
+    }
+
+    override fun previous() {
+        val p = player ?: return
+        if (p.hasPreviousMediaItem()) {
+            p.seekToPreviousMediaItem()
+        } else {
+            p.seekTo(0, 0)
+        }
+        p.prepare()
+        p.play()
     }
 
     fun release() {

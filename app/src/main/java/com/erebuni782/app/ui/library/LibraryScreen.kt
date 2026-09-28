@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,8 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -141,8 +146,9 @@ private fun BooksTab(onOpenBook: (String) -> Unit, onOpenPdf: (String) -> Unit) 
     }
 }
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-fun AudioTab(viewModel: LibraryViewModel) {
+private fun AudioTab(viewModel: LibraryViewModel) {
     val context = LocalContext.current
     val localeTag = LocalConfiguration.current.locales[0]?.toLanguageTag() ?: "en"
     val stationEnabled by viewModel.stationEnabled.collectAsState()
@@ -175,27 +181,74 @@ fun AudioTab(viewModel: LibraryViewModel) {
             OrnamentalDivider(Modifier.padding(top = 6.dp))
         }
 
-        // ── Urartu.fm (D10) ──
+        // ── Urartu.fm (D10): тумблер + транспорт play/pause/stop ──
         item {
+            val playState by viewModel.playerState.collectAsState()
             Card(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    Modifier.padding(14.dp).fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("Urartu.fm", style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            stringResource(R.string.station_hint),
-                            style = MaterialTheme.typography.bodySmall
+                Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Urartu.fm", style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                stringResource(R.string.station_hint),
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                        Switch(
+                            checked = stationEnabled,
+                            onCheckedChange = { enabled ->
+                                viewModel.setStation(enabled)
+                            },
+                            modifier = Modifier.testTag("station_toggle")
                         )
                     }
-                    Switch(
-                        checked = stationEnabled,
-                        onCheckedChange = { enabled ->
-                            viewModel.setStation(enabled) { res -> context.getString(res) }
-                        },
-                        modifier = Modifier.testTag("station_toggle")
-                    )
+                    // транспорт: ⏮ ⏯(долгое=стоп) ⏭ + текущий трек
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        IconButton(
+                            onClick = { viewModel.stationPrevious() },
+                            modifier = Modifier.testTag("station_prev")
+                        ) {
+                            Icon(Icons.Filled.SkipPrevious, contentDescription = stringResource(R.string.previous_chapter))
+                        }
+                        IconButton(
+                            onClick = { viewModel.stationPlayPause() },
+                            enabled = stationEnabled || playState.hasContent,
+                            modifier = Modifier
+                                .testTag("station_playpause")
+                                .combinedClickable(
+                                    onClick = { viewModel.stationPlayPause() },
+                                    onLongClick = { viewModel.stationStop() }
+                                )
+                        ) {
+                            if (playState.isPlaying) {
+                                Icon(Icons.Filled.Pause, contentDescription = stringResource(R.string.pause))
+                            } else {
+                                Icon(Icons.Filled.PlayArrow, contentDescription = stringResource(R.string.play))
+                            }
+                        }
+                        IconButton(
+                            onClick = { viewModel.stationNext() },
+                            modifier = Modifier.testTag("station_next")
+                        ) {
+                            Icon(Icons.Filled.SkipNext, contentDescription = stringResource(R.string.next_chapter))
+                        }
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                text = playState.title ?: stringResource(R.string.station_idle_track),
+                                style = MaterialTheme.typography.labelMedium,
+                                maxLines = 1
+                            )
+                            Text(
+                                text = if (playState.hasContent) "playing=${if (playState.isPlaying) 1 else 0}" else "idle",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.testTag("station_status")
+                            )
+                        }
+                    }
                 }
             }
         }

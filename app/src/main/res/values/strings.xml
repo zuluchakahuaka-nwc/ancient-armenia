@@ -34,7 +34,8 @@
     <string name="import_music">Import music</string>
     <string name="library_empty">No music imported yet. Tap “Import music” and pick MP3/M4A/OGG/FLAC files.</string>
     <string name="audio_guides">Audio guides</string>
-    <string name="station_hint">Offline ambient pack bundled with the app. Toggle off if you don’t like it.</string>
+    <string name="station_hint">Owner’s soundtrack, 10 melodies bundled with the app. Toggle off if you don’t like it.</string>
+    <string name="station_idle_track">Station is off</string>
     <string name="station_track_aran_berd">Arin-Berd</string>
     <string name="station_track_haldi_temple">Temple of Haldi</string>
     <string name="station_track_karmir_blur">Karmir Blur</string>
@@ -150,4 +151,12 @@
     <string name="book_djvu_hint">DJVU: convert to PDF on a PC to read here</string>
     <string name="book_page_of">p. %1$d of %2$d</string>
     <string name="pdf_loading">Rendering page…</string>
+    <string name="help_title">About the app</string>
+    <string name="help_about">Erebuni 782 — a trilingual (hy/ru/en) offline guide to the Urartian fortresses Erebuni (782 BC) and Teishebaini (Karmir Blur). Works without internet.</string>
+    <string name="help_tourist_title">Tourist mode</string>
+    <string name="help_tourist_body">Guide: fortress cards open articles. Wiki: mini-encyclopedia about kings, gods, daily life. Library: books (PDF reader, font size, night mode, bookmarks) and audio (Urartu.fm station, your music). Map: fortress coordinates. Settings: switch language and skin on the fly.</string>
+    <string name="help_employee_title">Employee mode</string>
+    <string name="help_employee_body">Protected by PIN (set once, change later). Registry of artifacts with categories, photos, custody status, audit log, inspection reminders. Aerial survey: stitch photos, tap to mark objects, auto-detect anomalies at 3 sensitivity levels, generate 3D reconstruction by era. Export signed .e782 file for PC or device-to-device sync.</string>
+    <string name="help_fm_title">Urartu.fm</string>
+    <string name="help_fm_body">Offline station with owner\'s soundtrack (10 melodies). Play/pause from the top bar or Library → Audio. Toggle off if you don\'t like it.</string>
 </resources>

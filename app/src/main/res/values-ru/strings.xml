@@ -34,7 +34,8 @@
     <string name="import_music">Импортировать музыку</string>
     <string name="library_empty">Музыка ещё не импортирована. Нажмите «Импортировать музыку» и выберите файлы MP3/M4A/OGG/FLAC.</string>
     <string name="audio_guides">Аудиогиды</string>
-    <string name="station_hint">Офлайн-пакет атмосферных треков идёт с приложением. Выключите одним тапом, если не понравится.</string>
+    <string name="station_hint">Саундтрек владельца: 10 мелодий идут с приложением. Выключите одним тапом, если не понравится.</string>
+    <string name="station_idle_track">Станция выключена</string>
     <string name="station_track_aran_berd">Арин-Берд</string>
     <string name="station_track_haldi_temple">Храм Халди</string>
     <string name="station_track_karmir_blur">Кармир-Блур</string>
@@ -150,4 +151,12 @@
     <string name="book_djvu_hint">DJVU: сконвертируйте в PDF на ПК для чтения здесь</string>
     <string name="book_page_of">стр. %1$d из %2$d</string>
     <string name="pdf_loading">Рендер страницы…</string>
+    <string name="help_title">О приложении</string>
+    <string name="help_about">Эребуни 782 — трёхъязычный (hy/ru/en) офлайн-гид по урартским крепостям Эребуни (782 г. до н.э.) и Тейшебаини (Кармир-Блур). Работает без интернета.</string>
+    <string name="help_tourist_title">Режим туриста</string>
+    <string name="help_tourist_body">Гид: карточки крепостей открывают статьи. Вики: мини-энциклопедия о царях, богах, быте. Библиотека: книги (PDF-читалка, шрифт, ночной режим, закладки) и аудио (станция Urartu.fm, своя музыка). Карта: координаты крепостей. Настройки: смена языка и скина на лету.</string>
+    <string name="help_employee_title">Режим сотрудника</string>
+    <string name="help_employee_body">Защищён PIN-кодом (установить один раз, менять позже). Реестр артефактов с категориями, фото, статусами хранения, журналом изменений, напоминаниями об осмотрах. Аэро-разведка: сшивка фото, разметка объектов тапами, автодетекция аномалий 3 уровней, 3D-реконструкция по эпохам. Экспорт подписанного .e782 файла для ПК или синк между устройствами.</string>
+    <string name="help_fm_title">Urartu.fm</string>
+    <string name="help_fm_body">Офлайн-станция с саундтреком владельца (10 мелодий). Воспроизведение/пауза — из верхней панели или Библиотека → Аудио. Выключите одним тапом, если не понравится.</string>
 </resources>

@@ -47,6 +47,20 @@ class TouristShellE2E {
             null
         }
     }
+
+    private fun awaitStationStatus(expected: String) {
+        rule.waitUntil(timeoutMillis = 15_000) {
+            rule.onAllNodesWithTag("station_status").fetchSemanticsNodes()
+                .any { node ->
+                    try {
+                        node.config[androidx.compose.ui.semantics.SemanticsProperties.Text]
+                            .first().text == expected
+                    } catch (e: Exception) {
+                        false
+                    }
+                }
+        }
+    }
     }
 
     private fun goneTag(tag: String) {
@@ -81,7 +95,7 @@ class TouristShellE2E {
         rule.onNodeWithTag("reader_next").performClick()
         awaitText("Walls and palace")
 
-        // ── аудио: выходим из ридера «назад» → Library (restoreState вернул бы книгу)
+        // ── аудио: тумблер Urartu.fm (D10) + транспорт play/pause/stop
         rule.onNodeWithTag("reader_back").performClick()
         awaitTag("tab_audio")
         rule.onNodeWithTag("tab_audio").performClick()
@@ -89,6 +103,15 @@ class TouristShellE2E {
         rule.onNodeWithTag("station_toggle").performClick() // OFF
         rule.onNodeWithTag("station_toggle").performClick() // ON → станция играет офлайн-пакет
         awaitTag("miniplayer_title")
+        awaitStationStatus("playing=1")
+        rule.onNodeWithTag("station_playpause").performClick() // пауза
+        awaitStationStatus("playing=0")
+        rule.onNodeWithTag("station_playpause").performClick() // снова играет
+        awaitStationStatus("playing=1")
+        rule.onNodeWithTag("station_stop").performClick()      // стоп → idle
+        awaitStationStatus("idle")
+        rule.onNodeWithTag("station_playpause").performClick() // из idle снова старт
+        awaitStationStatus("playing=1")
         rule.onNodeWithTag("nav_map").performClick()
         awaitText("40.1776")
 

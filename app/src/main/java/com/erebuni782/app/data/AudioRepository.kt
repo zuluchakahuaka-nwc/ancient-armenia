@@ -10,13 +10,23 @@ data class UserTrackUi(val id: Long, val uri: String, val title: String)
 
 data class GuideTrackUi(val id: Long, val title: String, val durationSec: Int, val available: Boolean)
 
-data class StationTrack(val assetPath: String, val titleRes: Int)
+data class StationTrack(val assetPath: String, val title: String)
 
-/** Urartu.fm: офлайн-пакет треков идёт с приложением (D10). */
+/**
+ * D10: Urartu.fm — офлайн-станция из саундтреков владельца (10 мелодий,
+ * ~3.5 мин каждая; mp3 в assets/urartu_fm, медиа вне git — AGENTS §gitignore).
+ */
 val URARTU_FM_PACK: List<StationTrack> = listOf(
-    StationTrack("urartu_fm/track_aran_berd.wav", com.erebuni782.app.R.string.station_track_aran_berd),
-    StationTrack("urartu_fm/track_haldi_temple.wav", com.erebuni782.app.R.string.station_track_haldi_temple),
-    StationTrack("urartu_fm/track_karmir_blur.wav", com.erebuni782.app.R.string.station_track_karmir_blur)
+    StationTrack("urartu_fm/01_rise_of_the_kingdom_of_van.mp3", "Rise of the Kingdom of Van"),
+    StationTrack("urartu_fm/02_sarduri_coronation.mp3", "Sarduri's Coronation"),
+    StationTrack("urartu_fm/03_shores_of_lake_van.mp3", "Shores of Lake Van"),
+    StationTrack("urartu_fm/04_erebuni_walls_at_dawn.mp3", "Erebuni Walls at Dawn"),
+    StationTrack("urartu_fm/05_chariots_of_argishti.mp3", "Chariots of Argishti"),
+    StationTrack("urartu_fm/06_teisheba_thunder.mp3", "Teisheba's Thunder"),
+    StationTrack("urartu_fm/07_temple_of_musasir.mp3", "Temple of Musasir"),
+    StationTrack("urartu_fm/08_khaldi_sacred_fire.mp3", "Khaldi's Sacred Fire"),
+    StationTrack("urartu_fm/09_rusa_by_the_araxes.mp3", "Rusa by the Araxes"),
+    StationTrack("urartu_fm/10_twilight_of_tushpa.mp3", "Twilight of Tushpa")
 )
 
 interface AudioStore {

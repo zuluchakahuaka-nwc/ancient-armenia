@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.erebuni782.app"
-        minSdk = 26
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "0.1.0"
@@ -30,6 +30,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -65,6 +66,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.exifinterface)
     implementation(libs.androidx.work.runtime.ktx)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.org.json)

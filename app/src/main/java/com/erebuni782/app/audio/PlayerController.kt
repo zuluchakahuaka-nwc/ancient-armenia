@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.StateFlow
 /** Абстракция над плеером (подменяется фейком в unit-тестах). */
 interface PlayerController {
     val state: StateFlow<PlayerUiState>
-    fun startStation(tracks: List<StationTrack>, resolveTitle: (Int) -> String)
+    fun startStation(tracks: List<StationTrack>)
     fun playUri(uri: String, title: String)
     fun togglePlayPause()
     fun stop()
+    fun next()
+    fun previous()
 }

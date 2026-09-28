@@ -29,6 +29,22 @@ class LibraryViewModel(
 
     val playerState: StateFlow<PlayerUiState> = player.state
 
+    /** Транспорт станции: play/pause; из idle при включённой станции — старт. */
+    fun stationPlayPause() {
+        val st = player.state.value
+        if (!st.hasContent) {
+            if (stationEnabled.value) {
+                viewModelScope.launch { player.startStation(URARTU_FM_PACK) }
+            }
+        } else {
+            player.togglePlayPause()
+        }
+    }
+
+    fun stationStop() = player.stop()
+    fun stationNext() = player.next()
+    fun stationPrevious() = player.previous()
+
     fun userTracks(localeTag: String): Flow<List<UserTrackUi>> = audio.userTracks(localeTag)
 
     fun guides(localeTag: String) = audio.guides(localeTag)
@@ -47,10 +63,10 @@ class LibraryViewModel(
 
     fun stopPlayer() = player.stop()
 
-    fun setStation(enabled: Boolean, resolveTitle: (Int) -> String) {
+    fun setStation(enabled: Boolean) {
         viewModelScope.launch {
             settings.setUrartuFmEnabled(enabled)
-            if (enabled) player.startStation(URARTU_FM_PACK, resolveTitle) else player.stop()
+            if (enabled) player.startStation(URARTU_FM_PACK) else player.stop()
         }
     }
 

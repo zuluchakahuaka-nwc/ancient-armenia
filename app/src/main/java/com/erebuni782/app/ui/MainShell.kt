@@ -44,6 +44,8 @@ import com.erebuni782.app.ui.library.rememberLibraryViewModel
 import com.erebuni782.app.ui.reader.ReaderScreen
 import com.erebuni782.app.ui.settings.SettingsScreen
 
+import com.erebuni782.app.ui.topbar.TopActionBar
+
 private data class TabSpec(val route: String, val labelRes: Int, val icon: androidx.compose.ui.graphics.vector.ImageVector)
 
 private val tabs = listOf(
@@ -79,6 +81,7 @@ fun MainShell(mainViewModel: MainViewModel) {
 
         if (wide) {
             Column(Modifier.fillMaxSize()) {
+                TopActionBar(libraryViewModel)
                 MiniPlayerBar(libraryViewModel)
                 Row(Modifier.fillMaxHeight()) {
                     NavigationRail {
@@ -99,6 +102,7 @@ fun MainShell(mainViewModel: MainViewModel) {
             }
         } else {
             Scaffold(
+                topBar = { TopActionBar(libraryViewModel) },
                 bottomBar = {
                     Column {
                         MiniPlayerBar(libraryViewModel)

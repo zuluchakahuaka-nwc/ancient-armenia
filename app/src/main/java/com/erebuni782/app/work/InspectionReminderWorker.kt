@@ -35,25 +35,27 @@ class InspectionReminderWorker(
 
     private fun showNotification(artifactId: String, title: String) {
         val ctx = applicationContext
-        val manager = NotificationManagerCompat.from(ctx)
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            ctx.getString(R.string.reminder_channel_name),
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        manager.createNotificationChannel(channel)
-        val notification = NotificationCompat.Builder(ctx, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(ctx.getString(R.string.reminder_title))
-            .setContentText(title)
-            .setAutoCancel(true)
-            .build()
         if (android.os.Build.VERSION.SDK_INT >= 33 &&
             ctx.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) !=
             PackageManager.PERMISSION_GRANTED
         ) {
             return // без разрешения молча пропускаем (запрос — на экране сотрудника)
         }
+        val manager = NotificationManagerCompat.from(ctx)
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                ctx.getString(R.string.reminder_channel_name),
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            manager.createNotificationChannel(channel)
+        }
+        val notification = NotificationCompat.Builder(ctx, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(ctx.getString(R.string.reminder_title))
+            .setContentText(title)
+            .setAutoCancel(true)
+            .build()
         manager.notify(artifactId.hashCode(), notification)
     }
 

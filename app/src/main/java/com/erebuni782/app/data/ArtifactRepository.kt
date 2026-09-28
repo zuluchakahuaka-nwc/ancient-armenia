@@ -5,7 +5,6 @@ import com.erebuni782.app.data.db.ArtifactEntity
 import com.erebuni782.app.data.db.AuditDao
 import com.erebuni782.app.data.db.AuditEntryEntity
 import kotlinx.coroutines.flow.Flow
-import java.time.Clock
 import java.util.UUID
 
 data class ArtifactUi(
@@ -45,7 +44,7 @@ interface ArtifactStore {
 class ArtifactRepository(
     private val artifactDao: ArtifactDao,
     private val auditDao: AuditDao,
-    private val clock: Clock = Clock.systemUTC(),
+    private val clock: () -> Long = { System.currentTimeMillis() },
     private val deviceIdProvider: () -> String = { "" }
 ) : ArtifactStore {
 
@@ -62,7 +61,7 @@ class ArtifactRepository(
 
     override suspend fun create(ui: ArtifactUi): String {
         val id = ui.id.ifEmpty { UUID.randomUUID().toString() }
-        val now = clock.millis()
+        val now = clock()
         val (vv, editor) = bumpVv("{}")
         artifactDao.upsert(ui.toEntity(id, now, now).copy(versionVector = vv, lastEditor = editor))
         auditDao.insert(
@@ -72,7 +71,7 @@ class ArtifactRepository(
     }
 
     override suspend fun update(ui: ArtifactUi, action: String, details: String) {
-        val now = clock.millis()
+        val now = clock()
         val (vv, editor) = bumpVv(ui.versionVector)
         artifactDao.upsert(ui.toEntity(ui.id, ui.createdAt, now).copy(versionVector = vv, lastEditor = editor))
         auditDao.insert(AuditEntryEntity(artifactId = ui.id, timestamp = now, action = action, details = details))
@@ -80,7 +79,7 @@ class ArtifactRepository(
 
     override suspend fun setStatus(id: String, status: CustodyStatus) {
         val current = artifactDao.byId(id) ?: return
-        val now = clock.millis()
+        val now = clock()
         val from = CustodyStatus.fromRaw(current.custodyStatus)
         if (from == status) return
         require(CustodyStatus.canTransition(from, status)) {
@@ -98,7 +97,7 @@ class ArtifactRepository(
 
     override suspend fun addPhoto(id: String, path: String) {
         val current = artifactDao.byId(id) ?: return
-        val now = clock.millis()
+        val now = clock()
         val photos = if (current.photoPaths.isBlank()) path else current.photoPaths + "\n" + path
         val (vv, editor) = bumpVv(current.versionVector)
         artifactDao.upsert(current.copy(photoPaths = photos, updatedAt = now, versionVector = vv, lastEditor = editor))
@@ -109,7 +108,7 @@ class ArtifactRepository(
 
     override suspend fun softDelete(id: String) {
         val current = artifactDao.byId(id) ?: return
-        val now = clock.millis()
+        val now = clock()
         val (vv, editor) = bumpVv(current.versionVector)
         artifactDao.upsert(current.copy(deleted = true, updatedAt = now, versionVector = vv, lastEditor = editor))
         auditDao.insert(

@@ -51,9 +51,9 @@ class FakePlayerController : PlayerController {
     var playedUri: String? = null
         private set
 
-    override fun startStation(tracks: List<StationTrack>, resolveTitle: (Int) -> String) {
+    override fun startStation(tracks: List<StationTrack>) {
         startedStationTracks = tracks
-        state.value = PlayerUiState(title = "station", isPlaying = true, hasContent = true)
+        state.value = PlayerUiState(title = tracks.firstOrNull()?.title ?: "station", isPlaying = true, hasContent = true)
     }
 
     override fun playUri(uri: String, title: String) {
@@ -61,7 +61,10 @@ class FakePlayerController : PlayerController {
         state.value = PlayerUiState(title = title, isPlaying = true, hasContent = true)
     }
 
-    override fun togglePlayPause() {}
+    override fun togglePlayPause() {
+        state.value = state.value.copy(isPlaying = !state.value.isPlaying)
+    }
+
     override fun stop() {
         stopped = true
         state.value = PlayerUiState()
@@ -93,16 +96,17 @@ class LibraryViewModelTest {
         val settings = FakeSettingsStore()
         val player = FakePlayerController()
         val vm = LibraryViewModel(FakeAudioStore(), settings, player)
-        vm.setStation(false) { "t" }
+        vm.setStation(false)
         advanceUntilIdle()
         assertFalse(settings.urartuFmEnabled.value)
         assertTrue(player.stopped)
 
-        vm.setStation(true) { "t" }
+        vm.setStation(true)
         advanceUntilIdle()
         assertTrue(settings.urartuFmEnabled.value)
         assertEquals(URARTU_FM_PACK.map { it.assetPath }, player.startedStationTracks?.map { it.assetPath })
-        assertEquals(3, player.startedStationTracks?.size)
+        assertEquals(10, player.startedStationTracks?.size)
+        assertEquals("Rise of the Kingdom of Van", player.startedStationTracks?.first()?.title)
     }
 
     @Test
@@ -124,5 +128,37 @@ class LibraryViewModelTest {
         val vm = LibraryViewModel(FakeAudioStore(), FakeSettingsStore(), player)
         vm.playTrack("content://media/2", "track")
         assertEquals("content://media/2", player.playedUri)
+    }
+
+    @Test
+    fun `station transport playPause starts station from idle when enabled`() = runTest {
+        val player = FakePlayerController()
+        val vm = LibraryViewModel(FakeAudioStore(), FakeSettingsStore(), player)
+        advanceUntilIdle()
+        vm.stationPlayPause() // idle + станция включена → старт пакета
+        advanceUntilIdle()
+        assertEquals(10, player.startedStationTracks?.size)
+        assertEquals(true, player.state.value.isPlaying)
+
+        vm.stationPlayPause() // играет → пауза
+        assertEquals(false, player.state.value.isPlaying)
+        vm.stationPlayPause() // пауза → снова играет
+        assertEquals(true, player.state.value.isPlaying)
+
+        vm.stationStop() // стоп → контент очищен
+        assertEquals(false, player.state.value.hasContent)
+    }
+
+    @Test
+    fun `station transport playPause does nothing when disabled and idle`() = runTest {
+        val player = FakePlayerController()
+        val settings = FakeSettingsStore()
+        val vm = LibraryViewModel(FakeAudioStore(), settings, player)
+        advanceUntilIdle()
+        vm.setStation(false)
+        advanceUntilIdle()
+        vm.stationPlayPause()
+        advanceUntilIdle()
+        assertEquals(null, player.startedStationTracks)
     }
 }
