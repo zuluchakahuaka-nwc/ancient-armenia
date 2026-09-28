@@ -1,6 +1,16 @@
 # Локальный только: инструкция агента + окружение владельца (в GitHub НЕ грузить)
 AGENTS.md
 
+# МЕДИА НЕ В GIT (политика владельца): книги/музыка живут локально и в APK;
+# в репо — только manifest.json и README (списки). См. assets/books/README.md
+app/src/main/assets/books/*.pdf
+app/src/main/assets/books/*.djvu
+app/src/main/assets/urartu_fm/*.wav
+app/src/main/assets/urartu_fm/*.m4a
+app/src/main/assets/urartu_fm/*.mp3
+app/src/main/assets/urartu_fm/*.ogg
+app/src/main/assets/urartu_fm/*.flac
+
 *.iml
 .gradle/
 /local.properties

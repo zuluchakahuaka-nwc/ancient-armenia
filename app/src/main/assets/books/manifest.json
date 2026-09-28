@@ -14,16 +14,18 @@
       "title": "Ванское царство (Урарту)",
       "author": "Пиотровский Б.Б.",
       "year": 1959,
-      "file": "piotrovsky_van_kingdom_1959.djvu",
-      "format": "djvu"
+      "file": "piotrovsky_van_kingdom_1959.pdf",
+      "format": "pdf",
+      "source": "DJVU -> PDF (DjVuLibre ddjvu, subsample=2)"
     },
     {
       "id": "arutunyan_1964",
       "title": "Земледелие и скотоводство Урарту",
       "author": "Арутюнян Н.В.",
       "year": 1964,
-      "file": "arutunyan_agriculture_urartu_1964.djvu",
-      "format": "djvu"
+      "file": "arutunyan_agriculture_urartu_1964.pdf",
+      "format": "pdf",
+      "source": "DJVU -> PDF (DjVuLibre ddjvu, subsample=2)"
     },
     {
       "id": "arutunyan_2006",
