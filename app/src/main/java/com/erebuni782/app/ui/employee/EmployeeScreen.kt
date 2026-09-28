@@ -161,6 +161,7 @@ private fun ExchangeCard() {
     val vm: ExportViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = ExportViewModel.factory())
     val status by vm.status.collectAsState()
     var passphrase by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("erebuni") }
+    var showPinChange by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf(false) }
 
     Card {
         Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -191,6 +192,10 @@ private fun ExchangeCard() {
                     modifier = Modifier.testTag("btn_sync")
                 ) { Text(stringResource(R.string.btn_sync)) }
             }
+            androidx.compose.material3.OutlinedButton(
+                onClick = { showPinChange = true },
+                modifier = Modifier.fillMaxWidth().testTag("btn_change_pin")
+            ) { Text(stringResource(R.string.btn_change_pin)) }
             Text(
                 text = status,
                 style = MaterialTheme.typography.labelMedium,
@@ -198,4 +203,71 @@ private fun ExchangeCard() {
             )
         }
     }
+
+    if (showPinChange) {
+        ChangePinDialog(
+            onDismiss = { showPinChange = false },
+            onResult = { ok ->
+                showPinChange = false
+                vm.reportPinChange(ok)
+            }
+        )
+    }
+}
+
+/** D3: смена общего PIN (текущий + новый с подтверждением). */
+@Composable
+private fun ChangePinDialog(onDismiss: () -> Unit, onResult: (Boolean) -> Unit) {
+    var current by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var newPin by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var confirm by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    var error by androidx.compose.runtime.saveable.rememberSaveable { androidx.compose.runtime.mutableStateOf("") }
+    val msgWrong = stringResource(R.string.pin_wrong)
+    val msgMismatch = stringResource(R.string.pin_mismatch)
+    val msgFormat = stringResource(R.string.pin_bad_format)
+
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.btn_change_pin)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                androidx.compose.material3.OutlinedTextField(
+                    current, { if (it.length <= 8 && it.all { c -> c.isDigit() }) current = it },
+                    label = { Text(stringResource(R.string.pin_current)) },
+                    singleLine = true,
+                    modifier = Modifier.testTag("pin_current")
+                )
+                androidx.compose.material3.OutlinedTextField(
+                    newPin, { if (it.length <= 8 && it.all { c -> c.isDigit() }) newPin = it },
+                    label = { Text(stringResource(R.string.pin_new)) },
+                    singleLine = true,
+                    modifier = Modifier.testTag("pin_new")
+                )
+                androidx.compose.material3.OutlinedTextField(
+                    confirm, { if (it.length <= 8 && it.all { c -> c.isDigit() }) confirm = it },
+                    label = { Text(stringResource(R.string.pin_confirm_label)) },
+                    singleLine = true,
+                    modifier = Modifier.testTag("pin_new_confirm")
+                )
+                if (error.isNotEmpty()) {
+                    Text(error, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
+                }
+            }
+        },
+        confirmButton = {
+            androidx.compose.material3.TextButton(
+                onClick = {
+                    when {
+                        !com.erebuni782.app.data.PinHasher.isValidPinFormat(newPin) -> error = msgFormat
+                        newPin != confirm -> error = msgMismatch
+                        else -> onResult(AppGraph.pin.change(current, newPin))
+                    }
+                },
+                modifier = Modifier.testTag("pin_change_apply")
+            ) { Text(stringResource(R.string.action_save)) }
+        },
+        dismissButton = {
+            androidx.compose.material3.TextButton(onClick = onDismiss) { Text(stringResource(R.string.back)) }
+        }
+    )
 }

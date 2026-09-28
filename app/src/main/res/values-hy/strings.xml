@@ -142,4 +142,7 @@
     <string name="btn_export">Արտահանել</string>
     <string name="btn_import">Ներմուծել</string>
     <string name="btn_sync">Սինք-թեստ</string>
+    <string name="btn_change_pin">Փոխել PIN-ը</string>
+    <string name="pin_current">Ընթացիկ PIN</string>
+    <string name="pin_new">Նոր PIN</string>
 </resources>

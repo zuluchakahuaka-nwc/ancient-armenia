@@ -52,6 +52,10 @@ class ExportViewModel : ViewModel() {
         }
     }
 
+    fun reportPinChange(ok: Boolean) {
+        _status.value = if (ok) "PIN ok changed=1" else "PIN fail wrong"
+    }
+
     companion object {
         fun factory() = viewModelFactory { initializer { ExportViewModel() } }
     }

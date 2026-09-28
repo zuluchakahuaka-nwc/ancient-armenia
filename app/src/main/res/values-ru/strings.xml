@@ -142,4 +142,7 @@
     <string name="btn_export">Экспорт</string>
     <string name="btn_import">Импорт</string>
     <string name="btn_sync">Тест синка</string>
+    <string name="btn_change_pin">Сменить PIN</string>
+    <string name="pin_current">Текущий PIN</string>
+    <string name="pin_new">Новый PIN</string>
 </resources>

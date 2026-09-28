@@ -142,4 +142,7 @@
     <string name="btn_export">Export</string>
     <string name="btn_import">Import</string>
     <string name="btn_sync">Sync test</string>
+    <string name="btn_change_pin">Change PIN</string>
+    <string name="pin_current">Current PIN</string>
+    <string name="pin_new">New PIN</string>
 </resources>

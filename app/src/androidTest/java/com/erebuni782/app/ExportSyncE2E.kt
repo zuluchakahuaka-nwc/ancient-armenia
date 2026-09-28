@@ -69,5 +69,21 @@ class ExportSyncE2E {
         // loopback-синк: полный протокол в одном процессе
         rule.onNodeWithTag("btn_sync").performClick()
         awaitStatus("SYNC ok sent=")
+
+        // D3: смена PIN 1234 → 9999 → обратно 1234
+        rule.onNodeWithTag("btn_change_pin").performClick()
+        awaitTag("pin_current")
+        rule.onNodeWithTag("pin_current").performTextReplacement("1234")
+        rule.onNodeWithTag("pin_new").performTextReplacement("9999")
+        rule.onNodeWithTag("pin_new_confirm").performTextReplacement("9999")
+        rule.onNodeWithTag("pin_change_apply").performClick()
+        awaitStatus("PIN ok changed=1")
+        rule.onNodeWithTag("btn_change_pin").performClick()
+        awaitTag("pin_current")
+        rule.onNodeWithTag("pin_current").performTextReplacement("9999")
+        rule.onNodeWithTag("pin_new").performTextReplacement("1234")
+        rule.onNodeWithTag("pin_new_confirm").performTextReplacement("1234")
+        rule.onNodeWithTag("pin_change_apply").performClick()
+        awaitStatus("PIN ok changed=1")
     }
 }
