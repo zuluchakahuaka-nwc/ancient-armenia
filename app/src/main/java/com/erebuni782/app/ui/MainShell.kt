@@ -81,10 +81,18 @@ fun MainShell(mainViewModel: MainViewModel) {
         }
     }
 
+    val startDestination = if (!modeSelected) "welcome" else "guide"
+
     BoxWithConstraints {
         val wide = maxWidth >= 840.dp
 
-        if (wide) {
+        // ── ЭКРАН ПЕРВОГО ЗАПУСКА: отдельный экран, не оверлей ──
+        if (!modeSelected) {
+            com.erebuni782.app.ui.WelcomeScreen(
+                onTourist = { mainViewModel.selectMode() },
+                onEmployee = { mainViewModel.selectMode() }
+            )
+        } else if (wide) {
             Column(Modifier.fillMaxSize()) {
                 TopActionBar(libraryViewModel)
                 MiniPlayerBar(libraryViewModel)
@@ -129,19 +137,6 @@ fun MainShell(mainViewModel: MainViewModel) {
             ) { padding ->
                 AppNavHost(navController, mainViewModel, Modifier.padding(padding))
             }
-        }
-
-        // ── ЭКРАН ПЕРВОГО ЗАПУСКА: выбор режима ──
-        if (!modeSelected) {
-            com.erebuni782.app.ui.WelcomeScreen(
-                onTourist = {
-                    mainViewModel.selectMode()
-                },
-                onEmployee = {
-                    mainViewModel.selectMode()
-                    navController.navigate("employee_gate")
-                }
-            )
         }
     }
 }

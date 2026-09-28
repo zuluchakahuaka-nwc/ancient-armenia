@@ -176,4 +176,10 @@
     <string name="welcome_tourist_desc">Ուղեցույց, վիքի, գրքեր, աուդիո, քարտեզ։ Ամեն ինչ աշխատում է առանց ինտերնետի։</string>
     <string name="welcome_employee">Ես աշխատակից եմ</string>
     <string name="welcome_employee_desc">Արտեֆակտների ռեգիստր, աերոհետախուզություն, 3D վերակառուցում։ Պաշտպանված է PIN-ով։</string>
+    <string name="employee_menu_title">Աշխատակցի ռեժիմ</string>
+    <string name="quick_capture_title">📸 Արագ նկարահանում</string>
+    <string name="quick_capture_desc">Նկարել և անմիջապես նշել օբյեկտները։</string>
+    <string name="quick_capture_button">Նկարել և նշել</string>
+    <string name="employee_registry_count">%1$d գրառում ռեգիստրում</string>
+    <string name="aerial_open">Բացել աերոհետախուզությունը</string>
 </resources>

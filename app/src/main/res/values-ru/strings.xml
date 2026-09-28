@@ -176,4 +176,10 @@
     <string name="welcome_tourist_desc">Гид, вики, книги, аудио, карта. Всё работает офлайн.</string>
     <string name="welcome_employee">Я сотрудник</string>
     <string name="welcome_employee_desc">Реестр артефактов, аэро-разведка, 3D-реконструкция. Защищено PIN.</string>
+    <string name="employee_menu_title">Режим сотрудника</string>
+    <string name="quick_capture_title">📸 Быстрая съёмка</string>
+    <string name="quick_capture_desc">Сделать фото и сразу разметить объекты — тыкай пальцем для нумерации целей.</string>
+    <string name="quick_capture_button">Снять и разметить</string>
+    <string name="employee_registry_count">%1$d записей в реестре</string>
+    <string name="aerial_open">Открыть аэро-разведку</string>
 </resources>

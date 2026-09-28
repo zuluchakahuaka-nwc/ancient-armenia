@@ -51,10 +51,14 @@ fun GuideScreen(onOpenArticle: (String) -> Unit) {
             items(articles, key = { it.id }) { article ->
                 Card(modifier = Modifier.fillMaxWidth().clickable { onOpenArticle(article.id) }) {
                     Column {
-                        // иллюстрация крепости
+                        // реальное фото крепости (jpg — приоритет, png — fallback)
                         val imageName = if (article.id == "erebuni") "erebuni_fortress" else "teishebaini_ruins"
                         val bitmap = remember(article.id) {
                             runCatching {
+                                BitmapFactory.decodeStream(
+                                    AppGraph.appContext.assets.open("wiki_images/$imageName.jpg")
+                                )
+                            }.recoverCatching {
                                 BitmapFactory.decodeStream(
                                     AppGraph.appContext.assets.open("wiki_images/$imageName.png")
                                 )

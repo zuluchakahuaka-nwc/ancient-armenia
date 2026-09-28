@@ -6,12 +6,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -213,15 +215,16 @@ private fun AudioTab(viewModel: LibraryViewModel) {
                         ) {
                             Icon(Icons.Filled.SkipPrevious, contentDescription = stringResource(R.string.previous_chapter))
                         }
-                        IconButton(
-                            onClick = { viewModel.stationPlayPause() },
-                            enabled = stationEnabled || playState.hasContent,
+                        // play/pause (короткое = пауза/плей, долгое = стоп) — Box без IconButton
+                        Box(
                             modifier = Modifier
+                                .size(48.dp)
                                 .testTag("station_playpause")
                                 .combinedClickable(
                                     onClick = { viewModel.stationPlayPause() },
                                     onLongClick = { viewModel.stationStop() }
-                                )
+                                ),
+                            contentAlignment = Alignment.Center
                         ) {
                             if (playState.isPlaying) {
                                 Icon(Icons.Filled.Pause, contentDescription = stringResource(R.string.pause))

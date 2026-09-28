@@ -73,22 +73,29 @@ fun WikiArticleScreen(articleId: String) {
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // ── иллюстрация статьи ──
+        // ── реальное фото статьи (jpg приоритет, png fallback) ──
         item {
             val imageName = when (articleId) {
-                "erebuni" -> "erebuni_fortress"
-                "teishebaini" -> "teishebaini_ruins"
+                "erebuni", "argishtikhinili" -> "erebuni_fortress"
+                "teishebaini", "tushpa" -> "teishebaini_ruins"
                 "haldi" -> "god_haldi"
                 "teisheba" -> "god_teisheba"
-                "shivini" -> "god_shivini"
-                "argishti1", "sarduri2", "rusa2" -> "king_throne"
+                "shivini", "pantheon" -> "god_shivini"
+                "argishti1", "argishti2", "sarduri1", "sarduri2", "rusa2", "rusa3", "menua", "ishpuini", "king_throne" -> "king_throne"
                 "cuneiform" -> "cuneiform_tablet"
-                "daily_life" -> "daily_life"
+                "daily_life", "agriculture" -> "daily_life"
+                "metallurgy", "army" -> "king_throne"
+                "excavations", "murals" -> "erebuni_fortress"
+                "urartu_assyria", "fall_urartu" -> "teishebaini_ruins"
                 else -> null
             }
             imageName?.let { name ->
                 val bitmap = remember(articleId) {
                     runCatching {
+                        BitmapFactory.decodeStream(
+                            AppGraph.appContext.assets.open("wiki_images/$name.jpg")
+                        )
+                    }.recoverCatching {
                         BitmapFactory.decodeStream(
                             AppGraph.appContext.assets.open("wiki_images/$name.png")
                         )

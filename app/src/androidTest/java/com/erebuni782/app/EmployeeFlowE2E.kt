@@ -38,9 +38,21 @@ class EmployeeFlowE2E {
         }
     }
 
+    /** Пропускаем welcome-экран если показан (первый запуск). */
+    private fun skipWelcomeIfShown() {
+        rule.waitUntil(timeoutMillis = 5_000) {
+            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("btn_tourist").performClick()
+        }
+    }
+
     @Test
     fun pinGate_crud_restartSurvival_statusAudit() {
         val artifactTitle = "Stone-${System.currentTimeMillis()}"
+        skipWelcomeIfShown()
 
         // нормализуем локаль EN
         awaitTag("nav_settings")

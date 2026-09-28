@@ -1,11 +1,12 @@
 package com.erebuni782.app
 
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -28,6 +29,16 @@ class ExportSyncE2E {
         }
     }
 
+    private fun skipWelcomeIfShown() {
+        rule.waitUntil(timeoutMillis = 5_000) {
+            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("btn_tourist").performClick()
+        }
+    }
+
     private fun awaitStatus(token: String) {
         rule.waitUntil(timeoutMillis = 20_000) {
             rule.onAllNodesWithTag("export_status").fetchSemanticsNodes()
@@ -44,6 +55,7 @@ class ExportSyncE2E {
 
     @Test
     fun exportImportLoopbackSync() {
+        skipWelcomeIfShown()
         // EN + PIN + сотрудник
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()
@@ -56,6 +68,8 @@ class ExportSyncE2E {
         rule.onNodeWithTag("pin_input").performTextReplacement("1234")
         if (setup) rule.onNodeWithTag("pin_confirm").performTextReplacement("1234")
         rule.onNodeWithTag("pin_submit").performClick()
+        awaitTag("employee_scroll")
+        rule.onNodeWithTag("employee_scroll").performScrollToNode(hasTestTag("btn_export"))
         awaitTag("btn_export")
 
         // экспорт (пасфраза по умолчанию уже в поле)

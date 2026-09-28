@@ -59,8 +59,19 @@ class AerialFlowE2E {
         }
     }
 
+    private fun skipWelcomeIfShown() {
+        rule.waitUntil(timeoutMillis = 5_000) {
+            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("btn_tourist").performClick()
+        }
+    }
+
     @Test
     fun aerialSession_fullPipeline() {
+        skipWelcomeIfShown()
         // EN + PIN (адаптивно) + вход в аэро
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()

@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -61,7 +62,6 @@ class TouristShellE2E {
                 }
         }
     }
-    }
 
     private fun goneTag(tag: String) {
         rule.waitUntil(timeoutMillis = 10_000) {
@@ -71,6 +71,15 @@ class TouristShellE2E {
 
     @Test
     fun fullTouristFlow() {
+        // welcome: «Я турист» если показан
+        rule.waitUntil(timeoutMillis = 5_000) {
+            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("btn_tourist").performClick()
+        }
+
         // нормализация EN/скины через TAG-якоря чипов (§7.5 — планшето-стабильно)
         awaitTag("nav_settings")
         rule.onNodeWithTag("nav_settings").performClick()
@@ -108,7 +117,9 @@ class TouristShellE2E {
         awaitStationStatus("playing=0")
         rule.onNodeWithTag("station_playpause").performClick() // снова играет
         awaitStationStatus("playing=1")
-        rule.onNodeWithTag("station_stop").performClick()      // стоп → idle
+        // стоп: долгое нажатие на playpause (combinedClickable)
+        rule.onNodeWithTag("station_playpause")
+            .performTouchInput { longClick(durationMillis = 600) }
         awaitStationStatus("idle")
         rule.onNodeWithTag("station_playpause").performClick() // из idle снова старт
         awaitStationStatus("playing=1")
@@ -117,6 +128,8 @@ class TouristShellE2E {
 
         // ── PDF-читалка книг владельца (D1): Моисеева-1955 → страница → свайп
         rule.onNodeWithTag("nav_library").performClick()
+        awaitTag("tab_books")
+        rule.onNodeWithTag("tab_books").performClick() // явно выбираем вкладку книг
         awaitTag("owner_books_header")
         rule.onNodeWithTag("books_scroll").performScrollToNode(hasTestTag("owner_book_moiseeva_1955"))
         rule.onNodeWithTag("owner_book_moiseeva_1955").performClick()

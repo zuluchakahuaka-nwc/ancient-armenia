@@ -176,4 +176,10 @@
     <string name="welcome_tourist_desc">Guide, wiki, books, audio, map. Everything works offline.</string>
     <string name="welcome_employee">I am an employee</string>
     <string name="welcome_employee_desc">Artifact registry, aerial survey, 3D reconstruction. PIN protected.</string>
+    <string name="employee_menu_title">Employee mode</string>
+    <string name="quick_capture_title">📸 Quick capture</string>
+    <string name="quick_capture_desc">Take a photo and mark objects on it immediately — tap to number targets.</string>
+    <string name="quick_capture_button">Take photo and mark</string>
+    <string name="employee_registry_count">%1$d records in registry</string>
+    <string name="aerial_open">Open aerial survey</string>
 </resources>

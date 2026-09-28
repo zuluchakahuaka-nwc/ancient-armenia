@@ -13,11 +13,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -38,6 +39,7 @@ import com.erebuni782.app.R
 import com.erebuni782.app.data.ArtifactRepository
 import com.erebuni782.app.data.ArtifactUi
 import com.erebuni782.app.data.CustodyStatus
+import com.erebuni782.app.ui.theme.OrnamentalDivider
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -63,90 +65,127 @@ class EmployeeViewModel : ViewModel() {
     }
 }
 
-/** Реестр артефактов (P3) + настройки сотрудника (EXIF D4, смена PIN D3). */
+/** Главное меню режима сотрудника: Учёт / Аэро / Быстрая съёмка / Экспорт. */
 @Composable
 fun EmployeeScreen(onOpenArtifact: (String) -> Unit, onNewArtifact: () -> Unit, onOpenAerial: () -> Unit) {
     val vm: EmployeeViewModel = viewModel()
     val artifacts by vm.artifacts.collectAsState()
     val keepExif by AppGraph.settings.keepExif.collectAsState(initial = true)
 
-    Box(Modifier.fillMaxSize()) {
-        LazyColumn(
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            item {
-                Text(stringResource(R.string.employee_list_title), style = MaterialTheme.typography.headlineSmall)
-            }
-            item {
-                Card {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(stringResource(R.string.employee_section_title), style = MaterialTheme.typography.titleSmall)
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f)) {
-                                Text(stringResource(R.string.exif_toggle_label), style = MaterialTheme.typography.bodyMedium)
-                                Text(
-                                    stringResource(R.string.exif_hint),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            Switch(
-                                checked = keepExif,
-                                onCheckedChange = { enabled ->
-                                    vm.setKeepExif(enabled)
-                                },
-                                modifier = Modifier.testTag("exif_toggle")
-                            )
-                        }
-                    }
-                }
-            }
-            item {
-                androidx.compose.material3.OutlinedButton(
-                    onClick = onOpenAerial,
-                    modifier = Modifier.fillMaxWidth().testTag("open_aerial")
-                ) {
-                    Text(stringResource(R.string.aerial_entry))
-                }
-            }
-            item {
-                ExchangeCard()
-            }
-            if (artifacts.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.empty_artifacts),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            items(artifacts, key = { it.id }) { artifact ->
-                Card(
-                    modifier = Modifier.fillMaxWidth().clickable { onOpenArtifact(artifact.id) }
-                ) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Text(artifact.title, style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            artifact.address.ifBlank { stringResource(R.string.no_address) },
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        AssistChip(
-                            onClick = {},
-                            label = { Text(statusLabel(artifact.custodyStatus)) }
-                        )
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().testTag("employee_scroll"),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // ── заголовок ──
+        item {
+            Text(stringResource(R.string.employee_menu_title), style = MaterialTheme.typography.headlineMedium)
+            OrnamentalDivider(Modifier.padding(top = 6.dp))
+        }
+
+        // ── БЫСТРАЯ СЪЁМКА ──
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                modifier = Modifier.fillMaxWidth().testTag("quick_capture_card")
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.quick_capture_title), style = MaterialTheme.typography.titleLarge)
+                    Text(stringResource(R.string.quick_capture_desc), style = MaterialTheme.typography.bodyMedium)
+                    Button(
+                        onClick = onOpenAerial,
+                        modifier = Modifier.fillMaxWidth().testTag("btn_take_photo")
+                    ) {
+                        Icon(Icons.Filled.AddAPhoto, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                        Text(stringResource(R.string.quick_capture_button))
                     }
                 }
             }
         }
 
-        ExtendedFloatingActionButton(
-            onClick = onNewArtifact,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp).testTag("add_artifact")
-        ) {
-            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_artifact))
-            Text(stringResource(R.string.add_artifact))
+        // ── УЧЁТ АРТЕФАКТОВ + ДОБАВИТЬ + СПИСОК (единный блок) ──
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(stringResource(R.string.employee_list_title), style = MaterialTheme.typography.titleLarge)
+                    Text(stringResource(R.string.employee_registry_count, artifacts.size), style = MaterialTheme.typography.bodySmall)
+                }
+                Button(
+                    onClick = onNewArtifact,
+                    modifier = Modifier.testTag("add_artifact")
+                ) {
+                    Icon(Icons.Filled.Add, contentDescription = null)
+                    Text(stringResource(R.string.add_artifact))
+                }
+            }
+        }
+
+        // список записей (сразу после заголовка реестра — до аэро/экспорта)
+        items(artifacts, key = { it.id }) { artifact ->
+            Card(
+                modifier = Modifier.fillMaxWidth().clickable { onOpenArtifact(artifact.id) }
+            ) {
+                Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(artifact.title, style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        artifact.address.ifBlank { stringResource(R.string.no_address) },
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    AssistChip(
+                        onClick = {},
+                        label = { Text(statusLabel(artifact.custodyStatus)) }
+                    )
+                }
+            }
+        }
+
+        // ── АЭРО-РАЗВЕДКА ──
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.aerial_title), style = MaterialTheme.typography.titleLarge)
+                    Text(stringResource(R.string.aerial_subtitle), style = MaterialTheme.typography.bodyMedium)
+                    Button(
+                        onClick = onOpenAerial,
+                        modifier = Modifier.fillMaxWidth().testTag("open_aerial")
+                    ) {
+                        Text(stringResource(R.string.aerial_open))
+                    }
+                }
+            }
+        }
+
+        // ── ЭКСПОРТ/СИНК ──
+        item { ExchangeCard() }
+
+        // ── EXIF ──
+        item {
+            Card {
+                Row(
+                    Modifier.padding(12.dp).fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.exif_toggle_label), style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            stringResource(R.string.exif_hint),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = keepExif,
+                        onCheckedChange = { enabled -> vm.setKeepExif(enabled) },
+                        modifier = Modifier.testTag("exif_toggle")
+                    )
+                }
+            }
         }
     }
 }
