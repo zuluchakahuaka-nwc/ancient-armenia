@@ -73,20 +73,26 @@ fun WikiArticleScreen(articleId: String) {
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // ── реальное фото статьи (jpg приоритет, png fallback) ──
+        // ── реальное фото статьи (все — с Wikipedia/Commons) ──
         item {
             val imageName = when (articleId) {
-                "erebuni", "argishtikhinili" -> "erebuni_fortress"
-                "teishebaini", "tushpa" -> "teishebaini_ruins"
-                "haldi" -> "god_haldi"
-                "teisheba" -> "god_teisheba"
-                "shivini", "pantheon" -> "god_shivini"
-                "argishti1", "argishti2", "sarduri1", "sarduri2", "rusa2", "rusa3", "menua", "ishpuini", "king_throne" -> "king_throne"
-                "cuneiform" -> "cuneiform_tablet"
-                "daily_life", "agriculture" -> "daily_life"
-                "metallurgy", "army" -> "king_throne"
-                "excavations", "murals" -> "erebuni_fortress"
-                "urartu_assyria", "fall_urartu" -> "teishebaini_ruins"
+                "erebuni" -> "erebuni_fortress"           // фото крепости
+                "teishebaini" -> "teishebaini_ruins"       // фото Кармир-Блура
+                "argishti1" -> "king_argishti1_real"       // статуя Аргишти I
+                "ishpuini" -> "king_ishpuini_real"         // рельеф Ишпуини
+                "sarduri1" -> "king_sarduri1_fort"         // крепость Сардури I
+                "rusa1", "tushpa" -> "king_rusa1_van"      // Ванская скала (столица)
+                "rusa2" -> "king_rusa2_cuneiform"          // клинопись Русы II
+                "sarduri2", "argishti2", "rusa3", "menua" -> "king_argishti1_real" // династия
+                "haldi", "pantheon" -> "mural_apadana"     // роспись из храма
+                "teisheba" -> "fresco_animals"             // фреска с животными
+                "shivini" -> "fresco_1"                    // фреска
+                "cuneiform", "urartu_assyria" -> "king_rusa2_cuneiform" // клинописная надпись
+                "daily_life", "agriculture" -> "fresco_animals" // фреска быта
+                "murals", "excavations" -> "murals_real"   // росписи Эребуни
+                "metallurgy", "army" -> "king_sarduri1_fort" // крепость/оружие
+                "fall_urartu" -> "teishebaini_ruins"       // гибель Тейшебаини
+                "argishtikhinili" -> "erebuni_fortress"    // крепость-аналог
                 else -> null
             }
             imageName?.let { name ->
