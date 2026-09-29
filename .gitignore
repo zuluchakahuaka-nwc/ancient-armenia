@@ -27,6 +27,7 @@ app/build/
 dist/*.apk
 dist/.~lock*
 dist/Erebuni782_Manual.pdf
+/*.apk
 
 # Релизная подпись — НИКОГДА в git (секреты, §9)
 keystore.properties
