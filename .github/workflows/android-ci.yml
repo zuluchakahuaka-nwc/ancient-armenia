@@ -1,0 +1,39 @@
+name: android-ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew test --console=plain
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug --console=plain
+
+      - name: Lint
+        run: ./gradlew lint --console=plain
+
+      # Примечание: книги/музыка в git не лежат (политика владельца) — CI-сборка
+      # без медиа-ассетов; полная инструментальная проверка (e2e на AVD) — локально.
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: erebuni782-debug-ci
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7

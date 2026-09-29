@@ -1,49 +1,31 @@
 # TODO — следующая сессия
 
-## КРИТИЧНО (git не пушится — 432 МБ)
+## Закрыто 2026-09-29 (см. PROGRESS.md)
 
-- [ ] **БЫСТРАЯ СЪЁМКА — ВЫЛЕТАЕТ ПРИЛОЖЕНИЕ** при нажатии. Вероятная причина: ActivityResultContracts.TakePicture требует FileProvider (API 24+) — не настроен. Нужно:
-  1. Добавить FileProvider в AndroidManifest.xml
-  2. Создать file_paths.xml
-  3. Использовать FileProvider.getUriForFile() вместо Uri.fromFile()
-  4. Или заменить на ActivityResultContracts.TakePicturePreview (возвращает Bitmap, не требует FileProvider)
+- [x] Быстрая съёмка — краш (FileProvider + getUriForFile + e2e)
+- [x] git filter-repo: APK 403МБ выкинут из истории, репо 3.25МБ, force-push
+- [x] wiki_images book_*/extract_* — .gitignore
+- [x] Репо публичное + описание (DE: «App für armenische Museen — von einem unbekannten Touristen»)
+- [x] Португальский (values-pt, все экраны, пикер/настройки/locales_config)
+- [x] Wiki-статьи расширены до 5-8 предложений ×3 локали (hy-обрывы дописаны)
+- [x] Фото богов (Халди/Тейшеба/Шивини с Commons, vision-проверка)
+- [x] Wiki-категории (фильтр-чипы)
+- [x] Timeline 860 до н.э. → XX век
+- [x] StyledCard → гид/вики
+- [x] Орнаменты при смене скина — пиксельная проверка
+- [x] Планшет — полный suite OK (13)
+- [x] AAB (318.6МБ) + release-подпись + R8 (v0.2.7)
+- [x] CI/CD GitHub Actions (test+assemble+lint+artifact)
 
-- [ ] **git filter-repo — НЕ сработал до конца**: APK 385 МБ всё ещё в истории. Запустить:
-  ```powershell
-  python -m pip install git-filter-repo
-  git filter-repo --force --invert-paths --path "dist/Erebuni782-v0.2.2.apk" --path-glob "dist/*.apk"
-  # ПРОВЕРИТЬ результат через: git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | Where-Object { $_ -match "blob" -and ($_ -split " ")[2] -gt 1000000 }
-  # Урок из P5: filter-repo может молча не переписать — проверять commit-map/новые хеши!
-  git reflog expire --expire=now --all
-  git gc --prune=now --aggressive
-  ```
-- [ ] **Удалить тяжёлые wiki_images из git**: book_*.png (~20 МБ), extract_*.png (~30 МБ) — это рендеры страниц книг, не нужны в git. Добавить в .gitignore:
-  ```
-  app/src/main/assets/wiki_images/book_*.png
-  app/src/main/assets/wiki_images/extract_*.png
-  ```
-- [ ] Сделать репо **публичным** на GitHub (Settings → Danger Zone → Change visibility)
-- [ ] Force-push после чистки
+## Осталось (за владельцем / следующая сессия)
 
-## Контент и фичи
-
-- [ ] **Португальский язык** (values-pt) — strings.xml для всех экранов
-- [ ] **Расширить wiki-статьи** — сейчас по 2-3 предложения, нужно 5-8 с деталями
-- [ ] **Армянский PDF-мануал** — проверить шрифт (возможно не отображается на некоторых устройствах; попробовать Sylfaen вместо Arial)
-- [ ] **Камера в быстрой съёмке** — ActivityResultContracts.TakePicture требует FileProvider на API 24+ (может не работать на Redmi 4X без настройки)
-- [ ] **Скачивание фото богов** (Халди, Тейшеба, Шивини) — сейчас используют фрески, нужны отдельные изображения
-- [ ] **Wiki: категории** — добавить фильтрацию по категориям (цари/боги/крепости/быт)
-- [ ] **Timeline** — визуальная шкала 860→590 до н.э. с событиями
-
-## UX/UI
-
-- [ ] **Стилизация карточек** — StyledCard ещё не подключена к гиду/вики (только StyledScreen на уровне MainShell)
-- [ ] **Орнаменты при смене скина** — проверить что фон/бока/верх перерисовываются мгновенно
-- [ ] **TalkBack** — живой прогон скринридером на телефоне
-- [ ] **Планшет** — прогнать suite на erebuni_tablet после всех изменений
-
-## Инфраструктура
-
-- [ ] **APK 385 МБ** — рассмотреть App Bundle (AAB) для уменьшения размера
-- [ ] **CI/CD** — GitHub Actions для автосборки
-- [ ] **Release build** — настроить подпись и minify (R8)
+- [ ] **Армянский PDF-мануал** — проверить шрифт (Sylfaen вместо Arial). Мануалы
+      генерируются ВНЕ репо (скрипта в git нет) — нужен исходник генерации
+- [ ] **TalkBack** — живой прогон скринридером на реальном телефоне (AVD без сервиса)
+- [ ] **Книги** — лицензии/добор контента (D1: списка у владельца нет)
+- [ ] **Keystore-бэкап** — сохранить keystore/ + keystore.properties в надёжном месте:
+      потеря = потеря возможности обновлять приложение (пароль в keystore.properties)
+- [ ] **Urartu.fm** — заменить сгенерированные WAV на музыку владельца (urartu music mp4
+      отложена владельцем до команды)
+- [ ] Идеи на будущее: OpenCV-сшивка (слот есть), SfM-фотограмметрия, живая карта
+      (сейчас координаты), TFLite-детектор когда появится выборка (D5)

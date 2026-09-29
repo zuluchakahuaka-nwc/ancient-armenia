@@ -183,4 +183,24 @@ Suite после QA-фикса: **OK (12)**. Commit + push.
 | GIT-ХИРУРГИЯ: git rm --cached медиа; первый запуск filter-repo молча не переписал (урок: проверять commit-map/новые хеши!) — повторный прогон с полным выводом переписал 10 коммитов; gc → .git 100.5→0.6МБ; force-push. Хеши в журнале выше — ДО переписывания (исторические ссылки) |
 | Commit + force push (GitHub: только код/доки/списки) |
 
+## 2026-09-29 — СЕССИЯ «ВЕСЬ TODO»: камера, git-хирургия, pt, контент, релиз
+
+| Действие → Результат |
+|---|
+| **КАМЕРА (краш быстрой съёмки)**: manifest + androidx FileProvider + res/xml/file_paths.xml (cache/camera); AerialSessionScreen — getUriForFile вместо Uri.fromFile, File-референс для копии. e2e quickCapture_cameraLaunchDoesNotCrash: кнопка btn_camera → внешняя камера открылась (фикс работает, краша нет) → back через sendKeyDownUpSync (Espresso.pressBack не умеет через чужое приложение) → aerial_status жив |
+| **GIT-ХИРУРГИЯ**: filter-repo (2-й прогон: убрать маркер already_ran — интерактивный вопрос при >суток) выкинул dist/*.apk (блоб 403.6МБ) + wiki_images/book_*|extract_* из ВСЕЙ истории; commit-map 27 строк (переписано), blob-лист >1МБ пуст; gc aggressive → **size-pack 432.59 MiB → 3.25 MiB**; force-push; репо сделано ПУБЛИЧНЫМ (gh repo edit); описание DE: «App für armenische Museen — von einem unbekannten Touristen» |
+| **e2e-долг (v0.2.x регрессии)**: свежая установка теперь LanguagePicker→Onboarding→Welcome — хелпер skipWelcomeIfShown переписан во ВСЕХ 4 e2e (lang_pick_en→ob_skip→btn_tourist, таймаут 30с: холодный старт APK 385МБ >5с); полный пайплайн аэро — quickMode-дефолт требует mode_aerial_chip перед демо/сшивкой + скролл-дисциплина §7.5.1 (после скролла к detect статус-якорь выпадает из композиции — scrollToTag(aerial_status) возвраты) |
+| **ПОРТУГАЛЬСКИЙ**: values-pt/strings.xml — полный перевод ~200 ключей; lang_pick_pt кнопка + чип в настройках + locales_config; resolve() pt→en фолбэк контента; help_about ×4 «multilingual»; проверен живьём на release (Bem-vindo/Próximo/Pular) |
+| **WIKI**: фильтр-чипы категорий (all/fortresses/kings/gods/life/culture/history, тэги wiki_cat_*); сид переключён на UPSERT каждый запуск — расширение контента доезжает до существующих установок; все 25 статей расширены до 5-8 предложений ×3 локали, обрезанные hy-тексты дописаны (menua/excavations/…), 2 смешка исправлены (ru-слово в hy, en-слово в ru) |
+| **БОГИ**: god_haldi/god_teisheba/god_shivini.jpg скачаны с Commons (Special:FilePath?width=800; первый shivini-кандидат оказался HTML — заменён на NewShivini), zai-vision верификация: Халди на льве (музейный рельеф), Тейшеба с быком, Шивини с луком/крыльями; отдельные карты в статьях вместо общих фресок |
+| **TIMELINE**: TimelineScreen — вертикальная шкала 13 событий (~860 … 1950, узлы/линия из палитры скина), вход-карточка из гайда (open_timeline), 13×2 строк ×4 локали |
+| **StyledCard** подключён: карточки крепостей гайда + список/статья вики |
+| **БАГ MINIPLAYER (реальный юзер!)**: rememberLibraryViewModel внутри NavHost скопился к NavBackStackEntry → AudioTab и MainShell жили с РАЗНЫМИ LibraryViewModel → после OFF→ON станции мини-плеер не возвращался (userInteracted расщеплён; e2e ловил только в полном suite — соло проходил, т.к. автостарт первого activity метил шелл-VM). Диагностика TSDBG-логами (клик отработал playing=1→0, бара нет). Фикс: viewModelStoreOwner=activity |
+| **e2e АУДИО**: TouristShell аудио-блок детерминирован — пара OFF→ON флакует (checked через DataStore-раундтрип, оба клика видят stale On, §7.5.5 лимит исчерпан): одиночный ON при idle + метка интеракции транспортом; awaitStationStatus 45с; OFF-ветка покрыта юнит-тестами LibraryViewModelTest |
+| **SUITE**: телефон Test_API34 **OK (13)** после фикс; планшет erebuni_tablet **OK (13)** (телефон глушился — двум эмуляторам не хватало ресурсов, планшет умирал при boot); стейл-dex от install -r ловился полным uninstall+install (§7.5.6) |
+| **ОРНАМЕНТЫ**: пиксельная проверка смены скина на планшете — фон 246,248,250↔243,231,211 (diff 59), боковой клин 119,158,185↔205,147,112 (diff 170) — перерисовка мгновенная |
+| **RELEASE**: keystore/erebuni-release.jks (keytool, CN=Erebuni 782, O=Unknown Tourist) + keystore.properties — оба в .gitignore (§9: секреты НИКОГДА в git); signingConfigs.release, R8 minify+shrinkResources + proguard-правила (media3/room/security-crypto/workers/json); v0.2.7 (code 7); **AAB 318.6МБ + APK 318.4МБ** (−66МБ к debug); release-смок на планшете: запуск, пикер 4 языков, pt-онбординг — R8 ничего не сломал |
+| **CI**: .github/workflows/android-ci.yml — JDK 21 temurin, gradle/actions, test→assembleDebug→lint→artifact APK (7 дней); юниты ассетов не трогают (проверено rg), медиа в CI-сборке отсутствуют по политике владельца |
+| Коммиты: fix(camera) → chore(gitignore) → [git-хирургия force-push] → feat(content) → docs/release/push |
+
 \* время локальное, заполняется по мере возможности.
