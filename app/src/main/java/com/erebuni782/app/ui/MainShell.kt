@@ -177,7 +177,13 @@ private fun AppNavHost(
 ) {
     NavHost(navController = navController, startDestination = "guide", modifier = modifier) {
         composable("guide") {
-            GuideScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })
+            GuideScreen(
+                onOpenArticle = { navController.navigate("wiki_article/$it") },
+                onOpenTimeline = { navController.navigate("timeline") }
+            )
+        }
+        composable("timeline") {
+            com.erebuni782.app.ui.guide.TimelineScreen()
         }
         composable("wiki") {
             WikiScreen(onOpenArticle = { navController.navigate("wiki_article/$it") })

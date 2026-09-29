@@ -48,17 +48,17 @@ abstract class AppDatabase : RoomDatabase() {
         private fun seed(db: AppDatabase) {
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
             scope.launch {
-                if (db.wikiDao().count() == 0) {
-                    db.wikiDao().insertAll(
-                        WIKI_SEED.map {
-                            com.erebuni782.app.data.db.WikiArticleEntity(
-                                id = it.id, category = it.category, sortOrder = it.sortOrder,
-                                titleEn = it.titleEn, titleRu = it.titleRu, titleHy = it.titleHy,
-                                bodyEn = it.bodyEn, bodyRu = it.bodyRu, bodyHy = it.bodyHy
-                            )
-                        }
-                    )
-                }
+                // Wiki — справочный сид-контент: upsert каждый запуск (id = PK, REPLACE),
+                // чтобы расширение статей доезжало и на существующие установки
+                db.wikiDao().insertAll(
+                    WIKI_SEED.map {
+                        com.erebuni782.app.data.db.WikiArticleEntity(
+                            id = it.id, category = it.category, sortOrder = it.sortOrder,
+                            titleEn = it.titleEn, titleRu = it.titleRu, titleHy = it.titleHy,
+                            bodyEn = it.bodyEn, bodyRu = it.bodyRu, bodyHy = it.bodyHy
+                        )
+                    }
+                )
                 if (db.bookDao().bookById(BOOK_SEED.id) == null) {
                     db.bookDao().insertBooks(
                         listOf(

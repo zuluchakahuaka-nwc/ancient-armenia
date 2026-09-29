@@ -55,5 +55,15 @@ fun MiniPlayerBar(viewModel: LibraryViewModel) {
     }
 }
 
+/**
+ * Единственный activity-scoped LibraryViewModel: и MainShell (мини-плеер, автостарт),
+ * и Library/AudioTab обязаны делить ОДИН экземпляр — иначе viewModel() внутри NavHost
+ * скопится к NavBackStackEntry и userInteracted/плеер расщепятся (мини-плеер не вернётся
+ * после OFF→ON станции).
+ */
 @Composable
-fun rememberLibraryViewModel(): LibraryViewModel = viewModel(factory = LibraryViewModel.factory())
+fun rememberLibraryViewModel(): LibraryViewModel {
+    val activity = androidx.compose.ui.platform.LocalContext.current as? androidx.activity.ComponentActivity
+        ?: error("rememberLibraryViewModel requires an Activity context")
+    return viewModel(viewModelStoreOwner = activity, factory = LibraryViewModel.factory())
+}

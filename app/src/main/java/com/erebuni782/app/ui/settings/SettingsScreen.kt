@@ -36,7 +36,8 @@ private val skinOptions = listOf(
 private val languageOptions = listOf(
     "hy" to R.string.lang_hy,
     "ru" to R.string.lang_ru,
-    "en" to R.string.lang_en
+    "en" to R.string.lang_en,
+    "pt" to R.string.lang_pt
 )
 
 /** Настройки: язык, скин, вход сотрудника, о приложении. */

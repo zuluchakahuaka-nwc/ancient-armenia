@@ -49,8 +49,17 @@ class TouristShellE2E {
         }
     }
 
+    private fun stationStatus(): String? {
+        val nodes = rule.onAllNodesWithTag("station_status").fetchSemanticsNodes()
+        if (nodes.isEmpty()) return null
+        return try {
+            nodes.first().config[androidx.compose.ui.semantics.SemanticsProperties.Text].first().text
+        } catch (e: Exception) { null }
+    }
+
     private fun awaitStationStatus(expected: String) {
-        rule.waitUntil(timeoutMillis = 15_000) {
+        // 45с: в полном suite аудио-пайплайн холоднее (эмулятор под нагрузкой предыдущих тестов)
+        rule.waitUntil(timeoutMillis = 45_000) {
             rule.onAllNodesWithTag("station_status").fetchSemanticsNodes()
                 .any { node ->
                     try {
@@ -71,8 +80,25 @@ class TouristShellE2E {
 
     @Test
     fun fullTouristFlow() {
-        // welcome: «Я турист» если показан
-        rule.waitUntil(timeoutMillis = 5_000) {
+        // первый запуск (v0.2.2+): LanguagePicker → Onboarding → Welcome; холодный старт APK ~385МБ
+        rule.waitUntil(timeoutMillis = 30_000) {
+            rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("lang_pick_en").performClick()
+        }
+        rule.waitUntil(timeoutMillis = 10_000) {
+            rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("ob_skip").performClick()
+        }
+        rule.waitUntil(timeoutMillis = 10_000) {
             rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
@@ -109,11 +135,22 @@ class TouristShellE2E {
         awaitTag("tab_audio")
         rule.onNodeWithTag("tab_audio").performClick()
         awaitTag("station_toggle")
-        rule.onNodeWithTag("station_toggle").performClick() // OFF
-        rule.onNodeWithTag("station_toggle").performClick() // ON → станция играет офлайн-пакет
+        // ── аудио: Urartu.fm (D10).
+        // Пара кликов OFF→ON флакует (checked через DataStore-раундтрип, §7.5.5 — 2 итерации),
+        // а мини-бар виден только после интеракции юзера: VM фрешный у каждого теста suite,
+        // станция же уже играет с автостарта ПЕРВОГО теста (плеер — синглтон). Поэтому:
+        // нормализуем ON одиночным кликом при idle, метку интеракции ставит любой транспорт.
+        awaitTag("station_toggle")
+        rule.waitUntil(timeoutMillis = 10_000) {
+            val s = stationStatus(); s == "playing=1" || s == "playing=0" || s == "idle"
+        }
+        if (stationStatus() == "idle") {
+            rule.onNodeWithTag("station_toggle").performClick() // одиночный детерминированный ON
+            awaitStationStatus("playing=1")
+        }
+        awaitTag("station_playpause")
+        rule.onNodeWithTag("station_playpause").performClick() // метка интеракции + пауза
         awaitTag("miniplayer_title")
-        awaitStationStatus("playing=1")
-        rule.onNodeWithTag("station_playpause").performClick() // пауза
         awaitStationStatus("playing=0")
         rule.onNodeWithTag("station_playpause").performClick() // снова играет
         awaitStationStatus("playing=1")

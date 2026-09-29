@@ -83,5 +83,18 @@ fun LanguagePickerScreen(
         ) {
             Text("English", style = MaterialTheme.typography.titleLarge)
         }
+
+        Spacer(Modifier.height(16.dp))
+
+        // Português
+        Button(
+            onClick = {
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("pt"))
+                onLangSelected("pt")
+            },
+            modifier = Modifier.fillMaxWidth().height(64.dp).testTag("lang_pick_pt")
+        ) {
+            Text("Português", style = MaterialTheme.typography.titleLarge)
+        }
     }
 }
