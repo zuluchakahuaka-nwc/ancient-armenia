@@ -25,9 +25,9 @@ app/build/
 
 # Бинарники сборки — не в git
 dist/*.apk
-dist/Erebuni782_Manual.pdf
-
-
-dist/*.apk
 dist/.~lock*
 dist/Erebuni782_Manual.pdf
+
+# Рендеры страниц книг (тяжёлые PNG ~50МБ) — генерируются локально, в git не нужны
+app/src/main/assets/wiki_images/book_*.png
+app/src/main/assets/wiki_images/extract_*.png
