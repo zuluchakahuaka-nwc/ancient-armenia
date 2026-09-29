@@ -29,13 +29,37 @@ class ExportSyncE2E {
         }
     }
 
+    /**
+     * Первый запуск (v0.2.2+): LanguagePicker → Onboarding → Welcome → main.
+     * Холодный старт APK ~385МБ → щедрый таймаут. Идём до nav_settings.
+     */
     private fun skipWelcomeIfShown() {
-        rule.waitUntil(timeoutMillis = 5_000) {
+        rule.waitUntil(timeoutMillis = 30_000) {
+            rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("lang_pick_en").performClick()
+        }
+        rule.waitUntil(timeoutMillis = 10_000) {
+            rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("ob_skip").performClick()
+        }
+        rule.waitUntil(timeoutMillis = 10_000) {
             rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
         if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
             rule.onNodeWithTag("btn_tourist").performClick()
+        }
+        rule.waitUntil(timeoutMillis = 10_000) {
+            rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
     }
 

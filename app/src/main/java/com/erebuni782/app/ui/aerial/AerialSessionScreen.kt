@@ -47,9 +47,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.erebuni782.app.R
 import com.erebuni782.app.aerial.detect.DetectLevel
@@ -72,12 +74,14 @@ fun AerialSessionScreen(sessionId: String, onBack: () -> Unit) {
     }
 
     // ── КАМЕРА: фото прямо с телефона ──
-    val cameraUri = remember { mutableStateOf<Uri?>(null) }
+    // D-фикс QA: TakePicture требует content://Uri (API 24+), file:// валит приложение.
+    // Держим сам File: у content-Uri нет прямого path, копируем из созданного файла.
+    val context = LocalContext.current
+    val cameraFile = remember { mutableStateOf<File?>(null) }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) {
-            cameraUri.value?.let { uri ->
-                val src = File(uri.path ?: return@let)
-                if (src.exists()) {
+            cameraFile.value?.let { src ->
+                if (src.exists() && src.length() > 0) {
                     val dst = File(vm.repoDir(), "cam_${System.currentTimeMillis()}.jpg")
                     src.copyTo(dst, overwrite = true)
                     vm.addPhotoPath(dst.absolutePath)
@@ -86,11 +90,12 @@ fun AerialSessionScreen(sessionId: String, onBack: () -> Unit) {
         }
     }
     fun launchCamera() {
-        val dir = File(com.erebuni782.app.AppGraph.appContext.cacheDir, "camera")
+        val dir = File(context.cacheDir, "camera")
         dir.mkdirs()
         val file = File(dir, "cam_${System.currentTimeMillis()}.jpg")
-        cameraUri.value = Uri.fromFile(file)
-        cameraUri.value?.let { uri -> cameraLauncher.launch(uri) }
+        cameraFile.value = file
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        cameraLauncher.launch(uri)
     }
 
     LaunchedEffect(state.message) { state.message?.let { infoMessage = it } }
