@@ -50,7 +50,7 @@ fun PdfReaderScreen(book: OwnerBook, onBack: () -> Unit) {
     val doc = remember(book.id) { PdfDocument(context, book) }
     val pageCount = remember(book.id) { doc.pageCount() }
     val pagerState = rememberPagerState(pageCount = { pageCount })
-    val currentPage by derivedStateOf { pagerState.currentPage + 1 }
+    val currentPage by remember { derivedStateOf { pagerState.currentPage + 1 } }
 
     Column(Modifier.fillMaxSize()) {
         Row(
