@@ -152,6 +152,20 @@ fun WikiArticleScreen(articleId: String) {
                 "khorenatsi" -> "anc_khorenatsi"            // статуя Хоренаци
                 "christianity" -> "anc_etchmiadzin"         // первый христианский собор
                 "cilicia" -> "anc_cilicia_coin"             // монета киликийского царя
+                "dvin" -> "anc_dvin"
+                "artashat" -> "anc_artashat_map"             // карта района Арташата (1989)
+                "tigranakert" -> "anc_tigranes_coin"
+                "tatev" -> "anc_tatev"
+                "noravank" -> "anc_noravank"
+                "haghpat" -> "anc_haghpat"
+                "sanahin" -> "anc_sanahin"
+                "sevanavank" -> "anc_sevanavank"
+                "aghtamar" -> "anc_aghtamar"
+                "khorvirap" -> "anc_khorvirap"
+                "khachkar" -> "anc_khachkar"
+                "matenadaran" -> "anc_matenadaran"
+                "vardan" -> "anc_vardan"
+                "bagratuni" -> "anc_ani"
                 else -> null
             }
             imageName?.let { name ->

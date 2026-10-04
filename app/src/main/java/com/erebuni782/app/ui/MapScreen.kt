@@ -71,6 +71,27 @@ fun MapScreen() {
                 driveText = stringResource(R.string.map_etchmiadzin_drive),
                 lat = 40.1625, lon = 44.2919
             )
+            MapCard(
+                title = stringResource(R.string.map_sevan_name),
+                coords = stringResource(R.string.map_coords_sevan),
+                walkText = stringResource(R.string.map_sevan_walk),
+                driveText = stringResource(R.string.map_sevan_drive),
+                lat = 40.3400, lon = 45.0200
+            )
+            MapCard(
+                title = stringResource(R.string.map_tatev_name),
+                coords = stringResource(R.string.map_coords_tatev),
+                walkText = stringResource(R.string.map_tatev_walk),
+                driveText = stringResource(R.string.map_tatev_drive),
+                lat = 39.3933, lon = 46.2522
+            )
+            MapCard(
+                title = stringResource(R.string.map_khorvirap_name),
+                coords = stringResource(R.string.map_coords_khorvirap),
+                walkText = stringResource(R.string.map_khorvirap_walk),
+                driveText = stringResource(R.string.map_khorvirap_drive),
+                lat = 39.8817, lon = 44.5786
+            )
         } else {
             // ── карта-картинка (только урартский раздел: обе крепости у Еревана) ──
             val mapBitmap = remember {

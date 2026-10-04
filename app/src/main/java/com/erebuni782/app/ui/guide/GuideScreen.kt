@@ -90,6 +90,16 @@ fun GuideScreen(onOpenArticle: (String) -> Unit, onOpenTimeline: () -> Unit = {}
                             "etchmiadzin" -> "anc_etchmiadzin"
                             "amberd" -> "anc_amberd"
                             "ani" -> "anc_ani"
+                            "dvin" -> "anc_dvin"
+                            "artashat" -> "anc_artashes_coin"     // монета основателя Арташеса I
+                            "tigranakert" -> "anc_tigranes_coin" // столица Тиграна — его драхма
+                            "tatev" -> "anc_tatev"
+                            "noravank" -> "anc_noravank"
+                            "haghpat" -> "anc_haghpat"
+                            "sanahin" -> "anc_sanahin"
+                            "sevanavank" -> "anc_sevanavank"
+                            "aghtamar" -> "anc_aghtamar"
+                            "khorvirap" -> "anc_khorvirap"
                             else -> null
                         }
                         val bitmap = imageName?.let { name ->

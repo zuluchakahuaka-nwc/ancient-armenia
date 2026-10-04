@@ -280,6 +280,12 @@
     <string name="tl_a_1045_body">Byzantium annexes Ani; the Bagratid kingdom ends and Armenian statehood shifts west, to Cilicia.</string>
     <string name="tl_a_1375_title">The end of Cilician Armenia</string>
     <string name="tl_a_1375_body">The Mamluks take the last Armenian strongholds; Levon V is the final crowned king — the Middle Ages close.</string>
+    <string name="tl_a_484_title">Treaty of Nvarsak</string>
+    <string name="tl_a_484_body">After the war of Vahan Mamikonian the Sasanians grant Armenia freedom of faith — the harvest of Avarayr.</string>
+    <string name="tl_a_654_title">Arab rule</string>
+    <string name="tl_a_654_body">The Caliphate takes Armenia; princes like Theodore Rshtuni preserve wide autonomy under the ostikans.</string>
+    <string name="tl_a_1236_title">The Mongols</string>
+    <string name="tl_a_1236_body">Mongol armies take Ani and Kars; the Zakarian age ends and heavy tribute follows.</string>
 
     <!-- ═══ Ancient Armenia map: Garni / Geghard / Etchmiadzin ═══ -->
     <string name="map_garni_name">Garni Temple</string>
@@ -294,4 +300,16 @@
     <string name="map_coords_etchmiadzin">40.1625, 44.2919 · 20 km west of Yerevan</string>
     <string name="map_etchmiadzin_walk">A 20 km walk west along the Yerevan highway — for hikers only.</string>
     <string name="map_etchmiadzin_drive">From Republic Square go west via Tigran Mets Ave and the Argavand highway, 20 km to Vagharshapat; Zvartnots is 3 km before it.</string>
+    <string name="map_sevan_name">Sevanavank</string>
+    <string name="map_coords_sevan">40.3400, 45.0200 · 65 km north-east of Yerevan</string>
+    <string name="map_sevan_walk">From the Sevan town shore a paved path climbs the peninsula causeway (~30 min).</string>
+    <string name="map_sevan_drive">From Yerevan take the M4 highway north-east along the Hrazdan river, 65 km to Sevan town, then the peninsula road.</string>
+    <string name="map_tatev_name">Tatev Monastery</string>
+    <string name="map_coords_tatev">39.3933, 46.2522 · 250 km south of Yerevan</string>
+    <string name="map_tatev_walk">A full-day hike through the Vorotan gorge from Tatev village down the switchbacks (~2 h one way).</string>
+    <string name="map_tatev_drive">From Yerevan the Yerevan-Goris highway south, then via Sisian and the Vorotan gorge road; or ride the Wings of Tatev cableway from Halidzor.</string>
+    <string name="map_khorvirap_name">Khor Virap</string>
+    <string name="map_coords_khorvirap">39.8817, 44.5786 · 30 km south of Yerevan</string>
+    <string name="map_khorvirap_walk">A flat 30 km walk south through Ararat villages — bikes or buses 456/467 from Yerevan are easier.</string>
+    <string name="map_khorvirap_drive">From Yerevan south on the M2 toward Ararat city, 30 km, then right to Pokr Vedi village; the monastery is visible from far away.</string>
 </resources>

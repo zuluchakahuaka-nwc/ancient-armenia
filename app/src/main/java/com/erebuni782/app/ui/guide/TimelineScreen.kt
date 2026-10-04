@@ -71,9 +71,12 @@ val TIMELINE_ANCIENT: List<TimelineEvent> = listOf(
     TimelineEvent(405, approx = false, major = true, titleRes = R.string.tl_a_405_title, bodyRes = R.string.tl_a_405_body),
     TimelineEvent(428, approx = false, titleRes = R.string.tl_a_428_title, bodyRes = R.string.tl_a_428_body),
     TimelineEvent(451, approx = false, titleRes = R.string.tl_a_451_title, bodyRes = R.string.tl_a_451_body),
+    TimelineEvent(484, approx = false, titleRes = R.string.tl_a_484_title, bodyRes = R.string.tl_a_484_body),
+    TimelineEvent(654, approx = true, titleRes = R.string.tl_a_654_title, bodyRes = R.string.tl_a_654_body),
     TimelineEvent(885, approx = false, titleRes = R.string.tl_a_885_title, bodyRes = R.string.tl_a_885_body),
     TimelineEvent(961, approx = false, titleRes = R.string.tl_a_961_title, bodyRes = R.string.tl_a_961_body),
     TimelineEvent(1045, approx = false, titleRes = R.string.tl_a_1045_title, bodyRes = R.string.tl_a_1045_body),
+    TimelineEvent(1236, approx = false, titleRes = R.string.tl_a_1236_title, bodyRes = R.string.tl_a_1236_body),
     TimelineEvent(1375, approx = false, major = true, titleRes = R.string.tl_a_1375_title, bodyRes = R.string.tl_a_1375_body)
 )
 

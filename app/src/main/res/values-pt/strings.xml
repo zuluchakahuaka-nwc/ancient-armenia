@@ -279,6 +279,12 @@
     <string name="tl_a_1045_body">Bizâncio anexa Ani; o reino Bagrátida termina e a estadania armênia desloca-se para o oeste — a Cilícia.</string>
     <string name="tl_a_1375_title">O fim da Armênia Cilícia</string>
     <string name="tl_a_1375_body">Os mamelucos tomam as últimas fortalezas armênias; Levon V é o último rei coroado — a Idade Média se encerra.</string>
+    <string name="tl_a_484_title">Tratado de Nvarsak</string>
+    <string name="tl_a_484_body">Após a guerra de Vahan Mamikonian, os sassânidas concedem à Armênia liberdade religiosa — a colheita de Avarayr.</string>
+    <string name="tl_a_654_title">Domínio árabe</string>
+    <string name="tl_a_654_body">O califado toma a Armênia; príncipes como Teodoro Rshtuni preservam ampla autonomia sob os osticanos.</string>
+    <string name="tl_a_1236_title">Os mongóis</string>
+    <string name="tl_a_1236_body">Exércitos mongóis tomam Ani e Kars; a era zakárida termina e chega o pesado tributo.</string>
 
     <!-- ═══ Mapa da Armênia Antiga: Garni / Geghard / Etchmiadzin ═══ -->
     <string name="map_garni_name">Templo de Garni</string>
@@ -293,4 +299,16 @@
     <string name="map_coords_etchmiadzin">40.1625, 44.2919 · 20 km a oeste de Yerevan</string>
     <string name="map_etchmiadzin_walk">20 km a pé para o oeste pela rodovia de Yerevan — apenas para quem gosta de longas caminhadas.</string>
     <string name="map_etchmiadzin_drive">Da Praça da República para o oeste pela avenida Tigran Mets e a rodovia de Argavand, 20 km até Vagharshapat; Zvartnots fica 3 km antes.</string>
+    <string name="map_sevan_name">Sevanavank</string>
+    <string name="map_coords_sevan">40.3400, 45.0200 · 65 km a nordeste de Yerevan</string>
+    <string name="map_sevan_walk">Da margem da cidade de Sevan, uma trilha pavimentada sobe ao istmo da península (~30 min).</string>
+    <string name="map_sevan_drive">De Yerevan pela rodovia M4 a nordeste ao longo do Hrazdan, 65 km até Sevan, depois a estrada da península.</string>
+    <string name="map_tatev_name">Mosteiro de Tatev</string>
+    <string name="map_coords_tatev">39.3933, 46.2522 · 250 km ao sul de Yerevan</string>
+    <string name="map_tatev_walk">Caminhada de um dia inteiro pelo desfiladeiro do Vorotan desde a vila de Tatev (~2 h por trecho).</string>
+    <string name="map_tatev_drive">De Yerevan pela rodovia do sul até Goris, depois por Sisian e a estrada do desfiladeiro; ou pelo teleférico Asas de Tatev desde Halidzor.</string>
+    <string name="map_khorvirap_name">Khor Virap</string>
+    <string name="map_coords_khorvirap">39.8817, 44.5786 · 30 km ao sul de Yerevan</string>
+    <string name="map_khorvirap_walk">30 km planos a pé pelo sul, entre as vilas do vale do Ararat — mais fácil de bicicleta ou nos ônibus 456/467.</string>
+    <string name="map_khorvirap_drive">De Yerevan ao sul pela rodovia M2 rumo a Ararat, 30 km, depois à direita para a vila de Pokr Vedi; o mosteiro se vê de longe.</string>
 </resources>
