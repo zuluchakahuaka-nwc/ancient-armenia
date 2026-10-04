@@ -22,8 +22,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
+import com.erebuni782.app.AppGraph
 import com.erebuni782.app.MainViewModel
 import com.erebuni782.app.R
+import com.erebuni782.app.data.Sections
 import com.erebuni782.app.ui.theme.OrnamentalDivider
 import com.erebuni782.app.ui.theme.SkinId
 
@@ -40,12 +42,13 @@ private val languageOptions = listOf(
     "pt" to R.string.lang_pt
 )
 
-/** Настройки: язык, скин, вход сотрудника, о приложении. */
+/** Настройки: раздел, язык, скин, вход сотрудника, о приложении. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(viewModel: MainViewModel, onOpenEmployee: () -> Unit) {
     val skin by viewModel.skin.collectAsState()
     val currentLang = LocalConfiguration.current.locales[0]?.language ?: "en"
+    val section by AppGraph.settings.section.collectAsState(initial = Sections.URARTU)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -55,6 +58,23 @@ fun SettingsScreen(viewModel: MainViewModel, onOpenEmployee: () -> Unit) {
         item {
             Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
             OrnamentalDivider(Modifier.padding(top = 8.dp))
+        }
+        item {
+            Text(stringResource(R.string.settings_section), style = MaterialTheme.typography.titleMedium)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = section == Sections.URARTU,
+                    onClick = { viewModel.setSection(Sections.URARTU) },
+                    label = { Text(stringResource(R.string.section_urartu_label)) },
+                    modifier = Modifier.testTag("section_chip_urartu")
+                )
+                FilterChip(
+                    selected = section == Sections.ANCIENT,
+                    onClick = { viewModel.setSection(Sections.ANCIENT) },
+                    label = { Text(stringResource(R.string.section_ancient_label)) },
+                    modifier = Modifier.testTag("section_chip_ancient")
+                )
+            }
         }
         item {
             Text(stringResource(R.string.settings_language), style = MaterialTheme.typography.titleMedium)

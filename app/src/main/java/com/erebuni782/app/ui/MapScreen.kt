@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -29,13 +31,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.erebuni782.app.AppGraph
 import com.erebuni782.app.R
+import com.erebuni782.app.data.Sections
 import com.erebuni782.app.ui.theme.OrnamentalDivider
 import android.graphics.BitmapFactory
 
-/** Карта: иллюстрация + GPS + как дойти / как доехать. */
+/** Карта: иллюстрация + GPS + как дойти / как доехать (карточки текущего раздела). */
 @Composable
 fun MapScreen() {
     val context = LocalContext.current
+    val section by AppGraph.settings.section.collectAsState(initial = Sections.URARTU)
 
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(12.dp),
@@ -44,42 +48,67 @@ fun MapScreen() {
         Text(stringResource(R.string.map_title), style = MaterialTheme.typography.headlineMedium)
         OrnamentalDivider()
 
-        // ── карта-картинка ──
-        val mapBitmap = remember {
-            runCatching {
-                BitmapFactory.decodeStream(
-                    AppGraph.appContext.assets.open("wiki_images/map_fortresses.png")
-                )
-            }.getOrNull()
-        }
-        mapBitmap?.let {
-            Card(Modifier.fillMaxWidth()) {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = stringResource(R.string.map_image_desc),
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
+        if (section == Sections.ANCIENT) {
+            // ── Древняя Армения: Гарни / Гегард / Эчмиадзин ──
+            MapCard(
+                title = stringResource(R.string.map_garni_name),
+                coords = stringResource(R.string.map_coords_garni),
+                walkText = stringResource(R.string.map_garni_walk),
+                driveText = stringResource(R.string.map_garni_drive),
+                lat = 40.1125, lon = 44.7169
+            )
+            MapCard(
+                title = stringResource(R.string.map_geghard_name),
+                coords = stringResource(R.string.map_coords_geghard),
+                walkText = stringResource(R.string.map_geghard_walk),
+                driveText = stringResource(R.string.map_geghard_drive),
+                lat = 40.1407, lon = 44.7975
+            )
+            MapCard(
+                title = stringResource(R.string.map_etchmiadzin_name),
+                coords = stringResource(R.string.map_coords_etchmiadzin),
+                walkText = stringResource(R.string.map_etchmiadzin_walk),
+                driveText = stringResource(R.string.map_etchmiadzin_drive),
+                lat = 40.1625, lon = 44.2919
+            )
+        } else {
+            // ── карта-картинка (только урартский раздел: обе крепости у Еревана) ──
+            val mapBitmap = remember {
+                runCatching {
+                    BitmapFactory.decodeStream(
+                        AppGraph.appContext.assets.open("wiki_images/map_fortresses.png")
+                    )
+                }.getOrNull()
             }
+            mapBitmap?.let {
+                Card(Modifier.fillMaxWidth()) {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = stringResource(R.string.map_image_desc),
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            // ── ЭРЕБУНИ (Арин-Берд) ──
+            MapCard(
+                title = stringResource(R.string.map_erebuni_name),
+                coords = stringResource(R.string.map_coords_erebuni),
+                walkText = stringResource(R.string.map_erebuni_walk),
+                driveText = stringResource(R.string.map_erebuni_drive),
+                lat = 40.1776, lon = 44.5164
+            )
+
+            // ── ТЕЙШЕБАИНИ (Кармир-Блур) ──
+            MapCard(
+                title = stringResource(R.string.map_teishebaini_name),
+                coords = stringResource(R.string.map_coords_teishebaini),
+                walkText = stringResource(R.string.map_teishebaini_walk),
+                driveText = stringResource(R.string.map_teishebaini_drive),
+                lat = 40.1872, lon = 44.4642
+            )
         }
-
-        // ── ЭРЕБУНИ (Арин-Берд) ──
-        MapCard(
-            title = stringResource(R.string.map_erebuni_name),
-            coords = stringResource(R.string.map_coords_erebuni),
-            walkText = stringResource(R.string.map_erebuni_walk),
-            driveText = stringResource(R.string.map_erebuni_drive),
-            lat = 40.1776, lon = 44.5164
-        )
-
-        // ── ТЕЙШЕБАИНИ (Кармир-Блур) ──
-        MapCard(
-            title = stringResource(R.string.map_teishebaini_name),
-            coords = stringResource(R.string.map_coords_teishebaini),
-            walkText = stringResource(R.string.map_teishebaini_walk),
-            driveText = stringResource(R.string.map_teishebaini_drive),
-            lat = 40.1872, lon = 44.4642
-        )
 
         Text(
             stringResource(R.string.map_disclaimer),

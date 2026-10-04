@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
         com.erebuni782.app.data.db.AerialSessionEntity::class,
         com.erebuni782.app.data.db.AerialMarkerEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -37,8 +37,16 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun aerialMarkerDao(): com.erebuni782.app.data.db.AerialMarkerDao
 
     companion object {
+        /** 4→5: колонка section у вики-статей; НЕ деструктивно — данные сотрудника живы. */
+        private val MIGRATION_4_5 = object : androidx.room.migration.Migration(4, 5) {
+            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE wiki_articles ADD COLUMN section TEXT NOT NULL DEFAULT 'urartu'")
+            }
+        }
+
         fun build(context: Context): AppDatabase {
             val db = Room.databaseBuilder(context, AppDatabase::class.java, "erebuni.db")
+                .addMigrations(MIGRATION_4_5)
                 .fallbackToDestructiveMigration()
                 .build()
             seed(db)
@@ -51,9 +59,10 @@ abstract class AppDatabase : RoomDatabase() {
                 // Wiki — справочный сид-контент: upsert каждый запуск (id = PK, REPLACE),
                 // чтобы расширение статей доезжало и на существующие установки
                 db.wikiDao().insertAll(
-                    WIKI_SEED.map {
+                    (WIKI_SEED + com.erebuni782.app.data.seed.ANCIENT_WIKI_SEED).map {
                         com.erebuni782.app.data.db.WikiArticleEntity(
                             id = it.id, category = it.category, sortOrder = it.sortOrder,
+                            section = it.section,
                             titleEn = it.titleEn, titleRu = it.titleRu, titleHy = it.titleHy,
                             bodyEn = it.bodyEn, bodyRu = it.bodyRu, bodyHy = it.bodyHy
                         )

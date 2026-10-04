@@ -84,7 +84,7 @@ class TouristShellE2E {
         rule.waitUntil(timeoutMillis = 30_000) {
             rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
-                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
         if (rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty()) {
@@ -92,18 +92,18 @@ class TouristShellE2E {
         }
         rule.waitUntil(timeoutMillis = 10_000) {
             rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
-                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
         if (rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty()) {
             rule.onNodeWithTag("ob_skip").performClick()
         }
         rule.waitUntil(timeoutMillis = 10_000) {
-            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+            rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
-        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
-            rule.onNodeWithTag("btn_tourist").performClick()
+        if (rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("section_urartu").performClick()
         }
 
         // нормализация EN/скины через TAG-якоря чипов (§7.5 — планшето-стабильно)
@@ -111,6 +111,8 @@ class TouristShellE2E {
         rule.onNodeWithTag("nav_settings").performClick()
         awaitTag("lang_en")
         rule.onNodeWithTag("lang_en").performClick()
+        // раздел тоже нормализуем: предыдущий e2e мог оставить «Древнюю Армению»
+        rule.onNodeWithTag("section_chip_urartu").performClick()
         awaitTag("skin_POST_URARTU")
 
         // ── гид → вики-статья

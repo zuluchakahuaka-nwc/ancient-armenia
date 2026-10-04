@@ -213,4 +213,19 @@ Suite после QA-фикса: **OK (12)**. Commit + push.
 | assembleDebug + test ✓ (1m57s); SkinRenderTest берёт app_name из ресурса — адаптировался автоматически |
 | Commit fix(branding+guide) |
 
+## 2026-10-04 — СЕКЦИИ «УРАРТУ-АРМЕНИЯ / ДРЕВНЯЯ АРМЕНИЯ» + отмена выбора режима
+
+| Действие → Результат |
+|---|
+| **ОТМЕНА ВЫБОРА «ТУРИСТ/СОТРУДНИК»** (владелец): WelcomeScreen удалён; вход в режим сотрудника — только через вкладку «Сотрудник» внизу (PIN-гейт, как и было). Язык → онбординг → сразу выбор раздела |
+| **ДВА РАЗДЕЛА**: SectionPickerScreen — «Урарту-Армения» / «Древняя Армения» (тэги section_urartu/section_ancient); выбор пишется в DataStore (content_section) + modeSelected; переключение — чипы в Настройках (section_chip_*). Sections-константы в SettingsRepository |
+| **КОНТЕНТ «Древняя Армения»** (античность+Средневековье): ANCIENT_WIKI_SEED — 13 статей ×3 локали (Гарни, Гегард, Звартноц, Эчмиадзин, Амберд, Ани; Арташес I, Тигран II, Трдат III; Маштоц, Хоренаци; христианство 301, Киликия). Категории те же: fortresses/kings/culture/history; sortOrder 101+ |
+| **DB v4→v5**: колонка wiki_articles.section (default 'urartu'), МИГРАЦИЯ не деструктивная (addMigrations — данные сотрудника живы; fallback остался на будущее). Сид WIKI_SEED+ANCIENT_WIKI_SEED upsert'ом |
+| **UI по разделам**: GuideScreen фильтр fortresses+section + 6 новых фото-маппингов; WikiScreen список по разделу + 13 маппингов фото; TimelineScreen: TIMELINE_URARTU (13) / TIMELINE_ANCIENT (14: −331…1375, major: −189, 301, 405, 1375) + subtitle_ancient; MapScreen: урарт — карта+2 крепости, древний — Гарни/Гегард/Эчмиадзин (без общей карты). Строки ×4 локали (~60 ключей: секции, 28 tl_a_*, 12 map-*) |
+| **АССЕТЫ**: 12 фото с Commons (thumb 1200-1280px, 82–341KB): anc_garni/geghard/zvartnots/etchmiadzin/amberd/ani/artashes_coin/tigranes_coin/khorvirap/mashtots/khorenatsi/cilicia_coin. Урок: Special:FilePath даёт 404 при %-экранировании из PS → качать по imageinfo thumburl; API ругается 429 при >1req/2.5с без пауз |
+| **e2e**: новый AncientSectionE2E (пикер → гид Гарни (не Эребуни!) → статья → таймлайн 405/−331 есть, −782 нет); все 4 старых хелпера btn_tourist→section_urartu; TouristShellE2E нормализует раздел чипом (утечка section между тестами), WikiScreenTest (component) сбрасывает раздел через runBlocking; §7.5.6 полный uninstall+install |
+| **ФИКСЫ ПО ХОДУ**: апострофы \' в en-строках (aapt2), кавычки-лапки в pt, «armом»→«силой» в ru-тексте армии, с Garrison-опечатки; тэги списков guide_list/wiki_list |
+| **ИТОГ**: assembleDebug + test ✓; lint ✓ (2m2s); e2e ПОЛНЫЙ НАБОР **OK (14)** на Test_API34 (~3 мин); PROGRESS.md, commit |
+| Коммиты: fix(branding+guide) → feat(sections) |
+
 \* время локальное, заполняется по мере возможности.

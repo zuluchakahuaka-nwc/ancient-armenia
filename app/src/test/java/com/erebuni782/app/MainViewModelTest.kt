@@ -42,6 +42,9 @@ class FakeSettingsStore : SettingsStore {
     private val _modeSelected = MutableStateFlow(false)
     override val modeSelected = _modeSelected
     override suspend fun setModeSelected() { _modeSelected.value = true }
+    private val _section = MutableStateFlow(com.erebuni782.app.data.Sections.URARTU)
+    override val section = _section
+    override suspend fun setSection(section: String) { _section.value = section }
     private val _onboardingShown = MutableStateFlow(true)
     override val onboardingShown = _onboardingShown
     override suspend fun setOnboardingShown() { _onboardingShown.value = true }

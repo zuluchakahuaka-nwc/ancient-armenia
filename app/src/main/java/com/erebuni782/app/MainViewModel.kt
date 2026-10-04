@@ -23,9 +23,17 @@ class MainViewModel(private val store: SettingsStore) : ViewModel() {
         viewModelScope.launch { store.setSkin(id) }
     }
 
-    /** Первый запуск: выбор режима. */
-    fun selectMode() {
-        viewModelScope.launch { (store as? SettingsRepository)?.setModeSelected() }
+    /** Первый запуск: выбор раздела (Урарту-Армения/Древняя Армения) вместо режима. */
+    fun selectSection(section: String) {
+        viewModelScope.launch {
+            (store as? SettingsRepository)?.setSection(section)
+            (store as? SettingsRepository)?.setModeSelected()
+        }
+    }
+
+    /** Смена раздела из настроек. */
+    fun setSection(section: String) {
+        viewModelScope.launch { (store as? SettingsRepository)?.setSection(section) }
     }
 
     /** Онбординг просмотрен. */

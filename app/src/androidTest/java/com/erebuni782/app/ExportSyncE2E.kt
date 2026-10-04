@@ -37,7 +37,7 @@ class ExportSyncE2E {
         rule.waitUntil(timeoutMillis = 30_000) {
             rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
-                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
         if (rule.onAllNodesWithTag("lang_pick_en").fetchSemanticsNodes().isNotEmpty()) {
@@ -45,18 +45,18 @@ class ExportSyncE2E {
         }
         rule.waitUntil(timeoutMillis = 10_000) {
             rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty() ||
-                rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
         if (rule.onAllNodesWithTag("ob_skip").fetchSemanticsNodes().isNotEmpty()) {
             rule.onNodeWithTag("ob_skip").performClick()
         }
         rule.waitUntil(timeoutMillis = 10_000) {
-            rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty() ||
+            rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty() ||
                 rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()
         }
-        if (rule.onAllNodesWithTag("btn_tourist").fetchSemanticsNodes().isNotEmpty()) {
-            rule.onNodeWithTag("btn_tourist").performClick()
+        if (rule.onAllNodesWithTag("section_urartu").fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithTag("section_urartu").performClick()
         }
         rule.waitUntil(timeoutMillis = 10_000) {
             rule.onAllNodesWithTag("nav_settings").fetchSemanticsNodes().isNotEmpty()

@@ -18,6 +18,7 @@ fun WikiArticleEntity.resolve(localeTag: String): LocalizedContent {
 data class WikiArticleUi(
     val id: String,
     val category: String,
+    val section: String,
     val title: String,
     val body: String
 )
@@ -38,6 +39,6 @@ class WikiRepository(private val dao: com.erebuni782.app.data.db.WikiDao) : Wiki
 
     private fun WikiArticleEntity.toUi(localeTag: String): WikiArticleUi {
         val c = resolve(localeTag)
-        return WikiArticleUi(id = id, category = category, title = c.title, body = c.body)
+        return WikiArticleUi(id = id, category = category, section = section, title = c.title, body = c.body)
     }
 }

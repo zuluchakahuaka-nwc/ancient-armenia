@@ -240,4 +240,57 @@
     <string name="tl_1939_body">Boris Piotrovsky revela Teishebaini: cidadela, celeiros e milhares de tabuletas cuneiformes.</string>
     <string name="tl_1950_title">Escavações de Arin-Berd</string>
     <string name="tl_1950_body">Konstantine Hovhannisyan desenterra Erebuni; os murais do palácio fundam a urartologia como disciplina.</string>
+    <!-- ═══ Escolha de seção: Urartu-Armênia / Armênia Antiga ═══ -->
+    <string name="section_picker_title">Escolha uma seção</string>
+    <string name="section_picker_subtitle">Duas jornadas, um aplicativo</string>
+    <string name="section_urartu_label">Urartu-Armênia</string>
+    <string name="section_urartu_desc">As fortalezas de Erebuni e Teishebaini, os reis de Urartu, os deuses Haldi e Teisheba. 860–590 a.C.</string>
+    <string name="section_ancient_label">Armênia Antiga</string>
+    <string name="section_ancient_desc">Garni e Etchmiadzin, Tigranes, o Grande, e Mashtots, Ani e Cilícia. Antiguidade e Idade Média.</string>
+    <string name="settings_section">Seção</string>
+
+    <!-- ═══ Cronologia da Armênia Antiga (331 a.C. → 1375 d.C.) ═══ -->
+    <string name="timeline_subtitle_ancient">331 a.C. → 1375 d.C.: de Alexandre à queda da Cilícia</string>
+    <string name="tl_a_331_title">Alexandre e os Orôntidas</string>
+    <string name="tl_a_331_body">As conquistas de Alexandre destroem o império aquemênida; a dinastia Orôntida (Yervanduni) governa a Armênia — primeiro como sátrapas, depois como reis.</string>
+    <string name="tl_a_189_title">Artaxias I funda a Grande Armênia</string>
+    <string name="tl_a_189_body">Artashes I proclama a independência e funda a dinastia Artáxida; a tradição diz que a nova capital, Artaxata, foi traçada com a ajuda de Aníbal.</string>
+    <string name="tl_a_95_title">Tigranes, o Grande</string>
+    <string name="tl_a_95_body">Tigranes II assume o título de «rei dos reis»; o império armênio se estende do Cáspio ao Mediterrâneo, com Tigranocerta como nova capital.</string>
+    <string name="tl_a_69_title">Guerra com Roma</string>
+    <string name="tl_a_69_body">Lúculo cerca Tigranocerta; o pêndulo muda, e a Armênia se torna um estado-tampão entre Roma e a Pártia.</string>
+    <string name="tl_a_66_title">Pompeu na Armênia</string>
+    <string name="tl_a_66_body">Pompeu restaura Tigranes como "amigo e aliado do povo romano"; a Armênia conserva seus reis sob o patrocínio de Roma.</string>
+    <string name="tl_a_52_title">A dinastia Arsácida</string>
+    <string name="tl_a_52_body">Trdat I funda o ramo armênio da dinastia Arsácida (Arshakuni), ligada por sangue à Pártia.</string>
+    <string name="tl_a_301_title">O cristianismo vira religião de estado</string>
+    <string name="tl_a_301_body">Trdat III proclama o cristianismo como fé do estado — o primeiro estado cristão do mundo; Gregório, o Iluminador, libertado de Khor Virap, torna-se o primeiro Católico em Etchmiadzin.</string>
+    <string name="tl_a_405_title">Mesrop Mashtots cria o alfabeto</string>
+    <string name="tl_a_405_body">As 36 letras do alfabeto armênio dão ao povo a sua escrita; começa a era da tradução — escolas, primeiros livros e uma identidade que sobreviveu aos impérios.</string>
+    <string name="tl_a_428_title">Fim do reino Arsácida</string>
+    <string name="tl_a_428_body">Os sassânidas abolem o reino armênio; os marzobãs governam em nome do xá, mas a Igreja mantém a nação unida.</string>
+    <string name="tl_a_451_title">Batalha de Avarair</string>
+    <string name="tl_a_451_body">Vardan Mamikonian cai lutando contra o exército sassânida; a fé resiste, e em 484 o Tratado de Nvarsak concede à Armênia liberdade religiosa.</string>
+    <string name="tl_a_885_title">Ashot I e os Bagrátidas</string>
+    <string name="tl_a_885_body">Ashot I Bagratuni é coroado rei de toda a Armênia — reconhecido tanto por Bizâncio quanto pelo califado.</string>
+    <string name="tl_a_961_title">Ani, a cidade das 1001 igrejas</string>
+    <string name="tl_a_961_body">Ashot III transfere o trono para Ani; a cidade floresce como centro de comércio, arquitetura e saber sobre o desfiladeiro do Akhurian.</string>
+    <string name="tl_a_1045_title">A queda de Ani</string>
+    <string name="tl_a_1045_body">Bizâncio anexa Ani; o reino Bagrátida termina e a estadania armênia desloca-se para o oeste — a Cilícia.</string>
+    <string name="tl_a_1375_title">O fim da Armênia Cilícia</string>
+    <string name="tl_a_1375_body">Os mamelucos tomam as últimas fortalezas armênias; Levon V é o último rei coroado — a Idade Média se encerra.</string>
+
+    <!-- ═══ Mapa da Armênia Antiga: Garni / Geghard / Etchmiadzin ═══ -->
+    <string name="map_garni_name">Templo de Garni</string>
+    <string name="map_coords_garni">40.1125, 44.7169 · 28 km a leste de Yerevan</string>
+    <string name="map_garni_walk">Caminhada longa: ~6 horas pela estrada de Geghard junto ao desfiladeiro do Azat. Mais realista: ônibus 266 de Yerevan ou táxi.</string>
+    <string name="map_garni_drive">Da Praça da República, pela rua Khorenatsi até a rodovia M2, 28 km a leste, depois 4 km à esquerda até a vila de Garni.</string>
+    <string name="map_geghard_name">Mosteiro de Geghard</string>
+    <string name="map_coords_geghard">40.1407, 44.7975 · 7 km acima de Garni</string>
+    <string name="map_geghard_walk">De Garni, uma trilha sobe 7 km pelo desfiladeiro do Azat até o mosteiro (~1,5 h).</string>
+    <string name="map_geghard_drive">Após Garni, siga a estrada do desfiladeiro do Azat por mais ~9 km até o portão do mosteiro.</string>
+    <string name="map_etchmiadzin_name">Etchmiadzin (Vagharshapat)</string>
+    <string name="map_coords_etchmiadzin">40.1625, 44.2919 · 20 km a oeste de Yerevan</string>
+    <string name="map_etchmiadzin_walk">20 km a pé para o oeste pela rodovia de Yerevan — apenas para quem gosta de longas caminhadas.</string>
+    <string name="map_etchmiadzin_drive">Da Praça da República para o oeste pela avenida Tigran Mets e a rodovia de Argavand, 20 km até Vagharshapat; Zvartnots fica 3 km antes.</string>
 </resources>

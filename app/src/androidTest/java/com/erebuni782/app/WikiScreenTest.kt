@@ -19,6 +19,10 @@ class WikiScreenTest {
 
     @Test
     fun wikiList_showsSeedArticles() {
+        // раздел влияет на фильтр списка: приводим к урартскому (за e2e мог остаться ancient)
+        kotlinx.coroutines.runBlocking {
+            AppGraph.settings.setSection(com.erebuni782.app.data.Sections.URARTU)
+        }
         composeRule.setContent { WikiScreen(onOpenArticle = {}) }
         val firstTitle = "Erebuni fortress" // сид en-локали
         composeRule.waitUntil(10_000) {

@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.map
 
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
+/** Разделы контента: Урарту-Армения / Древняя Армения. */
+object Sections {
+    const val URARTU = "urartu"
+    const val ANCIENT = "ancient"
+}
+
 /** Абстракция хранилища настроек (для подмены в unit-тестах). */
 interface SettingsStore {
     val skin: Flow<SkinId>
@@ -34,9 +40,13 @@ interface SettingsStore {
     val keepExif: Flow<Boolean>
     suspend fun setKeepExif(enabled: Boolean)
 
-    /** Первый запуск: false пока не выбран режим (турист/сотрудник). */
+    /** Первый запуск: false пока не выбран раздел (Урарту-Армения/Древняя Армения). */
     val modeSelected: Flow<Boolean>
     suspend fun setModeSelected()
+
+    /** Текущий раздел контента (Sections.URARTU / Sections.ANCIENT). */
+    val section: Flow<String>
+    suspend fun setSection(section: String)
 
     /** Онбординг показан (первый запуск или повторно через «i»). */
     val onboardingShown: Flow<Boolean>
@@ -112,6 +122,14 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         store.edit { prefs -> prefs[MODE_SELECTED_KEY] = true }
     }
 
+    override val section: Flow<String> = store.data.map { prefs ->
+        prefs[SECTION_KEY] ?: Sections.URARTU
+    }
+
+    override suspend fun setSection(section: String) {
+        store.edit { prefs -> prefs[SECTION_KEY] = section }
+    }
+
     override val onboardingShown: Flow<Boolean> = store.data.map { prefs ->
         prefs[ONBOARDING_KEY] ?: false
     }
@@ -136,6 +154,7 @@ class SettingsRepository(private val context: Context) : SettingsStore {
         private val READER_BOOKMARKS_KEY = stringSetPreferencesKey("reader_bookmarks")
         private val KEEP_EXIF_KEY = booleanPreferencesKey("keep_exif")
         private val MODE_SELECTED_KEY = booleanPreferencesKey("mode_selected")
+        private val SECTION_KEY = stringPreferencesKey("content_section")
         private val ONBOARDING_KEY = booleanPreferencesKey("onboarding_shown")
         private val LANG_SELECTED_KEY = booleanPreferencesKey("lang_selected")
     }

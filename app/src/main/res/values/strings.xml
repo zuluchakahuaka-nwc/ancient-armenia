@@ -240,4 +240,58 @@
     <string name="tl_1939_body">Boris Piotrovsky reveals Teishebaini: citadel, granaries and thousands of cuneiform tablets.</string>
     <string name="tl_1950_title">Excavations at Arin-Berd</string>
     <string name="tl_1950_body">Konstantine Hovhannisyan unearths Erebuni; the palace murals establish Urartology as a discipline.</string>
+
+    <!-- ═══ Section picker: Urartu-Armenia / Ancient Armenia ═══ -->
+    <string name="section_picker_title">Choose a section</string>
+    <string name="section_picker_subtitle">Two journeys, one app</string>
+    <string name="section_urartu_label">Urartu-Armenia</string>
+    <string name="section_urartu_desc">The fortresses of Erebuni and Teishebaini, the kings of Urartu, the gods Haldi and Teisheba. 860–590 BC.</string>
+    <string name="section_ancient_label">Ancient Armenia</string>
+    <string name="section_ancient_desc">Garni and Etchmiadzin, Tigranes the Great and Mashtots, Ani and Cilicia. Antiquity and the Middle Ages.</string>
+    <string name="settings_section">Section</string>
+
+    <!-- ═══ Ancient Armenia timeline (331 BC → AD 1375) ═══ -->
+    <string name="timeline_subtitle_ancient">331 BC → AD 1375: from Alexander to the fall of Cilicia</string>
+    <string name="tl_a_331_title">Alexander and the Orontids</string>
+    <string name="tl_a_331_body">Alexander\'s conquest shatters the Achaemenid Empire; the Orontid (Yervanduni) dynasty rules Armenia — first as satraps, then as kings.</string>
+    <string name="tl_a_189_title">Artaxias I founds Greater Armenia</string>
+    <string name="tl_a_189_body">Artashes I proclaims independence and founds the Artaxiad dynasty; tradition says the new capital Artashat was laid out with the help of Hannibal.</string>
+    <string name="tl_a_95_title">Tigranes the Great</string>
+    <string name="tl_a_95_body">Tigranes II takes the title \'king of kings\'; the Armenian empire stretches from the Caspian to the Mediterranean with Tigranocerta as its new capital.</string>
+    <string name="tl_a_69_title">War with Rome</string>
+    <string name="tl_a_69_body">Lucullus besieges Tigranocerta; the pendulum swings, and Armenia becomes a buffer state between Rome and Parthia.</string>
+    <string name="tl_a_66_title">Pompey in Armenia</string>
+    <string name="tl_a_66_body">Pompey restores Tigranes as \'friend and ally of the Roman people\'; Armenia keeps its kings under Roman patronage.</string>
+    <string name="tl_a_52_title">The Arsacid dynasty</string>
+    <string name="tl_a_52_body">Trdat I founds the Armenian Arsacid (Arshakuni) dynasty, linked by blood to Parthia.</string>
+    <string name="tl_a_301_title">Christianity becomes the state religion</string>
+    <string name="tl_a_301_body">Trdat III proclaims Christianity the state faith — the first Christian state in the world; Gregory the Illuminator, freed from Khor Virap, becomes the first Catholicos at Etchmiadzin.</string>
+    <string name="tl_a_405_title">Mesrop Mashtots creates the alphabet</string>
+    <string name="tl_a_405_body">The 36-letter Armenian alphabet gives the nation its script; the age of translation begins and with it the schools, the first books and an identity that outlives empires.</string>
+    <string name="tl_a_428_title">End of the Arsacid kingdom</string>
+    <string name="tl_a_428_body">The Sasanians abolish the Armenian kingdom; marzpans rule in the shah\'s name, but the church keeps the nation together.</string>
+    <string name="tl_a_451_title">Battle of Avarayr</string>
+    <string name="tl_a_451_body">Vardan Mamikonian falls fighting the Sasanian army; the faith survives, and in 484 the Treaty of Nvarsak grants Armenia religious freedom.</string>
+    <string name="tl_a_885_title">Ashot I and the Bagratids</string>
+    <string name="tl_a_885_body">Ashot I Bagratuni is crowned king of all Armenia — recognized by both Byzantium and the Caliphate.</string>
+    <string name="tl_a_961_title">Ani, the city of 1001 churches</string>
+    <string name="tl_a_961_body">Ashot III moves the throne to Ani; the city booms into a hub of trade, architecture and scholarship on the Akhurian gorge.</string>
+    <string name="tl_a_1045_title">The fall of Ani</string>
+    <string name="tl_a_1045_body">Byzantium annexes Ani; the Bagratid kingdom ends and Armenian statehood shifts west, to Cilicia.</string>
+    <string name="tl_a_1375_title">The end of Cilician Armenia</string>
+    <string name="tl_a_1375_body">The Mamluks take the last Armenian strongholds; Levon V is the final crowned king — the Middle Ages close.</string>
+
+    <!-- ═══ Ancient Armenia map: Garni / Geghard / Etchmiadzin ═══ -->
+    <string name="map_garni_name">Garni Temple</string>
+    <string name="map_coords_garni">40.1125, 44.7169 · 28 km east of Yerevan</string>
+    <string name="map_garni_walk">A long walk: ~6 hours along the Geghard highway by the Azat gorge. Bus 266 from Yerevan or a taxi is the realistic option.</string>
+    <string name="map_garni_drive">From Republic Square take Khorenatsi St to the M2 highway, 28 km east, then 4 km left to Garni village.</string>
+    <string name="map_geghard_name">Geghard Monastery</string>
+    <string name="map_coords_geghard">40.1407, 44.7975 · 7 km above Garni</string>
+    <string name="map_geghard_walk">From Garni a footpath runs 7 km up the Azat gorge to the monastery (~1.5 h).</string>
+    <string name="map_geghard_drive">Past Garni follow the road up the Azat gorge for another ~9 km to the monastery gate.</string>
+    <string name="map_etchmiadzin_name">Etchmiadzin (Vagharshapat)</string>
+    <string name="map_coords_etchmiadzin">40.1625, 44.2919 · 20 km west of Yerevan</string>
+    <string name="map_etchmiadzin_walk">A 20 km walk west along the Yerevan highway — for hikers only.</string>
+    <string name="map_etchmiadzin_drive">From Republic Square go west via Tigran Mets Ave and the Argavand highway, 20 km to Vagharshapat; Zvartnots is 3 km before it.</string>
 </resources>

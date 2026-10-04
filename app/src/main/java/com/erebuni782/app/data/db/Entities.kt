@@ -8,6 +8,8 @@ data class WikiArticleEntity(
     @PrimaryKey val id: String,
     val category: String,
     val sortOrder: Int,
+    /** Раздел: Sections.URARTU (урартская история) / Sections.ANCIENT (античность и Средневековье). */
+    val section: String = "urartu",
     val titleEn: String,
     val titleRu: String,
     val titleHy: String,

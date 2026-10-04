@@ -17,6 +17,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import android.graphics.BitmapFactory
 import com.erebuni782.app.AppGraph
 import com.erebuni782.app.R
+import com.erebuni782.app.data.Sections
 import com.erebuni782.app.data.WikiArticleUi
 import com.erebuni782.app.ui.theme.OrnamentalDivider
 import com.erebuni782.app.ui.theme.StyledCard
@@ -51,15 +53,20 @@ private val wikiCategories = listOf(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WikiScreen(onOpenArticle: (String) -> Unit) {
-    val articles by produceState(initialValue = emptyList<WikiArticleUi>()) {
+    val section by AppGraph.settings.section.collectAsState(initial = Sections.URARTU)
+    val articles by produceState(
+        initialValue = emptyList<WikiArticleUi>(),
+        key1 = "wiki", key2 = section
+    ) {
         value = AppGraph.wiki.articles(java.util.Locale.getDefault().toLanguageTag())
+            .filter { it.section == section }
     }
     var selectedCategory by rememberSaveable { mutableStateOf("all") }
     val visible = if (selectedCategory == "all") articles
         else articles.filter { it.category == selectedCategory }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag("wiki_list"),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -131,6 +138,20 @@ fun WikiArticleScreen(articleId: String) {
                 "metallurgy", "army" -> "king_sarduri1_fort" // крепость/оружие
                 "fall_urartu" -> "teishebaini_ruins"       // гибель Тейшебаини
                 "argishtikhinili" -> "argishtikhinili"      // вид городища Аргиштихинили
+                // ── Древняя Армения ──
+                "garni" -> "anc_garni"                      // храм Гарни
+                "geghard" -> "anc_geghard"                  // монастырь Гегард
+                "zvartnots" -> "anc_zvartnots"              // руины Звартноца
+                "etchmiadzin" -> "anc_etchmiadzin"          // собор Эчмиадзин
+                "amberd" -> "anc_amberd"                    // крепость Амберд
+                "ani" -> "anc_ani"                          // руины Ани
+                "artashes1" -> "anc_artashes_coin"          // монета Арташеса I
+                "tigranes2" -> "anc_tigranes_coin"          // тетрадрахма Тиграна II
+                "trdat3" -> "anc_khorvirap"                 // Хор Вирап (Трдат и Григорий)
+                "mashtots" -> "anc_mashtots"                // статуя Маштоца
+                "khorenatsi" -> "anc_khorenatsi"            // статуя Хоренаци
+                "christianity" -> "anc_etchmiadzin"         // первый христианский собор
+                "cilicia" -> "anc_cilicia_coin"             // монета киликийского царя
                 else -> null
             }
             imageName?.let { name ->

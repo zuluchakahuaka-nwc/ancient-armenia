@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -25,21 +26,26 @@ import androidx.compose.ui.unit.dp
 import android.graphics.BitmapFactory
 import com.erebuni782.app.AppGraph
 import com.erebuni782.app.R
+import com.erebuni782.app.data.Sections
 import com.erebuni782.app.data.WikiArticleUi
 import com.erebuni782.app.ui.theme.OrnamentalDivider
 import com.erebuni782.app.ui.theme.StyledCard
 
-/** Гид: две крепости (сид-статьи категории fortresses) + вход в таймлайн. */
+/** Гид: карточки крепостей текущего раздела + вход в таймлайн. */
 @Composable
 fun GuideScreen(onOpenArticle: (String) -> Unit, onOpenTimeline: () -> Unit = {}) {
-    val articles by produceState(initialValue = emptyList<WikiArticleUi>(), key1 = "fortresses") {
+    val section by AppGraph.settings.section.collectAsState(initial = Sections.URARTU)
+    val articles by produceState(
+        initialValue = emptyList<WikiArticleUi>(),
+        key1 = "fortresses", key2 = section
+    ) {
         value = AppGraph.wiki.articles(java.util.Locale.getDefault().toLanguageTag())
-            .filter { it.category == "fortresses" }
+            .filter { it.category == "fortresses" && it.section == section }
     }
 
     Column(Modifier.fillMaxSize()) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().testTag("guide_list"),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -77,6 +83,13 @@ fun GuideScreen(onOpenArticle: (String) -> Unit, onOpenTimeline: () -> Unit = {}
                             "teishebaini" -> "teishebaini_ruins"
                             "tushpa" -> "king_rusa1_van"          // Ванская скала — она же Тушпа
                             "argishtikhinili" -> "argishtikhinili"
+                            // ── Древняя Армения ──
+                            "garni" -> "anc_garni"
+                            "geghard" -> "anc_geghard"
+                            "zvartnots" -> "anc_zvartnots"
+                            "etchmiadzin" -> "anc_etchmiadzin"
+                            "amberd" -> "anc_amberd"
+                            "ani" -> "anc_ani"
                             else -> null
                         }
                         val bitmap = imageName?.let { name ->

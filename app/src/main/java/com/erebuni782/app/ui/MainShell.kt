@@ -109,10 +109,10 @@ fun MainShell(mainViewModel: MainViewModel) {
                 onFinished = { mainViewModel.setOnboardingShown() }
             )
         } else if (!modeSelected) {
-            // ── 2. ВЫБОР РЕЖИМА ──
-            com.erebuni782.app.ui.WelcomeScreen(
-                onTourist = { mainViewModel.selectMode() },
-                onEmployee = { mainViewModel.selectMode() }
+            // ── 2. ВЫБОР РАЗДЕЛА (Урарту-Армения / Древняя Армения) ──
+            // режим сотрудника НЕ выбирается здесь: вход — вкладка «Сотрудник» (PIN)
+            com.erebuni782.app.ui.SectionPickerScreen(
+                onPick = { mainViewModel.selectSection(it) }
             )
         } else if (wide) {
             // ── ПЛАНШЕТ: rail слева + стилизованный контент ──
