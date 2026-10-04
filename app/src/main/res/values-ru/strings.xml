@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Урарту-Армения</string>
+    <string name="app_name">Древняя Армения</string>
     <string name="screen_home_title">Оформление и язык</string>
     <string name="settings_title">Настройки</string>
     <string name="settings_skin">Скин</string>
@@ -12,7 +12,7 @@
     <string name="lang_ru">Русский</string>
     <string name="lang_en">English</string>
     <string name="about_title">О приложении</string>
-    <string name="about_body">Урарту-Армения — трёхъязычный офлайн-гид по урартским крепостям Эребуни и Тейшебаини (Кармир-Блур). Фаза P2: туристический шелл — вики, библиотека, аудио и Urartu.fm.</string>
+    <string name="about_body">«Древняя Армения» — офлайн-гид по истории Армении в двух разделах: Урарту-Армения (Эребуни, Тейшебаини) и античность со Средневековьем (Гарни, Эчмиадзин, Ани). Работает без интернета.</string>
     <string name="back">Назад</string>
     <string name="nav_guide">Гид</string>
     <string name="nav_wiki">Вики</string>
@@ -152,7 +152,7 @@
     <string name="book_page_of">стр. %1$d из %2$d</string>
     <string name="pdf_loading">Рендер страницы…</string>
     <string name="help_title">О приложении</string>
-    <string name="help_about">Урарту-Армения — многоязычный (hy/ru/en/pt) офлайн-гид по урартским крепостям Эребуни (782 г. до н.э.) и Тейшебаини (Кармир-Блур). Работает без интернета.</string>
+    <string name="help_about">«Древняя Армения» — многоязычный (hy/ru/en/pt) офлайн-гид по истории Армении: Урарту-Армения (782 г. до н.э.) и Древняя Армения от Александра до Киликии. Работает без интернета.</string>
     <string name="help_tourist_title">Режим туриста</string>
     <string name="help_tourist_body">Гид: карточки крепостей открывают статьи. Вики: мини-энциклопедия о царях, богах, быте. Библиотека: книги (PDF-читалка, шрифт, ночной режим, закладки) и аудио (станция Urartu.fm, своя музыка). Карта: координаты крепостей. Настройки: смена языка и скина на лету.</string>
     <string name="help_employee_title">Режим сотрудника</string>
@@ -185,7 +185,7 @@
     <string name="ob_skip">Пропустить</string>
     <string name="ob_next">Далее</string>
     <string name="ob_start">Понятно!</string>
-    <string name="ob_welcome_title">Добро пожаловать в «Урарту-Армения»</string>
+    <string name="ob_welcome_title">Добро пожаловать в «Древняя Армения»</string>
     <string name="ob_welcome_body">Офлайн-гид по урартским крепостям Эребуни (782 до н.э.) и Тейшебаини. Всё работает без интернета. Выберите режим на следующем шаге.</string>
     <string name="ob_tourist_title">🧭 Режим туриста</string>
     <string name="ob_tourist_body">• Гид: карточки крепостей с фото\n• Вики: 25 статей о царях, богах, быте\n• Библиотека: 5 книг с PDF-читалкой\n• Карта: GPS-координаты + как добраться\n• Настройки: смена языка (hy/ru/en/pt) и скина на лету</string>

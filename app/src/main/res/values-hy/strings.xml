@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ուրարտու-Հայաստան</string>
+    <string name="app_name">Հին Հայաստան</string>
     <string name="screen_home_title">Ձեւավորում և լեզու</string>
     <string name="settings_title">Կարգավորումներ</string>
     <string name="settings_skin">Ոճ</string>
@@ -12,7 +12,7 @@
     <string name="lang_ru">Русский</string>
     <string name="lang_en">English</string>
     <string name="about_title">Ծրագրի մասին</string>
-    <string name="about_body">Ուրարտու-Հայաստան — եռալեզու առանց ինտերնետ ուղեցույց Ուրարտուի Էրեբունի և Թեյշեբաինի (Կարմիր բլուր) ամրոցների մասին։ P2 փուլ. տուրիստական ծածկույթ՝ վիքի, գրադարան, աուդիո և Urartu.fm։</string>
+    <string name="about_body">«Հին Հայաստան» — առանց ինտերնետ ուղեցույց Հայաստանի պատմությանը երկու բաժնով. Ուրարտու-Հայաստան (Էրեբունի, Թեյշեբաինի) և հնադար-միջնադար (Գառնի, Էջմիածին, Անի)։ Աշխատում է առանց ինտերնետի։</string>
     <string name="back">Հետ</string>
     <string name="nav_guide">Ուղեցույց</string>
     <string name="nav_wiki">Վիքի</string>
@@ -152,7 +152,7 @@
     <string name="book_page_of">էջ %1$d %2$d-ից</string>
     <string name="pdf_loading">Էջի մշակում…</string>
     <string name="help_title">Ծրագրի մասին</string>
-    <string name="help_about">Ուրարտու-Հայաստան — եռալեզու (hy/ru/en/pt) առանց ինտերնետ ուղեցույց Ուրարտուի Էրեբունի (մթա 782) և Թեյշեբաինի (Կարմիր բլուր) ամրոցների մասին։ Աշխատում է առանց ինտերնետի։</string>
+    <string name="help_about">«Հին Հայաստան» — բազմալեզու (hy/ru/en/pt) առանց ինտերնետ ուղեցույց Հայաստանի պատմությանը. Ուրարտու-Հայաստան (մթա 782) և Հին Հայաստան Ալեքսանդրից մինչև Կիլիկիա։ Աշխատում է առանց ինտերնետի։</string>
     <string name="help_tourist_title">Տուրիստի ռեժիմ</string>
     <string name="help_tourist_body">Ուղեցույց. ամրոցների քարտերը բացում են հոդվածներ։ Վիքի. մանրագիտարան թագավորների, աստվածների, կենցաղի մասին։ Գրադարան. գրքեր (PDF-ընթերցող, տառաչափ, գիշերային ռեժիմ, էջանիշներ) և աուդիո (Urartu.fm կայան, ձեր երաժշտություն)։ Քարտեզ. ամրոցների կոորդինատներ։ Կարգավորումներ. լեզվի և ոճի փոփոխություն թռուցիկ։</string>
     <string name="help_employee_title">Աշխատակցի ռեժիմ</string>
@@ -185,7 +185,7 @@
     <string name="ob_skip">Բաց թողնել</string>
     <string name="ob_next">Հաջորդը</string>
     <string name="ob_start">Հասկանալի է</string>
-    <string name="ob_welcome_title">Բարի գալուստ Ուրարտու-Հայաստան</string>
+    <string name="ob_welcome_title">Բարի գալուստ Հին Հայաստան</string>
     <string name="ob_welcome_body">Օֆլայն ուղեցույց Ուրարտուի ամրոցներով։ Ամեն ինչ աշխատում է առանց ինտերնետի։</string>
     <string name="ob_tourist_title">🧭 Տուրիստի ռեժիմ</string>
     <string name="ob_tourist_body">• Ուղեցույց. ամրոցների քարտեր լուսանկարներով\n• Վիքի. 25 հոդված\n• Գրադարան. 5 գիրք PDF\n• Քարտեզ. GPS + ճանապարհներ\n• Լեզու և ոճ փոխվում է թռուցիկ</string>
