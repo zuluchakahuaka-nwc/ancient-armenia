@@ -71,18 +71,26 @@ fun GuideScreen(onOpenArticle: (String) -> Unit, onOpenTimeline: () -> Unit = {}
             items(articles, key = { it.id }) { article ->
                 Card(modifier = Modifier.fillMaxWidth().clickable { onOpenArticle(article.id) }) {
                     Column {
-                        // реальное фото крепости (jpg — приоритет, png — fallback)
-                        val imageName = if (article.id == "erebuni") "erebuni_fortress" else "teishebaini_ruins"
-                        val bitmap = remember(article.id) {
-                            runCatching {
-                                BitmapFactory.decodeStream(
-                                    AppGraph.appContext.assets.open("wiki_images/$imageName.jpg")
-                                )
-                            }.recoverCatching {
-                                BitmapFactory.decodeStream(
-                                    AppGraph.appContext.assets.open("wiki_images/$imageName.png")
-                                )
-                            }.getOrNull()
+                        // реальное фото крепости (jpg — приоритет, png — fallback); у каждой карточки — своё
+                        val imageName = when (article.id) {
+                            "erebuni" -> "erebuni_fortress"
+                            "teishebaini" -> "teishebaini_ruins"
+                            "tushpa" -> "king_rusa1_van"          // Ванская скала — она же Тушпа
+                            "argishtikhinili" -> "argishtikhinili"
+                            else -> null
+                        }
+                        val bitmap = imageName?.let { name ->
+                            remember(article.id) {
+                                runCatching {
+                                    BitmapFactory.decodeStream(
+                                        AppGraph.appContext.assets.open("wiki_images/$name.jpg")
+                                    )
+                                }.recoverCatching {
+                                    BitmapFactory.decodeStream(
+                                        AppGraph.appContext.assets.open("wiki_images/$name.png")
+                                    )
+                                }.getOrNull()
+                            }
                         }
                         bitmap?.let {
                             Image(

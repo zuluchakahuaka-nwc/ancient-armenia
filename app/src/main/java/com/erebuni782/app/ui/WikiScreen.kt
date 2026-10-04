@@ -130,7 +130,7 @@ fun WikiArticleScreen(articleId: String) {
                 "murals", "excavations" -> "murals_real"   // росписи Эребуни
                 "metallurgy", "army" -> "king_sarduri1_fort" // крепость/оружие
                 "fall_urartu" -> "teishebaini_ruins"       // гибель Тейшебаини
-                "argishtikhinili" -> "erebuni_fortress"    // крепость-аналог
+                "argishtikhinili" -> "argishtikhinili"      // вид городища Аргиштихинили
                 else -> null
             }
             imageName?.let { name ->

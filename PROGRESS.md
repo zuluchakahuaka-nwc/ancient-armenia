@@ -203,4 +203,14 @@ Suite после QA-фикса: **OK (12)**. Commit + push.
 | **CI**: .github/workflows/android-ci.yml — JDK 21 temurin, gradle/actions, test→assembleDebug→lint→artifact APK (7 дней); юниты ассетов не трогают (проверено rg), медиа в CI-сборке отсутствуют по политике владельца |
 | Коммиты: fix(camera) → chore(gitignore) → [git-хирургия force-push] → feat(content) → docs/release/push |
 
+## 2026-10-04 — РЕБРЕЙДИНГ + дубли фото в гиде
+
+| Действие → Результат |
+|---|
+| **Имя приложения → «Урарту-Армения»** (владелец): app_name локализован — ru «Урарту-Армения», hy «Ուրարտու-Հայաստան», en/pt «Urartu-Armenia»; бренд заменён в about_body/help_about/ob_welcome_title ×4 локали (исторические упоминания крепости Эребуни не тронуты) |
+| **БАГ дублей фото на главной (Гид)**: GuideScreen использовал тернарник id==erebuni→erebuni_fortress, else→teishebaini_ruins; в категории fortresses теперь 4 статьи → 3 карточки с одним фото Кармир-Блура. Фикс: when-маппинг — erebuni/teishebaini свои, tushpa→king_rusa1_van (Ванская скала = Тушпа), argishtikhinili→новый ассет |
+| **Ассет**: ArgishtihiniliView.jpg с Commons (CC BY 2.5, thumb 1920px, 671КБ) → assets/wiki_images/argishtikhinili.jpg; WikiScreen-статья argishtikhinili тоже переключена с чужого erebuni_fortress на своё фото |
+| assembleDebug + test ✓ (1m57s); SkinRenderTest берёт app_name из ресурса — адаптировался автоматически |
+| Commit fix(branding+guide) |
+
 \* время локальное, заполняется по мере возможности.

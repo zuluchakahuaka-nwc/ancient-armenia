@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Erebuni 782</string>
+    <string name="app_name">Urartu-Armenia</string>
     <string name="screen_home_title">Aparência e Idioma</string>
     <string name="settings_title">Configurações</string>
     <string name="settings_skin">Estilo</string>
@@ -13,7 +13,7 @@
     <string name="lang_en">English</string>
     <string name="lang_pt">Português</string>
     <string name="about_title">Sobre</string>
-    <string name="about_body">Erebuni 782 — um guia offline trilíngue das fortalezas urartianas Erebuni e Teishebaini (Karmir Blur). Fase P2: estrutura turística com wiki, biblioteca, áudio e Urartu.fm.</string>
+    <string name="about_body">Urartu-Armenia — um guia offline trilíngue das fortalezas urartianas Erebuni e Teishebaini (Karmir Blur). Fase P2: estrutura turística com wiki, biblioteca, áudio e Urartu.fm.</string>
     <string name="back">Voltar</string>
     <string name="nav_guide">Guia</string>
     <string name="nav_wiki">Wiki</string>
@@ -153,7 +153,7 @@
     <string name="book_page_of">p. %1$d de %2$d</string>
     <string name="pdf_loading">Renderizando página…</string>
     <string name="help_title">Sobre o app</string>
-    <string name="help_about">Erebuni 782 — um guia offline trilíngue (hy/ru/en) das fortalezas urartianas Erebuni (782 a.C.) e Teishebaini (Karmir Blur). Funciona sem internet.</string>
+    <string name="help_about">Urartu-Armenia — um guia offline trilíngue (hy/ru/en) das fortalezas urartianas Erebuni (782 a.C.) e Teishebaini (Karmir Blur). Funciona sem internet.</string>
     <string name="help_tourist_title">Modo turista</string>
     <string name="help_tourist_body">Guia: cartões de fortalezas abrem artigos. Wiki: mini-enciclopédia sobre reis, deuses e vida cotidiana. Biblioteca: livros (leitor PDF, tamanho de fonte, modo noturno, marcadores) e áudio (estação Urartu.fm, sua música). Mapa: coordenadas das fortalezas. Configurações: troque idioma e estilo em tempo real.</string>
     <string name="help_employee_title">Modo funcionário</string>
@@ -186,7 +186,7 @@
     <string name="ob_skip">Pular</string>
     <string name="ob_next">Próximo</string>
     <string name="ob_start">Entendi!</string>
-    <string name="ob_welcome_title">Bem-vindo ao Erebuni 782</string>
+    <string name="ob_welcome_title">Bem-vindo ao Urartu-Armenia</string>
     <string name="ob_welcome_body">Seu guia offline das fortalezas urartianas de Erebuni (782 a.C.) e Teishebaini. Tudo funciona sem internet. Escolha seu modo no próximo passo.</string>
     <string name="ob_tourist_title">🧭 Modo turista</string>
     <string name="ob_tourist_body">• Guia: cartões de fortalezas com fotos\n• Wiki: 25 artigos sobre reis, deuses e vida cotidiana\n• Biblioteca: 5 livros com leitor PDF\n• Mapa: coordenadas GPS + como chegar\n• Config.: troque idioma (hy/ru/en/pt) e estilo em tempo real</string>
