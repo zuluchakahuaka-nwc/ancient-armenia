@@ -248,6 +248,11 @@
     <string name="section_ancient_label">Древняя Армения</string>
     <string name="section_ancient_desc">Гарни и Эчмиадзин, Тигран Великий и Маштоц, Ани и Киликия. Античность и Средневековье.</string>
     <string name="settings_section">Раздел</string>
+    <string name="contact_museum_title">Связь с музеем</string>
+    <string name="contact_dev_title">Связь с разработчиком</string>
+    <string name="contact_phone">Телефон</string>
+    <string name="contact_email">Почта</string>
+    <string name="contact_website">Сайт</string>
 
     <!-- ═══ Таймлайн Древней Армении (331 до н.э. → 1375 н.э.) ═══ -->
     <string name="timeline_subtitle_ancient">331 до н.э. → 1375 н.э.: от Александра до падения Киликии</string>

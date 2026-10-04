@@ -249,6 +249,11 @@
     <string name="section_ancient_label">Ancient Armenia</string>
     <string name="section_ancient_desc">Garni and Etchmiadzin, Tigranes the Great and Mashtots, Ani and Cilicia. Antiquity and the Middle Ages.</string>
     <string name="settings_section">Section</string>
+    <string name="contact_museum_title">Contact the museum</string>
+    <string name="contact_dev_title">Contact the developer</string>
+    <string name="contact_phone">Phone</string>
+    <string name="contact_email">Email</string>
+    <string name="contact_website">Website</string>
 
     <!-- ═══ Ancient Armenia timeline (331 BC → AD 1375) ═══ -->
     <string name="timeline_subtitle_ancient">331 BC → AD 1375: from Alexander to the fall of Cilicia</string>

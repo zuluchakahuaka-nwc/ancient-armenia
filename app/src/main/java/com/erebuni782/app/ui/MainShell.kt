@@ -136,6 +136,8 @@ fun MainShell(mainViewModel: MainViewModel) {
                         }
                         AppNavHost(navController, mainViewModel, Modifier.fillMaxHeight().weight(1f))
                     }
+                    // две планки в самом низу: музей + разработчик (тап = свернуть)
+                    ContactBars()
                 }
             }
         } else {
@@ -164,6 +166,8 @@ fun MainShell(mainViewModel: MainViewModel) {
                 ) { padding ->
                     AppNavHost(navController, mainViewModel, Modifier.padding(padding))
                 }
+                // две планки в самом низу (под нижней навигацией): тап = свернуть/развернуть
+                ContactBars()
             }
         }
     }

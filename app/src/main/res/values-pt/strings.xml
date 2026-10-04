@@ -248,6 +248,11 @@
     <string name="section_ancient_label">Armênia Antiga</string>
     <string name="section_ancient_desc">Garni e Etchmiadzin, Tigranes, o Grande, e Mashtots, Ani e Cilícia. Antiguidade e Idade Média.</string>
     <string name="settings_section">Seção</string>
+    <string name="contact_museum_title">Contato com o museu</string>
+    <string name="contact_dev_title">Contato com o desenvolvedor</string>
+    <string name="contact_phone">Telefone</string>
+    <string name="contact_email">E-mail</string>
+    <string name="contact_website">Site</string>
 
     <!-- ═══ Cronologia da Armênia Antiga (331 a.C. → 1375 d.C.) ═══ -->
     <string name="timeline_subtitle_ancient">331 a.C. → 1375 d.C.: de Alexandre à queda da Cilícia</string>
