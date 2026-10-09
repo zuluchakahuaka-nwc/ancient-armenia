@@ -1,6 +1,6 @@
-# Erebuni 782
+# Ancient Armenia
 
-Trilingual offline Android app: educational guide to the Urartian fortresses **Erebuni** (782 BC) and **Teishebaini** (Karmir Blur).
+Quadrilingual (hy/ru/en/pt) offline Android app: educational guide to the Urartian fortresses **Erebuni** (782 BC) and **Teishebaini** (Karmir Blur).
 
 ![Erebuni Fortress](app/src/main/assets/wiki_images/erebuni_fortress.jpg)
 
@@ -8,9 +8,9 @@ Trilingual offline Android app: educational guide to the Urartian fortresses **E
 
 ### 🧭 Tourist Mode
 - **Guide** — fortress cards with photos
-- **Wiki** — 25 articles: kings, gods, daily life, cuneiform (hy/ru/en)
-- **Library** — 5 PDF books (Moiseeva, Piotrovsky, Arutunyan)
-- **Urartu.fm** — 10 offline melodies: ⏮ ⏯ ⏭, long-press = stop
+- **Wiki** — articles: kings, gods, daily life, cuneiform
+- **Library** — PDF books + audio
+- **Urartu.fm** — offline station: ⏮ ⏯ ⏭, long-press = stop
 - **Map** — GPS + walking and driving directions
 - **Settings** — switch language and skin (Pre-Urartu / Urartu / Post-Urartu) on the fly
 
@@ -18,7 +18,7 @@ Trilingual offline Android app: educational guide to the Urartian fortresses **E
 - **Quick Capture** — 📷 camera photo → tap to mark targets
 - **Aerial Survey** — photo stitching, 3-level auto-detection, 3D reconstruction
 - **Artifact Registry** — catalog, custody status, audit log, reminders
-- **Export** — signed .e782 backup for PC or device sync
+- **Export** — signed backup for PC or device sync
 
 ### 🎨 Design
 - 3 historical skins (each = palette + fonts + cuneiform ornaments)
@@ -41,4 +41,4 @@ Android 7.0+ (API 24) · Fully offline
 
 ---
 
-[Русский](README.md) | [Հայերեն](README_HY.md)
+[Русский](README.md) | [Հայերեն](README_HY.md) | [Português](README_PT.md)
